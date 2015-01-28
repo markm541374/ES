@@ -1,0 +1,43 @@
+Entropy search for information-efficient global optimization
+
+http://dl.acm.org/citation.cfm?id=2343701
+
+@article{hennig2012entropy,
+  title={Entropy search for information-efficient global optimization},
+  author={Hennig, Philipp and Schuler, Christian J},
+  journal={The Journal of Machine Learning Research},
+  volume={98888},
+  number={1},
+  pages={1809--1837},
+  year={2012},
+  publisher={JMLR. org}
+}
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Predictive Entropy Search for Efficient Global Optimization of Black-box Functions
+
+http://papers.nips.cc/paper/5324-online-decision-making-in-general-combinatorial-spaces
+
+@inproceedings{hernandez2014predictive,
+  title={Predictive entropy search for efficient global optimization of black-box functions},
+  author={Hern{\'a}ndez-Lobato, Jos{\'e} Miguel and Hoffman, Matthew W and Ghahramani, Zoubin},
+  booktitle={Advances in Neural Information Processing Systems},
+  pages={918--926},
+  year={2014}
+}
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Derivative observations in Gaussian Process models of dynamic systems
+
+http://eprints.gla.ac.uk/3119/
+
+@article{solak2003derivative,
+  title={Derivative observations in Gaussian process models of dynamic systems},
+  author={Solak, Ercan and Murray-Smith, Roderick and Leithead, William E and Leith, Douglas J and Rasmussen, Carl Edward},
+  year={2003},
+  publisher={MIT Press}
+}
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
