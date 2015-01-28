@@ -2,6 +2,22 @@ import scipy as sp
 from scipy import linalg as spl
 from matplotlib import pyplot as plt
 
+#conbine sets of observations
+def catObs(O):
+    i=True
+    for Os in O:
+        if i:
+            i=False
+            X=Os[0]
+            Y=Os[1]
+            S=Os[2]
+            D=Os[3]
+        X=sp.vstack([X,Os[0]])
+        Y=sp.vstack([Y,Os[1]])
+        S=sp.vstack([S,Os[2]])
+        D=D+Os[3]
+    return [X,Y,S,D]
+
 #given a 1d input return a matrix with the input on the diagonal
 def vec2trace(v):
     (l,_) = v.shape
