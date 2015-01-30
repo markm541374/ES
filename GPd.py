@@ -12,10 +12,11 @@ def catObs(O):
             Y=Os[1]
             S=Os[2]
             D=Os[3]
-        X=sp.vstack([X,Os[0]])
-        Y=sp.vstack([Y,Os[1]])
-        S=sp.vstack([S,Os[2]])
-        D=D+Os[3]
+        else:
+            X=sp.vstack([X,Os[0]])
+            Y=sp.vstack([Y,Os[1]])
+            S=sp.vstack([S,Os[2]])
+            D=D+Os[3]
     return [X,Y,S,D]
 
 #given a 1d input return a matrix with the input on the diagonal
@@ -25,6 +26,24 @@ def vec2trace(v):
     for i in range(l):
         M[i,i]=v[i]
     return M
+
+def plot1(g,llimit,ulimit):
+    n_p=120
+    X_p = sp.matrix(sp.linspace(llimit[0],ulimit[0],n_p)).T #plot points
+    D_p = [[sp.NaN]]*n_p
+
+    [m_p,V_p] = g.infer_diag(X_p,D_p)
+
+    ub=sp.zeros(n_p)
+    lb=sp.zeros(n_p)
+    for i in xrange(n_p):
+       ub[i]=m_p[i,0]+2*sp.sqrt(V_p[i,0])
+       lb[i]=m_p[i,0]-2*sp.sqrt(V_p[i,0])
+    f0=plt.figure(figsize=(8,8))  
+    a0=f0.add_subplot(111)
+    a0.plot(sp.array(X_p).flatten(),sp.array(m_p).flatten())
+    a0.fill_between(sp.array(X_p).flatten(),lb,ub,facecolor='lightskyblue',alpha=0.5)
+    return a0
 
 # return xlogx but return zero for x=0 instead of raising a log0 error
 def xlx0(x):
