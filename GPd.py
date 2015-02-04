@@ -43,6 +43,11 @@ def plot1(g,llimit,ulimit):
     a0=f0.add_subplot(111)
     a0.plot(sp.array(X_p).flatten(),sp.array(m_p).flatten())
     a0.fill_between(sp.array(X_p).flatten(),lb,ub,facecolor='lightskyblue',alpha=0.5)
+    #print g
+    #print dir(g)
+    for i in xrange(len(g.D_s)):
+       if sp.isnan(g.D_s[i]):
+          a0.plot(g.X_s[i],g.Y_s[i],'rx')
     return a0
 
 # return xlogx but return zero for x=0 instead of raising a log0 error
@@ -326,7 +331,7 @@ class GPcore:
         #print S_s.T
         self.D_s=D_s
         self.X_s=X_s
-        #self.Y_s=Y_s
+        self.Y_s=Y_s
         #self.S_s=S_s
         self.kf=kf
         
