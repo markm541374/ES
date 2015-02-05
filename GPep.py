@@ -20,10 +20,12 @@ def gen_sqexp_k_d(theta):
 def PhiR(x):
     return sps.norm.pdf(x)/sps.norm.cdf(x)
 
+
+
 class GPcore:
-    def __init__(self,X_c,Y_c,S_c,D_c,X_z,D_z,I_z,G_z,kf):
+    def __init__(self,X_c,Y_c,S_c,D_c,X_z,D_z,I_z,G_z,N_z,kf):
        #X,Y,S,D_c are the x,y,var and derivative that have been observed
-       #X,I,G_z are the x,y and sign of inequality constraints
+       #X,I,G_z are the x,y sign and noise of inequality constraints
        self.X_c=X_c
        self.Y_c=Y_c
        self.S_c=S_c
@@ -32,6 +34,7 @@ class GPcore:
        self.D_z=D_z
        self.I_z=I_z
        self.G_z=G_z
+       self.N_z=N_z
        self.kf=kf
        self.n_z=len(G_z)
        self.n_c=len(D_z)
@@ -83,13 +86,13 @@ class GPcore:
                v_R[i].append(v_)
             #find the new ep obs
 
-               alpha = (m_+((-1)**self.G_z[i])*self.I_z[i,0])/(sp.sqrt(v_+10**-10))
+               alpha = (m_+((-1)**self.G_z[i])*self.I_z[i,0])/(sp.sqrt(v_+self.N_z[i]))
         
                pr = PhiR(alpha)
                if sp.isnan(pr):
                    pr=-alpha
-               beta = pr*(pr+alpha)/(v_+10**-10)
-               kappa = ((-1)**self.G_z[i] )*(pr+alpha)/(sp.sqrt(v_+10**-10))
+               beta = pr*(pr+alpha)/(v_+self.N_z[i]**2)
+               kappa = ((-1)**self.G_z[i] )*(pr+alpha)/(sp.sqrt(v_+self.N_z[i]**2))
 
                #replace with the new ep obs
                yt[i,0]=m_-1./kappa

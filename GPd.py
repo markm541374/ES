@@ -45,9 +45,11 @@ def plot1(g,llimit,ulimit):
     a0.fill_between(sp.array(X_p).flatten(),lb,ub,facecolor='lightskyblue',alpha=0.5)
     #print g
     #print dir(g)
+    xs=sp.array(g.X_s).flatten()
+    ys=sp.array(g.Y_s).flatten()
     for i in xrange(len(g.D_s)):
        if sp.isnan(g.D_s[i]):
-          a0.plot(g.X_s[i],g.Y_s[i],'rx')
+          a0.plot(xs,ys,'rx')
     return a0
 
 # return xlogx but return zero for x=0 instead of raising a log0 error
@@ -59,14 +61,14 @@ def xlx0(x):
     
 #sqexp kernel generator
 def gen_sqexp_k(theta):
-	A=theta[0]
-	d=sp.matrix(theta[1:]).T
-	
-	N=sp.matrix(d).shape[0]
-	D=sp.eye(N)
-	for i in range(N):
-		D[i,i]=1./(d[i,0]**2)
-	return lambda x,y:A*sp.exp(-0.5*(x-y)*D*(x-y).T)
+    A=theta[0]
+    d=sp.matrix(theta[1:]).T
+
+    N=sp.matrix(d).shape[0]
+    D=sp.eye(N)
+    for i in range(N):
+       D[i,i]=1./(d[i,0]**2)
+    return lambda x,y:A*sp.exp(-0.5*(x-y)*D*(x-y).T)
 
 #sqexp kernel generator
 
