@@ -1,7 +1,7 @@
 import scipy as sp
 from scipy import linalg as spl
 from matplotlib import pyplot as plt
-
+from numpy.linalg import slogdet as slogdet
 #conbine sets of observations
 def catObs(O):
     i=True
@@ -338,7 +338,7 @@ class GPcore:
         self.kf=kf
         
         K_ss = buildKsym_d(kf,X_s,D_s)
-        
+        (sign,self.logdet)=slogdet(K_ss)
         self.K_ss_cf = spl.cho_factor(K_ss+vec2trace(S_s))
         self.a = spl.cho_solve(self.K_ss_cf,Y_s)
         
@@ -377,4 +377,7 @@ class GPcore:
             
             V[j,0]=self.kf(X_i[j,:],X_i[j,:],d1=D_i[j],d2=D_i[j])-r*spl.cho_solve(self.K_ss_cf,r.T)
         return [m,V]
+
+    def llk(self):
+       return (-0.5*self.Y_s.T*self.a -0.5*self.logdet-0.5*len(self.D_s)*sp.log(2*sp.pi))[0,0]
 #kf = gen_sqexp_k_d([1.,0.3])
