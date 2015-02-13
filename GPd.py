@@ -342,6 +342,7 @@ class GPcore:
         self.K_ss_cf = spl.cho_factor(K_ss+vec2trace(S_s))
         self.a = spl.cho_solve(self.K_ss_cf,Y_s)
         
+        
         #print "----------"
         return
     
@@ -364,7 +365,7 @@ class GPcore:
         K_si = buildKasym_d(self.kf,X_i,self.X_s,D_i,self.D_s)
         
         m = K_si*self.a
-        V = K_ii - K_si*spl.cho_solve(self.K_ss_cf,K_si.T)
+	V = K_ii - K_si*spl.cho_solve(self.K_ss_cf,K_si.T)
         
         return [m,V]
     

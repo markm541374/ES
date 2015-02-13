@@ -45,9 +45,11 @@ class GPcore:
 
        self.nloops=10
        self.invalidflag=True
+       
        return
 
     def runEP(self,plot=False):
+       
        g=GPd.GPcore(self.X_c,self.Y_c,self.S_c,self.D_c,self.kf)
        #start by making the full inference at the inequality locations
        [m0,V0]=g.infer_full(self.X_z,self.D_z)
@@ -130,9 +132,10 @@ class GPcore:
         return self.gep.infer_m(X_i,D_i)
 
     def infer_full(self,X_i,D_i):
+        #print self.invalidflag
         if self.invalidflag:
            self.runEP()
-
+        #print self.invalidflag
         return self.gep.infer_full(X_i,D_i)
     
     def infer_diag(self,X_i,D_i):

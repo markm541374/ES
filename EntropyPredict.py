@@ -5,10 +5,22 @@ import scipy.linalg as spl
 from scipy.stats import norm as norm
 import GPep
 import GPd
+from scipy.optimize import minimize as mnz
+import DIRECT
 
-
-
-
+def searchEI(D,kf,lower,upper):
+    Xo=D[0]
+    Yo=D[1]
+    So=D[2]
+    Do=D[3]
+    best=sp.amin(Yo)
+    g1=GPd.GPcore(Xo,Yo,So,Do,kf)
+    ee = lambda post,best : -EI(best,post[0][0,0],sp.sqrt(post[1][0,0]))
+    ef = lambda g,x,best: ee(g.infer_diag(sp.matrix(x),[[sp.NaN]]),best)
+    eg = lambda x,y:(ef(g1,x,best),0)
+    [x,EImin,ierror]=DIRECT.solve(eg,lower,upper,user_data=[],algmethod=1,maxf=400)
+    
+    return x[0]
 def EI_1dfixk(D,kf,xs,best):
     Xo=D[0]
     Yo=D[1]
@@ -86,7 +98,7 @@ def predict_1dfixk(D,kf,xs,ss,nd=400,nx_inner=101):
                 Hydxxs=0.5*sp.log(2*sp.pi*sp.e*(vnxxs+ss[k]))
                 H[j,k]+=Hydxxs
     H=H/float(nd)
-
+    
     for i in xrange(nh):
         m,v=g1.infer_diag(sp.matrix([[X_h[i,0]]]),[[sp.NaN]])
     
@@ -110,3 +122,106 @@ def EI(ER,mu,sigma):
         return sp.matrix(EI)[0.0]
     else:
         return sp.matrix(0.0)[0,0]
+
+def makedraws(D,kf,nd=400,nx_inner=101):
+    Xo=D[0]
+    Yo=D[1]
+    So=D[2]
+    Do=D[3]
+    g1=GPd.GPcore(Xo,Yo,So,Do,kf)
+
+    #nh=len(xs)
+    #ns=len(ss)
+
+    #X_h = sp.matrix(sp.linspace(-1,1,nh)).T
+    X_x = sp.matrix(sp.linspace(-1,1,nx_inner)).T
+
+    D_x = [[sp.NaN]]*nx_inner
+    mh,Vh=g1.infer_full(X_x,D_x)
+    Vh_cho = spl.cholesky(Vh,lower=True)
+    
+    #ss=sp.logspace(4,-4,ns)
+    allG=[]
+    for i in xrange(nd):
+        if i%25==0:
+            print i
+        dr = mh+Vh_cho*sp.matrix(sp.random.normal(size=nx_inner)).T
+        xsi=dr.argmin()
+        xs=X_x[xsi,:][0,0]
+    #eq constraint
+    
+        Xg=sp.matrix([[xs]])
+        Yg=sp.matrix([[0.]])
+        Sg=sp.matrix([[0.000000001]])
+        Dg=[[0]]
+    
+        [Xc,Yc,Sc,Dc]=GPep.catObs([[Xo,Yo,So,Do],[Xg,Yg,Sg,Dg]])
+    
+    #ineq constraints
+    
+        Xz=sp.matrix([[xs],[xs]])
+    
+        Dz=[[sp.NaN],[0,0]]
+    #the inequality
+        Iz=sp.matrix([[Yo[Yo.argmin(),:][0,0]],[0.]])
+    #sign of the inequality
+        Gz=[0,0]
+        Nz=[0.1,0.]
+    
+        g=GPep.GPcore(Xc,Yc,Sc,Dc,Xz,Dz,Iz,Gz,Nz,kf)
+        g.runEP()
+        allG.append([g,xs])
+    return [g1,allG]
+
+def inferH(G,X_h,ss):
+    print "enter"
+    import time
+    acc0=0
+    acc1=0
+    acc2=0
+    acc3=[]
+    
+    nh=len(sp.array(X_h).flatten())
+    
+    ns=len(ss)
+    H=sp.zeros([nh,ns])
+    g1=G[0]
+    for Gi in G[1]:
+        g=Gi[0]
+        
+        xs=Gi[1]
+        for j in xrange(nh):
+            t0=time.time()
+            Xt=sp.matrix([[X_h[j,0]],[xs]])
+            Dt=[[sp.NaN],[sp.NaN]]
+            
+            m,V=g.infer_full(Xt,Dt)
+            t1=time.time()
+            s=V[0,0]+V[1,1]-V[0,1]-V[1,0]
+            mu=m[1,0]-m[0,0]
+            alpha=mu/sp.sqrt(s)
+            beta=sps.norm.pdf(alpha)/sps.norm.cdf(alpha)
+        
+            vnxxs=V[0,0]-beta*(beta+alpha)*(1./s)*(V[0,0]-V[0,1])**2
+            t2=time.time()
+            for k in xrange(ns):
+                Hydxxs=0.5*sp.log(2*sp.pi*sp.e*(vnxxs+ss[k]))
+                H[j,k]+=Hydxxs
+            t3=time.time()
+            acc0+=t1-t0
+            
+            acc1+=t2-t1
+            acc2+=t3-t2
+    print '0 ' + str(acc0)
+    print '1 ' + str(acc1)
+    print '2 ' + str(acc2)
+    #print acc3
+    H=H/float(len(G[1]))
+    
+    for i in xrange(nh):
+        m,v=g1.infer_diag(sp.matrix([[X_h[i,0]]]),[[sp.NaN]])
+    
+        for k in xrange(ns):
+            Hydx=0.5*sp.log(2*sp.pi*sp.e*(v[0,0]+ss[k]))
+            H[i,k]=Hydx-H[i,k]
+    return H
