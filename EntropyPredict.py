@@ -24,6 +24,21 @@ def searchEI(D,kf,lower,upper):
     [x,EImin,ierror]=DIRECT.solve(eg,lower,upper,user_data=[],algmethod=1,maxf=400)
     
     return x[0]
+
+def searchEnt(D,kf,lower,upper):
+    Xo=D[0]
+    Yo=D[1]
+    So=D[2]
+    Do=D[3]
+    Si=[0.01]
+    GG=makedraws([Xo,Yo,So,Do],kf,nd=100)
+
+    ee = lambda x:-inferHmulti(GG,sp.matrix(sp.matrix(x)).T,Si)
+    ef = lambda x,y:(ee(x),0)
+    [x,EImin,ierror]=DIRECT.solve(ef,lower,upper,user_data=[],algmethod=1,maxf=400)
+
+    return x[0]
+
 def EI_1dfixk(D,kf,xs,best):
     Xo=D[0]
     Yo=D[1]
