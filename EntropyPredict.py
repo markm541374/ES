@@ -161,8 +161,8 @@ def makedraws(D,kf,nd=400,nx_inner=101):
     #ss=sp.logspace(4,-4,ns)
     allG=[]
     for i in xrange(nd):
-        if i%25==0:
-            print i
+        #if i%25==0:
+        #    print i
         dr = mh+Vh_cho*sp.matrix(sp.random.normal(size=nx_inner)).T
         xsi=dr.argmin()
         xs=X_x[xsi,:][0,0]
@@ -189,7 +189,7 @@ def makedraws(D,kf,nd=400,nx_inner=101):
         g=GPep.GPcore(Xc,Yc,Sc,Dc,Xz,Dz,Iz,Gz,Nz,kf)
         g.runEP()
         allG.append([g,xs])
-    return [g1,allG]
+    return [[g1],allG]
 
 def singleG(X_h,ss,G):
     g=G[0]
@@ -233,14 +233,16 @@ def inferHmulti(G,X_h,ss):
             for k in xrange(ns):
                 H[j,k]+=h[j,k]
         
-    H=H/float(ng)
+    H=-H/float(ng)
+    ing1=1./float(len(g1))
+    for gi in g1:
+
+        for i in xrange(nh):
+            m,v=gi.infer_diag(sp.matrix([[X_h[i,0]]]),[[sp.NaN]])
     
-    for i in xrange(nh):
-        m,v=g1.infer_diag(sp.matrix([[X_h[i,0]]]),[[sp.NaN]])
-    
-        for k in xrange(ns):
-            Hydx=0.5*sp.log(2*sp.pi*sp.e*(v[0,0]+ss[k]))
-            H[i,k]=Hydx-H[i,k]
+            for k in xrange(ns):
+                Hydx=0.5*sp.log(2*sp.pi*sp.e*(v[0,0]+ss[k]))
+                H[i,k]+=ing1*Hydx
     return H
 
 def inferH(G,X_h,ss):
