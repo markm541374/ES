@@ -7,6 +7,9 @@ import GPep
 import GPd
 from scipy.optimize import minimize as mnz
 import DIRECT
+from functools import partial
+import time
+from multiprocessing import pool
 
 def searchEI(D,kf,lower,upper):
     Xo=D[0]
@@ -173,13 +176,59 @@ def makedraws(D,kf,nd=400,nx_inner=101):
         allG.append([g,xs])
     return [g1,allG]
 
+def singleG(X_h,ss,G):
+    g=G[0]
+    xs=G[1]
+    nh=len(sp.array(X_h).flatten())
+    
+    ns=len(ss)
+    H=sp.zeros([nh,ns])
+    
+    for j in xrange(nh):
+        
+        Xt=sp.matrix([[X_h[j,0]],[xs]])
+        Dt=[[sp.NaN],[sp.NaN]]
+            
+        m,V=g.infer_full(Xt,Dt)
+        
+        s=V[0,0]+V[1,1]-V[0,1]-V[1,0]
+        mu=m[1,0]-m[0,0]
+        alpha=mu/sp.sqrt(s)
+        beta=sps.norm.pdf(alpha)/sps.norm.cdf(alpha)
+        
+        vnxxs=V[0,0]-beta*(beta+alpha)*(1./s)*(V[0,0]-V[0,1])**2
+        
+        for k in xrange(ns):
+            Hydxxs=0.5*sp.log(2*sp.pi*sp.e*(vnxxs+ss[k]))
+            H[j,k]+=Hydxxs
+        
+    return H
+def inferHmulti(G,X_h,ss):
+    nh=len(sp.array(X_h).flatten())
+    ns=len(ss)
+    Hp=partial(singleG,X_h,ss)
+    g1=G[0]
+    p=pool.Pool(8)
+    allh=p.map(Hp,G[1])
+    ng=len(G[1])
+    p.close()
+    H=sp.zeros([nh,ns])
+    for h in allh:
+        for j in xrange(nh):
+            for k in xrange(ns):
+                H[j,k]+=h[j,k]
+        
+    H=H/float(ng)
+    
+    for i in xrange(nh):
+        m,v=g1.infer_diag(sp.matrix([[X_h[i,0]]]),[[sp.NaN]])
+    
+        for k in xrange(ns):
+            Hydx=0.5*sp.log(2*sp.pi*sp.e*(v[0,0]+ss[k]))
+            H[i,k]=Hydx-H[i,k]
+    return H
+
 def inferH(G,X_h,ss):
-    print "enter"
-    import time
-    acc0=0
-    acc1=0
-    acc2=0
-    acc3=[]
     
     nh=len(sp.array(X_h).flatten())
     
@@ -191,7 +240,7 @@ def inferH(G,X_h,ss):
         
         xs=Gi[1]
         for j in xrange(nh):
-            t0=time.time()
+            
             Xt=sp.matrix([[X_h[j,0]],[xs]])
             Dt=[[sp.NaN],[sp.NaN]]
             
@@ -203,19 +252,12 @@ def inferH(G,X_h,ss):
             beta=sps.norm.pdf(alpha)/sps.norm.cdf(alpha)
         
             vnxxs=V[0,0]-beta*(beta+alpha)*(1./s)*(V[0,0]-V[0,1])**2
-            t2=time.time()
+            
             for k in xrange(ns):
                 Hydxxs=0.5*sp.log(2*sp.pi*sp.e*(vnxxs+ss[k]))
                 H[j,k]+=Hydxxs
-            t3=time.time()
-            acc0+=t1-t0
             
-            acc1+=t2-t1
-            acc2+=t3-t2
-    print '0 ' + str(acc0)
-    print '1 ' + str(acc1)
-    print '2 ' + str(acc2)
-    #print acc3
+            
     H=H/float(len(G[1]))
     
     for i in xrange(nh):
