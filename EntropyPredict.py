@@ -31,7 +31,7 @@ def searchEnt(D, kf, lower, upper):
     Yo = D[1]
     So = D[2]
     Do = D[3]
-    Si = [0.01]
+    Si = [0.0001]
     GG = makedraws([Xo, Yo, So, Do], kf, nd=100)
     ee = lambda x: -inferHmulti(GG, sp.matrix(sp.matrix(x)).T, Si)
     ef = lambda x, y: (ee(x), 0)

@@ -2,34 +2,39 @@ import scipy as sp
 from scipy import linalg as spl
 from matplotlib import pyplot as plt
 from numpy.linalg import slogdet as slogdet
-#conbine sets of observations
+# conbine sets of observations
+
+
 def catObs(O):
-    i=True
+    i = True
     for Os in O:
         if i:
-            i=False
-            X=Os[0]
-            Y=Os[1]
-            S=Os[2]
-            D=Os[3]
+            i = False
+            X = Os[0]
+            Y = Os[1]
+            S = Os[2]
+            D = Os[3]
         else:
-            X=sp.vstack([X,Os[0]])
-            Y=sp.vstack([Y,Os[1]])
-            S=sp.vstack([S,Os[2]])
-            D=D+Os[3]
-    return [X,Y,S,D]
+            X = sp.vstack([X, Os[0]])
+            Y = sp.vstack([Y, Os[1]])
+            S = sp.vstack([S, Os[2]])
+            D = D+Os[3]
+    return [X, Y, S, D]
 
-#given a 1d input return a matrix with the input on the diagonal
+# given a 1d input return a matrix with the input on the diagonal
+
+
 def vec2trace(v):
-    (l,_) = v.shape
+    (l, _) = v.shape
     M = sp.eye(l)
     for i in range(l):
-        M[i,i]=v[i]
+        M[i, i] = v[i]
     return M
 
-def plot1(g,llimit,ulimit):
-    n_p=120
-    X_p = sp.matrix(sp.linspace(llimit[0],ulimit[0],n_p)).T #plot points
+
+def plot1(g, llimit, ulimit):
+    n_p = 120
+    X_p = sp.matrix(sp.linspace(llimit[0], ulimit[0], n_p)).T #plot points
     D_p = [[sp.NaN]]*n_p
 
     [m_p,V_p] = g.infer_diag(X_p,D_p)

@@ -42,10 +42,10 @@ plt.plot(xmintrue, miny, 'rx')
 
 n_init = 21
 x = sp.random.uniform(-1, 1, n_init)
-y = map(f, x)+sp.random.normal(scale=0.1, size=n_init)
+y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
 Xo = sp.matrix(x).T
 Yo = sp.matrix(y).T
-So = sp.matrix([[0.01]]*n_init)
+So = sp.matrix([[0.001]]*n_init)
 Do = [[sp.NaN]]*n_init
 g1 = GPd.GPcore(Xo, Yo, So, Do, kf)
 a = GPd.plot1(g1, [-1], [1])
@@ -97,6 +97,9 @@ ee = lambda hyp, y: (-dist.loglike(hyp), 0)
 [xmintrue, miny, ierror] = DIRECT.solve(ee, [-4, -4], [4, 4], user_data=[], algmethod=1, maxf=500)
 print [10**i for i in xmintrue]
 
+kfMLE=kfGen([10**i for i in xmintrue])
+gMLE = GPd.GPcore(Xo, Yo, So, Do, kfMLE)
+aMLE = GPd.plot1(gMLE, [-1], [1])
 # %%
 
 w_0 = xmintrue
