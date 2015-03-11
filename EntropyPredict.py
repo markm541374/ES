@@ -1,5 +1,5 @@
 import scipy as sp
-# from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt
 import scipy.stats as sps
 import scipy.linalg as spl
 from scipy.stats import norm as norm
@@ -10,7 +10,8 @@ import DIRECT
 from functools import partial
 # import time
 from multiprocessing import pool
-
+from tools import *
+import sys
 
 def searchEI(D, kf, lower, upper):
     Xo = D[0]
@@ -303,8 +304,8 @@ def slice_sample(dist, init, iters, sigma, step_out=True):
     xx = init.copy()
 
     for i in xrange(iters):
-        if i % 10 == 0:
-            print i
+        sys.stdout.write('\r'+str(i))
+        sys.stdout.flush()
 
         perm = range(D)
         sp.random.shuffle(perm)
@@ -344,24 +345,112 @@ def slice_sample(dist, init, iters, sigma, step_out=True):
                 else:
                     raise RuntimeError('Slice sampler shrank too far.')
 
-        if i % 1000 == 0:
-            print 'iteration', i
+        #if i % 1000 == 0:
+        #    print 'iteration', i
 
         samples[:, i] = xx.copy().ravel()
-
+    print '\n'
     return samples
 
 
-class dist_obj():
-    def __init__(self, llk, D, prior):
-        self.llk = llk
+
+class EntPredictor():
+    def __init__(self, D, lower, upper, kfgen, kfprior):
         self.D = D
-        self.prior = prior
+        # function takes hyperparameters and returns a kernel fn
+        self.kfgen = kfgen
+        # function takes hyperparameters and returns ln(prior)
+        self.kfprior = kfprior
+        # g1 = GPd.GPcore(self.Xo, self.Yo, self.So, self.Do, self.kf)
+        self.MLEflag = True
+        self.HypSampleflag = True
+        self.Predictorflag = True
         return
 
-    def loglike(self, xx):
-        P = self.prior(xx)
-        L = self.llk(xx, self.D)
-        # print str(L)+'  xx  '+str(P)
-        # print L+P
-        return L+P
+    def seekMLEkf(self):
+        # searches for the MLE hyperparameters over +- 4 deacdes from unity
+        print 'seeking MLE phyperparameters'
+
+        
+        self.dist = dist_obj(squaresllk, self.D, self.kfprior, self.kfgen)
+        ee = lambda hyp, y: (-self.dist.loglike(hyp), 0)
+        [xmintrue, miny, ierror] = DIRECT.solve(ee, [-4, -4], [4, 4], user_data=[], algmethod=1, maxf=500)
+        print 'MLEhyperparameters: '+str([10**i for i in xmintrue])
+        self.loghypMLE=xmintrue
+        self.kfMLE = self.kfgen([10**i for i in xmintrue])
+        self.gMLE = GPd.GPcore(self.D[0], self.D[1], self.D[2], self.D[3], self.kfMLE)
+        self.MLEflag = False
+        return
+
+    def drawHypSamples(self, n, plot=False):
+        
+        if self.MLEflag:
+            self.seekMLEkf()
+        print 'Drawing '+str(n)+' hyperparameter samples'
+        w_0 = self.loghypMLE
+        sigma = 0.1*sp.ones(2)
+        samples = slice_sample(self.dist, w_0, iters=n, sigma=sigma)
+        self.kfSam = []
+        for i in xrange(n):
+            self.kfSam.append(self.kfgen([10**samples[0][i], 10**samples[1][i]]))
+
+        if plot:
+            plt.figure()
+            plt.xlabel('outputscale')
+            plt.ylabel('lengthscale')
+            for i in xrange(n):
+                plt.loglog(10**samples[0][i], 10**samples[1][i], 'rx')
+        self.HypSampleflag = False
+        print ''
+        return
+    
+    def initPredictor(self):
+        if self.HypSampleflag:
+            raise ValueError('no samples have been taken over the hyperparameters')
+        print 'cov decomposition for inference over hyp samples'
+        self.Pred = [[], []]
+        for i, k in enumerate(self.kfSam):
+            sys.stdout.write('\r'+str(i))
+            sys.stdout.flush()
+            try:
+                g = makedraws(self.D, k, nd=1)
+                self.Pred[0].append(g[0][0])
+                self.Pred[1].append(g[1][0])
+            except:
+                print 'not using kf '+str(i)+' hyp: '+str(k)
+        self.Predictorflag = False
+        print '\n'
+        return
+                
+    def predictGraph(self,X,S):
+        if self.Predictorflag:
+            raise ValueError('no predictor has been set up')
+        n = len(X)
+        print 'plotting entropy graph over ' + str(n) + ' points'
+        
+        H = [[]]*n
+        for i in xrange(n):
+            sys.stdout.write('\r'+str(i))
+            sys.stdout.flush()
+            H[i] = inferHmulti(self.Pred, sp.matrix(X[i]).T, S)
+        print '\n'
+        return H
+
+    def showEntGraph(self, Xi, S):
+        nx = len(Xi)
+        ns = len(S)
+        if self.HypSampleflag:
+            self.drawHypSamples(100, plot=True)
+        if self.Predictorflag:
+            self.initPredictor()
+        H = self.predictGraph(Xi, S)
+        Hplot = sp.zeros([nx, ns])
+        for i in xrange(nx):
+            for j in xrange(ns):
+                Hplot[i,j]=H[i][0,j]
+
+        plt.figure(figsize=(16, 16))
+        a = GPd.plot1(self.gMLE, [-1], [1])
+        for i in xrange(ns):
+            a.plot(Xi, Hplot[:,i].flatten())
+        return a

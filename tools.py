@@ -91,17 +91,25 @@ def slice_sample(dist, init, iters, sigma, step_out=True):
 
     return samples
 
+def squaresllk(xx, D, kfgen):
+            hyp = [10**(i) for i in xx]
+            kf = kfgen(hyp)
+            g = GPd.GPcore(D[0], D[1], D[2], D[3], kf)
+            lk = g.llk()
+            return lk
+
 
 class dist_obj():
-    def __init__(self, llk, D, prior):
+    def __init__(self, llk, D, prior, kfgen):
         self.llk = llk
         self.D = D
         self.prior = prior
+        self.kfgen = kfgen
         return
 
     def loglike(self, xx):
         P = self.prior(xx)
-        L = self.llk(xx, self.D)
+        L = self.llk(xx, self.D, self.kfgen)
         # print str(L)+'  xx  '+str(P)
         # print L+P
         return L+P
