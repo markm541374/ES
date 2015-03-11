@@ -18,11 +18,12 @@ import GPd
 from tools import *
 import EntropyPredict
 import DIRECT
+import copy as cp
 %pylab inline
 
 # %%
 
-hyptrue = [1., 0.3]
+hyptrue = [1., 0.2]
 kfGen = GPep.gen_sqexp_k_d
 kf = GPep.gen_sqexp_k_d(hyptrue)
 upper = 1
@@ -42,7 +43,7 @@ plt.plot(xmintrue, miny, 'rx')
 
 # %%
 
-n_init = 7
+n_init = 3
 x = sp.random.uniform(-1, 1, n_init)
 y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
 Xo = sp.matrix(x).T
@@ -60,13 +61,26 @@ def sqexpprior(xx):
     
 e = EntropyPredict.EntPredictor([Xo,Yo, So, Do],[-1],[1],kfGen,sqexpprior)
 
-# %%
-n = 101
-Xi = sp.linspace(-1, 1, n)
-Si = sp.logspace(-4,0,10)
-a = e.showEntGraph(Xi,Si)
-
-# %%
+s=0.01
 
 
 # %%
+for k in xrange(3):
+    n = 51
+    Xi = sp.linspace(-1, 1, n)
+    Si = sp.logspace(-4, 0, 10)
+    a = e.showEntGraph(Xi, [s])
+    xmin = e.searchAtS([-1], [1], [s])
+    a.plot(xmin, [0], 'go')
+    a.plot(xmin, f(xmin[0]), 'ro')
+    xIn = xmin[0]
+    yIn = f(xIn)+sp.random.normal(scale=s)
+
+    Xo = sp.vstack([Xo, xIn])
+    Yo = sp.vstack([Yo, yIn])
+    So = sp.vstack([So, s])
+    Do.append([sp.NaN])
+
+    e = EntropyPredict.EntPredictor([Xo, Yo, So, Do], [-1], [1], kfGen, sqexpprior)
+    plt.show()
+    

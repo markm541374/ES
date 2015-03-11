@@ -349,7 +349,8 @@ def slice_sample(dist, init, iters, sigma, step_out=True):
         #    print 'iteration', i
 
         samples[:, i] = xx.copy().ravel()
-    print '\n'
+    sys.stdout.write('\r                   \n')
+    sys.stdout.flush()
     return samples
 
 
@@ -371,19 +372,18 @@ class EntPredictor():
         # searches for the MLE hyperparameters over +- 4 deacdes from unity
         print 'seeking MLE phyperparameters'
 
-        
         self.dist = dist_obj(squaresllk, self.D, self.kfprior, self.kfgen)
         ee = lambda hyp, y: (-self.dist.loglike(hyp), 0)
         [xmintrue, miny, ierror] = DIRECT.solve(ee, [-4, -4], [4, 4], user_data=[], algmethod=1, maxf=500)
         print 'MLEhyperparameters: '+str([10**i for i in xmintrue])
-        self.loghypMLE=xmintrue
+        self.loghypMLE = xmintrue
         self.kfMLE = self.kfgen([10**i for i in xmintrue])
         self.gMLE = GPd.GPcore(self.D[0], self.D[1], self.D[2], self.D[3], self.kfMLE)
         self.MLEflag = False
         return
 
     def drawHypSamples(self, n, plot=False):
-        
+
         if self.MLEflag:
             self.seekMLEkf()
         print 'Drawing '+str(n)+' hyperparameter samples'
@@ -401,9 +401,10 @@ class EntPredictor():
             for i in xrange(n):
                 plt.loglog(10**samples[0][i], 10**samples[1][i], 'rx')
         self.HypSampleflag = False
-        print ''
+        sys.stdout.write('\r              \n')
+        sys.stdout.flush()
         return
-    
+
     def initPredictor(self):
         if self.HypSampleflag:
             raise ValueError('no samples have been taken over the hyperparameters')
@@ -419,9 +420,10 @@ class EntPredictor():
             except:
                 print 'not using kf '+str(i)+' hyp: '+str(k)
         self.Predictorflag = False
-        print '\n'
+        sys.stdout.write('\r           \n')
+        sys.stdout.flush()
         return
-                
+
     def predictGraph(self,X,S):
         if self.Predictorflag:
             raise ValueError('no predictor has been set up')
@@ -433,24 +435,54 @@ class EntPredictor():
             sys.stdout.write('\r'+str(i))
             sys.stdout.flush()
             H[i] = inferHmulti(self.Pred, sp.matrix(X[i]).T, S)
-        print '\n'
+        sys.stdout.write('\r             \n')
+        sys.stdout.flush()
         return H
+
+    def searchAtS(self, lower, upper, S):
+        if self.HypSampleflag:
+            self.drawHypSamples(50, plot=False)
+        if self.Predictorflag:
+            self.initPredictor()
+        searchmax=100
+        print 'searching over '+str(searchmax)+' iterations for maxEnt'
+        global sc
+        global me
+        sc = 0
+        me = 0
+
+        def ee(x,y):
+            global sc
+            global me
+            sys.stdout.write('\r'+str(sc)+' max found '+str(me))
+            sys.stdout.flush()
+            sc += 1
+            Ent = inferHmulti(self.Pred, sp.matrix(x).T, S)
+            if Ent > me:
+                me = Ent
+            return (-Ent, 0)
+
+        [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=searchmax)
+        del sc
+        del me
+        sys.stdout.write('\rMaxEnt at '+str(xmintrue)+'             ')
+        return xmintrue
 
     def showEntGraph(self, Xi, S):
         nx = len(Xi)
         ns = len(S)
         if self.HypSampleflag:
-            self.drawHypSamples(100, plot=True)
+            self.drawHypSamples(50, plot=False)
         if self.Predictorflag:
             self.initPredictor()
         H = self.predictGraph(Xi, S)
         Hplot = sp.zeros([nx, ns])
         for i in xrange(nx):
             for j in xrange(ns):
-                Hplot[i,j]=H[i][0,j]
+                Hplot[i, j] = H[i][0, j]
 
         plt.figure(figsize=(16, 16))
         a = GPd.plot1(self.gMLE, [-1], [1])
         for i in xrange(ns):
-            a.plot(Xi, Hplot[:,i].flatten())
+            a.plot(Xi, Hplot[:, i].flatten())
         return a
