@@ -188,7 +188,16 @@ def makedraws(D, kf, nd=400, nx_inner=101):
         Nz = [0.1, 0.]
 
         g = GPep.GPcore(Xc, Yc, Sc, Dc, Xz, Dz, Iz, Gz, Nz, kf)
-        g.runEP()
+        try:
+            g.runEP()
+        except:
+            
+            
+            import pickle
+            object = [[Xo, Yo, So, Do], [Xg, Yg, Sg, Dg],[Xz, Dz, Iz, Gz, Nz],kf]
+            file_pi = open('GPEPfail.obj', 'wb') 
+            pickle.dump(object, file_pi)
+            raise ValueError()
         allG.append([g, xs])
     return [[g1], allG]
 
@@ -211,12 +220,18 @@ def singleG(X_h, ss, G):
         s = V[0, 0]+V[1, 1]-V[0, 1]-V[1, 0]
         mu = m[1, 0]-m[0, 0]
         alpha = mu / sp.sqrt(s)
-        beta = sps.norm.pdf(alpha)/sps.norm.cdf(alpha)
-
+        # beta = sp.exp(sps.norm.logpdf(alpha) - sps.norm.logcdf(alpha))
+        beta = sp.exp(sps.norm.logpdf(alpha) - sps.norm.logcdf(alpha))
         vnxxs = V[0, 0]-beta*(beta+alpha)*(1./s)*(V[0, 0]-V[0, 1])**2
 
         for k in xrange(ns):
             Hydxxs = 0.5*sp.log(2*sp.pi*sp.e*(vnxxs+ss[k]))
+            if sp.iscomplex(Hydxxs):
+                import pickle 
+                object = [X_h, ss, G]
+                file_pi = open('filename_pi.obj', 'w') 
+                pickle.dump(object, file_pi)
+                
             H[j, k] += Hydxxs
     return H
 
@@ -413,12 +428,12 @@ class EntPredictor():
         for i, k in enumerate(self.kfSam):
             sys.stdout.write('\r'+str(i))
             sys.stdout.flush()
-            try:
-                g = makedraws(self.D, k, nd=1)
-                self.Pred[0].append(g[0][0])
-                self.Pred[1].append(g[1][0])
-            except:
-                print 'not using kf '+str(i)+' hyp: '+str(k)
+            # try
+            g = makedraws(self.D, k, nd=1)
+            self.Pred[0].append(g[0][0])
+            self.Pred[1].append(g[1][0])
+            # except:
+            #    print 'not using kf '+str(i)+' hyp: '+str(k)
         self.Predictorflag = False
         sys.stdout.write('\r           \n')
         sys.stdout.flush()

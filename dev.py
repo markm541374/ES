@@ -43,29 +43,29 @@ plt.plot(xmintrue, miny, 'rx')
 
 # %%
 
-n_init = 3
+n_init = 5
 x = sp.random.uniform(-1, 1, n_init)
 y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
 Xo = sp.matrix(x).T
 Yo = sp.matrix(y).T
-So = sp.matrix([[0.01]]*n_init)
+So = sp.matrix([[0.001]]*n_init)
 Do = [[sp.NaN]]*n_init
 g1 = GPd.GPcore(Xo, Yo, So, Do, kf)
 a = GPd.plot1(g1, [-1], [1])
-
 # %%
+
 
 def sqexpprior(xx):
     p = sps.norm.pdf(((xx[0])-0.)/2.) * sps.norm.pdf(((xx[1])-0.)/2.)
     return sp.log(p)
-    
-e = EntropyPredict.EntPredictor([Xo,Yo, So, Do],[-1],[1],kfGen,sqexpprior)
 
-s=0.01
+e = EntropyPredict.EntPredictor([Xo, Yo, So, Do], [-1], [1], kfGen, sqexpprior)
+
+s = 0.001
 
 
 # %%
-for k in xrange(3):
+for k in xrange(30):
     n = 51
     Xi = sp.linspace(-1, 1, n)
     Si = sp.logspace(-4, 0, 10)
@@ -83,4 +83,21 @@ for k in xrange(3):
 
     e = EntropyPredict.EntPredictor([Xo, Yo, So, Do], [-1], [1], kfGen, sqexpprior)
     plt.show()
-    
+
+# %%
+
+
+e = EntropyPredict.EntPredictor([Xo, Yo, So, Do], [-1], [1], kfGen, sqexpprior)
+e.drawHypSamples(100,plot=True)
+e.initPredictor()
+e.showEntGraph(Xi,[0.01])
+# %%
+n = 251
+Xi = sp.linspace(-1, 1, n)
+H = e.predictGraph(Xi,[0.01])
+print H
+# %%
+for j in e.Pred[1]:
+    print j[0].infer_full(sp.matrix(0.439999),[[sp.NaN]])
+
+#GPep.GPcore.infer_full()
