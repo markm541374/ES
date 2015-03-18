@@ -145,17 +145,41 @@ def EI(ER, mu, sigma):
         return sp.matrix(0.0)[0, 0]
 
 
-def makedraws(D, kf, nd=400, nx_inner=101):
+def makedraws(D, kf, nd=400, nx_inner=101, mode='uniform'):
     Xo = D[0]
     Yo = D[1]
     So = D[2]
     Do = D[3]
     g1 = GPd.GPcore(Xo, Yo, So, Do, kf)
-
+    g1.infer_full(sp.matrix([0]),[[sp.NaN]])
     # nh=len(xs)
     # ns=len(ss)
     # X_h = sp.matrix(sp.linspace(-1,1,nh)).T
-    X_x = sp.matrix(sp.linspace(-1, 1, nx_inner)).T
+    
+    if mode == 'uniform':
+        X_x = sp.matrix(sp.linspace(-1, 1, nx_inner)).T
+    elif mode == 'slice':
+        nacc = 0
+        X_tmp = []
+        mn = min(Yo)
+        mx = max(Yo)
+        while nacc<nx_inner:
+            X_prop = sp.matrix(sp.random.uniform(-1, 1)).T
+            Y_prop = g1.infer_m(X_prop, [[sp.NaN]])
+            theta = -(Y_prop[0,0]-mx)/(mx-mn)
+            p = norm.cdf(2*theta-1.)
+            
+            if sp.random.uniform(0,1)<=p:
+                nacc+=1
+                X_tmp.append(X_prop)
+                #print X_prop
+                #print nacc
+        X_x  = sp.vstack(X_tmp)
+        # raise ValueError
+    else:
+        print 'invalid mode in makedraws'
+        print mode
+        raise ValueError
 
     D_x = [[sp.NaN]] * nx_inner
     mh, Vh = g1.infer_full(X_x, D_x)
@@ -169,6 +193,7 @@ def makedraws(D, kf, nd=400, nx_inner=101):
         dr = mh+Vh_cho*sp.matrix(sp.random.normal(size=nx_inner)).T
         xsi = dr.argmin()
         xs = X_x[xsi, :][0, 0]
+        # print xs
     # eq constraint
 
         Xg = sp.matrix([[xs]])
@@ -381,6 +406,12 @@ class EntPredictor():
         self.MLEflag = True
         self.HypSampleflag = True
         self.Predictorflag = True
+        
+        self.nx_inner = 101
+        self.HYPsamplen = 100
+        self.MLEsearchn = 800
+        self.ENTsearchn = 500
+        self.dmode = 'uniform'
         return
 
     def seekMLEkf(self):
@@ -389,7 +420,7 @@ class EntPredictor():
 
         self.dist = dist_obj(squaresllk, self.D, self.kfprior, self.kfgen)
         ee = lambda hyp, y: (-self.dist.loglike(hyp), 0)
-        [xmintrue, miny, ierror] = DIRECT.solve(ee, [-4, -4], [4, 4], user_data=[], algmethod=1, maxf=500)
+        [xmintrue, miny, ierror] = DIRECT.solve(ee, [-4, -4], [4, 4], user_data=[], algmethod=1, maxf=self.MLEsearchn)
         print 'MLEhyperparameters: '+str([10**i for i in xmintrue])
         self.loghypMLE = xmintrue
         self.kfMLE = self.kfgen([10**i for i in xmintrue])
@@ -425,15 +456,24 @@ class EntPredictor():
             raise ValueError('no samples have been taken over the hyperparameters')
         print 'cov decomposition for inference over hyp samples'
         self.Pred = [[], []]
+        tmp=[]
         for i, k in enumerate(self.kfSam):
             sys.stdout.write('\r'+str(i))
             sys.stdout.flush()
             # try
-            g = makedraws(self.D, k, nd=1)
+            g = makedraws(self.D, k, nd=1, nx_inner=self.nx_inner,mode=self.dmode)
             self.Pred[0].append(g[0][0])
             self.Pred[1].append(g[1][0])
+            
+            
+            #print g
+            # tmp.append(g[1][0][1])
+            
             # except:
             #    print 'not using kf '+str(i)+' hyp: '+str(k)
+        # print tmp
+        plt.figure(figsize=(8, 8))
+        plt.hist(tmp, 20)
         self.Predictorflag = False
         sys.stdout.write('\r           \n')
         sys.stdout.flush()
@@ -456,10 +496,10 @@ class EntPredictor():
 
     def searchAtS(self, lower, upper, S):
         if self.HypSampleflag:
-            self.drawHypSamples(50, plot=False)
+            self.drawHypSamples(self.HYPsamplen, plot=False)
         if self.Predictorflag:
             self.initPredictor()
-        searchmax=100
+        searchmax=self.ENTsearchn
         print 'searching over '+str(searchmax)+' iterations for maxEnt'
         global sc
         global me
@@ -487,7 +527,7 @@ class EntPredictor():
         nx = len(Xi)
         ns = len(S)
         if self.HypSampleflag:
-            self.drawHypSamples(50, plot=False)
+            self.drawHypSamples(self.HYPsamplen, plot=False)
         if self.Predictorflag:
             self.initPredictor()
         H = self.predictGraph(Xi, S)
