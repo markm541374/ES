@@ -23,7 +23,7 @@ import copy as cp
 
 # %%
 
-hyptrue = [1., 0.15]
+hyptrue = [1., 0.25]
 kfGen = GPep.gen_sqexp_k_d
 kf = GPep.gen_sqexp_k_d(hyptrue)
 upper = 1
@@ -43,7 +43,7 @@ plt.plot(xmintrue, miny, 'rx')
 
 # %%
 
-n_init = 5
+n_init = 25
 x = sp.random.uniform(-1, 1, n_init)
 y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
 Xo = sp.matrix(x).T
@@ -65,9 +65,14 @@ s = 0.001
 
 
 # %%
-e = EntropyPredict.EntPredictor([Xo, Yo, So, Do], [-1], [1], kfGen, sqexpprior)
-e.dmode='slice'
-for k in xrange(10):
+
+for k in xrange(1):
+    e = EntropyPredict.EntPredictor([Xo, Yo, So, Do], [-1], [1], kfGen, sqexpprior)
+    e.dmode = 'slice'
+    e.MLEsearchn = 400
+    e.HYPsamplen = 100
+    e.ENTsearchn = 300
+    
     n = 100
     Xi = sp.linspace(-1, 1, n)
     Si = sp.logspace(-4, 0, 10)
@@ -83,20 +88,23 @@ for k in xrange(10):
     So = sp.vstack([So, s])
     Do.append([sp.NaN])
 
-    e = EntropyPredict.EntPredictor([Xo, Yo, So, Do], [-1], [1], kfGen, sqexpprior)
-    e.dmode = 'slice'
+    
     plt.show()
 
 # %%
 
-
+Xi = sp.linspace(-1,1,100)
 e = EntropyPredict.EntPredictor([Xo, Yo, So, Do], [-1], [1], kfGen, sqexpprior)
-e.drawHypSamples(150,plot=True)
+e.drawHypSamples(1,plot=True)
 e.initPredictor()
-e.showEntGraph(Xi,[0.01])
+e.showEntGraph(Xi,[0.00001])
+# %%
+
+EntropyPredict.inferHmulti(e.Pred, sp.matrix(Xi).T, [0.00001], plot=True)
+
 # %%
 n = 1000
-Xi = sp.linspace(0.6, 0.8, n)
+Xi = sp.linspace(0.5, 0.6, n)
 H = e.predictGraph(Xi,[0.01])
 # %%
 plt.plot(sp.array(H).flatten())

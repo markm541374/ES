@@ -21,7 +21,7 @@ class fgen1d():
 
     def genfun(self):
         fn = self.vpCho*sp.matrix(sp.random.normal(size=self.npoints)).T
-        f = interpolate.interp1d(sp.array(self.Xi).flatten(), sp.array(fn).flatten())
+        f = interpolate.interp1d(sp.array(self.Xi).flatten(), sp.array(fn).flatten(),kind='cubic')
         return f
 
 

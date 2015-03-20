@@ -34,86 +34,85 @@ def vec2trace(v):
 
 def plot1(g, llimit, ulimit):
     n_p = 120
-    X_p = sp.matrix(sp.linspace(llimit[0], ulimit[0], n_p)).T #plot points
+    X_p = sp.matrix(sp.linspace(llimit[0], ulimit[0], n_p)).T   # plot points
     D_p = [[sp.NaN]]*n_p
 
-    [m_p,V_p] = g.infer_diag(X_p,D_p)
+    [m_p, V_p] = g.infer_diag(X_p, D_p)
 
-    ub=sp.zeros(n_p)
-    lb=sp.zeros(n_p)
+    ub = sp.zeros(n_p)
+    lb = sp.zeros(n_p)
     for i in xrange(n_p):
-       ub[i]=m_p[i,0]+2*sp.sqrt(V_p[i,0])
-       lb[i]=m_p[i,0]-2*sp.sqrt(V_p[i,0])
-    f0=plt.figure(figsize=(8,8))  
-    a0=f0.add_subplot(111)
-    a0.plot(sp.array(X_p).flatten(),sp.array(m_p).flatten())
-    a0.fill_between(sp.array(X_p).flatten(),lb,ub,facecolor='lightskyblue',alpha=0.5)
-    #print g
-    #print dir(g)
-    xs=sp.array(g.X_s).flatten()
-    ys=sp.array(g.Y_s).flatten()
+        ub[i] = m_p[i, 0]+2*sp.sqrt(V_p[i, 0])
+        lb[i] = m_p[i, 0]-2*sp.sqrt(V_p[i, 0])
+    f0 = plt.figure(figsize=(8, 8))
+    a0 = f0.add_subplot(111)
+    a0.plot(sp.array(X_p).flatten(), sp.array(m_p).flatten())
+    a0.fill_between(sp.array(X_p).flatten(), lb, ub, facecolor='lightskyblue', alpha=0.5)
+    # print g
+    # print dir(g)
+    xs = sp.array(g.X_s).flatten()
+    ys = sp.array(g.Y_s).flatten()
     for i in xrange(len(g.D_s)):
-       if sp.isnan(g.D_s[i]):
-          a0.plot(xs,ys,'rx')
+        if sp.isnan(g.D_s[i]):
+            a0.plot(xs, ys, 'rx')
     return a0
+
 
 # return xlogx but return zero for x=0 instead of raising a log0 error
 def xlx0(x):
-    if x==0:
+    if x == 0:
         return 0
     else:
         return x*sp.log(x)
-    
-#sqexp kernel generator
+
+
+# sqexp kernel generator
 def gen_sqexp_k(theta):
-    A=theta[0]
-    d=sp.matrix(theta[1:]).T
-
-    N=sp.matrix(d).shape[0]
-    D=sp.eye(N)
+    A = theta[0]
+    d = sp.matrix(theta[1:]).T
+    N = sp.matrix(d).shape[0]
+    D = sp.eye(N)
     for i in range(N):
-       D[i,i]=1./(d[i,0]**2)
-    return lambda x,y:A*sp.exp(-0.5*(x-y)*D*(x-y).T)
+        D[i, i] = 1./(d[i, 0]**2)
+    return lambda x, y: A*sp.exp(-0.5*(x-y)*D*(x-y).T)
 
-#sqexp kernel generator
 
-def sqexp_k_d(theta,x1,x2,d1=[sp.NaN],d2=[sp.NaN]):
-    x1=sp.matrix(x1)
-    x2=sp.matrix(x2)
-    #print "xxxxx"
-    A=theta[0]
-    d=sp.matrix(theta[1:]).T
-    
-    N=sp.matrix(d).shape[0]
-    D=sp.eye(N)
+# sqexp kernel generator
+def sqexp_k_d(theta, x1, x2, d1=[sp.NaN], d2=[sp.NaN]):
+    x1 = sp.matrix(x1)
+    x2 = sp.matrix(x2)
+    # print "xxxxx"
+    A = theta[0]
+    d = sp.matrix(theta[1:]).T
+
+    N = sp.matrix(d).shape[0]
+    D = sp.eye(N)
     for i in range(N):
-        D[i,i]=1./(d[i,0]**2)
-    X=x1-x2
-    #print X
-    #print D
-    core=(A*sp.exp(-0.5*(X)*D*(X).T))[0,0]
-    #print core
-    #d0 is the all the derivitive directions unsorted, then sorted
-    d0=[]
-   
-    n1=0
-    
-    n2=0
+        D[i, i] = 1./(d[i, 0]**2)
+    X = x1-x2
+    # print X
+    # print D
+    core = (A*sp.exp(-0.5*(X)*D*(X).T))[0, 0]
+    # print core
+    # d0 is the all the derivitive directions unsorted, then sorted
+    d0 = []
+    n1 = 0
+    n2 = 0
     for i in d2:
         if not sp.isnan(i):
-           # print 'x'+str(d2)
-            n2+=1
-    #print 'y'+str(n2)
-    sign=(-1)**(n2%2)
-    #print sign
+            # print 'x'+str(d2)
+            n2 += 1
+    # print 'y'+str(n2)
+    sign = (-1)**(n2 % 2)
+    # print sign
     for i in d1+d2:
-        
+
         if not sp.isnan(i):
             d0.append(i)
-            
-    if len(d0)==0:
-        #print "basic kernel"
-        #print core
+  
+    if len(d0) == 0:
+        # print "basic kernel"
+        # print core
         return core
     if len(d0)==1:
         #print "1st derivative"
