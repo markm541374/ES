@@ -53,7 +53,7 @@ def plot1(g, llimit, ulimit):
     xs = sp.array(g.X_s).flatten()
     ys = sp.array(g.Y_s).flatten()
     for i in xrange(len(g.D_s)):
-        if sp.isnan(g.D_s[i]):
+        if (sp.isnan(g.D_s[i])).any():
             a0.plot(xs, ys, 'rx')
     return a0
 

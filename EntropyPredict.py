@@ -145,7 +145,7 @@ def EI(ER, mu, sigma):
         return sp.matrix(0.0)[0, 0]
 
 
-def makedraws(D, kf, nd=400, nx_inner=101, mode='uniform', fig=False):
+def makedraws(D, kf, nd=400, nx_inner=101, mode='uniform', fig=False, plot='none'):
     Xo = D[0]
     Yo = D[1]
     So = D[2]
@@ -221,6 +221,7 @@ def makedraws(D, kf, nd=400, nx_inner=101, mode='uniform', fig=False):
         g = GPep.GPcore(Xc, Yc, Sc, Dc, Xz, Dz, Iz, Gz, Nz, kf)
         try:
             g.runEP()
+            
         except:
             
             
@@ -229,11 +230,14 @@ def makedraws(D, kf, nd=400, nx_inner=101, mode='uniform', fig=False):
             file_pi = open('GPEPfail.obj', 'wb') 
             pickle.dump(object, file_pi)
             raise ValueError()
+        if plot=='verbose':
+            a = GPd.plot1(g.gep,[-1],[1])
+            
         allG.append([g, xs])
     return [[g1], allG]
 
 
-def singleG(X_h, ss, G):
+def singleG(X_h, ss, G, plot='none'):
     g = G[0]
     xs = G[1]
     nh = len(sp.array(X_h).flatten())
@@ -241,14 +245,14 @@ def singleG(X_h, ss, G):
     ns = len(ss)
     H = sp.zeros([nh, ns])
 
-    # VV=[]
-    # Vr=[]
-    # C=[]
-    # Al = []
-    # Be = []
-    # S =[]
-    # Mu =[]
-    # Sq=[]
+    VV=[]
+    Vr=[]
+    C=[]
+    Al = []
+    Be = []
+    S =[]
+    Mu =[]
+    Sq=[]
     for j in xrange(nh):
 
         Xt = sp.matrix([[X_h[j, 0]], [xs]])
@@ -268,20 +272,16 @@ def singleG(X_h, ss, G):
         
         beta = sp.exp(sps.norm.logpdf(alpha) - sps.norm.logcdf(alpha))
         coef = beta*(beta+alpha)*(1./s)*(V[0, 0]-V[0, 1])**2
-        # C.append(coef)
-        # S.append(s)
-        # Al.append(alpha)
-        # try:
-        #    Be.append(sp.log10(beta))
-        # except:
-        #     print '!!!'
-        #     print beta
-        # Mu.append(mu)
-        # Sq.append((V[0, 0]-V[0, 1])**2)
+        C.append(coef)
+        S.append(s)
+        Al.append(alpha)
+        Be.append(beta)
+        Mu.append(mu)
+        Sq.append((V[0, 0]-V[0, 1])**2)
         
         vnxxs = V[0, 0]-coef
-        # VV.append(vnxxs)
-        # Vr.append(V[0,0])
+        VV.append(vnxxs)
+        Vr.append(V[0,0])
         for k in xrange(ns):
             Hydxxs = 0.5*sp.log(2*sp.pi*sp.e*(vnxxs+ss[k]))
             if sp.iscomplex(Hydxxs):
@@ -291,52 +291,48 @@ def singleG(X_h, ss, G):
                 pickle.dump(object, file_pi)
                 
             H[j, k] += Hydxxs
-#    if plot:
-#        print 'xxx'
-#        plt.figure()
-#        plt.plot(sp.linspace(-1,1,nh),VV)
-#        plt.plot(xs,0,'ro')
-#        plt.ylabel('vnxxs')
-#        plt.savefig('foo0.png')
-#        plt.figure()
-#        plt.plot(sp.linspace(-1,1,nh),Vr)
-#        plt.ylabel('V00')
-#        plt.savefig('foo1.png')
-#        plt.figure()
-#        plt.plot(sp.linspace(-1,1,nh),C)
-#        plt.ylabel('coef')
-#        plt.savefig('foo3.png')
-#        plt.figure()
-#        plt.semilogy(sp.linspace(-1,1,nh),S)
-#        plt.ylabel('s')
-#        plt.savefig('foo4.png')
-#        plt.figure()
-#        plt.semilogy(sp.linspace(-1,1,nh),Al)
-#        plt.ylabel('alpha')
-#        plt.savefig('foo5.png')
-#        try:
-#            plt.figure()
-#            plt.plot(sp.linspace(-1,1,nh),Be)
-#            plt.ylabel('log10beta')
-#            plt.savefig('foo6.png')
-#        except:
-#            print 'betaplot fail'
-#            
-#        plt.figure()
-#        plt.plot(sp.linspace(-1,1,nh),Mu)
-#        plt.ylabel('mu')
-#        plt.savefig('foo7.png')
-#        plt.figure()
-#        plt.plot(sp.linspace(-1,1,nh),Sq)
-#        plt.ylabel('sq')
-#        plt.savefig('foo8.png')
+    if plot == 'verbose':
+        
+        plt.figure()
+        plt.semilogy(sp.linspace(-1,1,nh),VV)
+        plt.plot(xs,0,'ro')
+        plt.ylabel('vnxxs')
+        plt.savefig('foo0.png')
+        plt.figure()
+        plt.semilogy(sp.linspace(-1,1,nh),Vr)
+        plt.ylabel('V00')
+        plt.savefig('foo1.png')
+        plt.figure()
+        plt.semilogy(sp.linspace(-1,1,nh),C)
+        plt.ylabel('coef')
+        plt.savefig('foo3.png')
+        plt.figure()
+        plt.semilogy(sp.linspace(-1,1,nh),S)
+        plt.ylabel('s')
+        plt.savefig('foo4.png')
+        plt.figure()
+        plt.semilogy(sp.linspace(-1,1,nh),Al)
+        plt.ylabel('alpha')
+        plt.savefig('foo5.png')
+        plt.figure()
+        plt.semilogy(sp.linspace(-1,1,nh),Be)
+        plt.ylabel('beta')
+        plt.savefig('foo6.png')
+        plt.figure()
+        plt.plot(sp.linspace(-1,1,nh),Mu)
+        plt.ylabel('mu')
+        plt.savefig('foo7.png')
+        plt.figure()
+        plt.plot(sp.linspace(-1,1,nh),Sq)
+        plt.ylabel('sq')
+        plt.savefig('foo8.png')
     return H
 
 
-def inferHmulti(G, X_h, ss, plot=False):
+def inferHmulti(G, X_h, ss, plot='none'):
     nh = len(sp.array(X_h).flatten())
     ns = len(ss)
-    Hp = partial(singleG, X_h, ss)
+    Hp = partial(singleG, X_h, ss, plot=plot)
     g1 = G[0]
     p = pool.Pool(8)
     allh = p.map(Hp, G[1])
@@ -348,28 +344,29 @@ def inferHmulti(G, X_h, ss, plot=False):
             for k in xrange(ns):
                 H[j, k] += h[j, k]
     H = -H/float(ng)
-    if plot:
+    if plot == 'verbose':
         plt.figure()
         for k in xrange(ns):
             plt.plot(H[:, k])
         
     ing1 = 1./float(len(g1))
-    # Vnx = [] #!!!!!
-    # Htmp = sp.zeros([nh, ns])
+    Vnx = [] #!!!!!
+    Htmp = sp.zeros([nh, ns])
     for gi in g1:
 
         for i in xrange(nh):
             m, v = gi.infer_diag(sp.matrix([[X_h[i, 0]]]), [[sp.NaN]])
-            # Vnx.append(v[0,0]) # !!!!!!!!!!
+            Vnx.append(v[0,0]) # !!!!!!!!!!
             for k in xrange(ns):
                 Hydx = 0.5*sp.log(2*sp.pi*sp.e*(v[0, 0]+ss[k]))
                 H[i, k] += ing1*Hydx
-                # Htmp[i, k] += ing1*Hydx
-    # !!!!!!!!!!11
-#    plt.figure()
-#    plt.plot(Vnx)
-#    plt.ylabel('vnx')
-#    plt.savefig('foo2.png')
+                Htmp[i, k] += ing1*Hydx
+    if plot == 'verbose':
+        plt.figure()
+        plt.semilogy(sp.linspace(-1,1,len(Vnx)), Vnx)
+        plt.ylabel('vnx')
+        plt.savefig('foo2.png')
+        
 #    if plot:
 #        plt.figure()
 #        for k in xrange(ns):
@@ -382,42 +379,42 @@ def inferHmulti(G, X_h, ss, plot=False):
     return H
 
 
-def inferH(G, X_h, ss):
-
-    nh = len(sp.array(X_h).flatten())
-    ns = len(ss)
-    H = sp.zeros([nh, ns])
-    g1 = G[0]
-    for Gi in G[1]:
-        g = Gi[0]
-        xs = Gi[1]
-        for j in xrange(nh):
-
-            Xt = sp.matrix([[X_h[j, 0]], [xs]])
-            Dt = [[sp.NaN], [sp.NaN]]
-
-            m, V = g.infer_full(Xt, Dt)
-            # t1 = time.time()
-            s = V[0, 0]+V[1, 1]-V[0, 1]-V[1, 0]
-            mu = m[1, 0]-m[0, 0]
-            alpha = mu/sp.sqrt(s)
-            beta = sps.norm.pdf(alpha)/sps.norm.cdf(alpha)
-
-            vnxxs = V[0, 0]-beta*(beta+alpha)*(1./s)*(V[0, 0]-V[0, 1])**2
-
-            for k in xrange(ns):
-                Hydxxs = 0.5*sp.log(2*sp.pi*sp.e*(vnxxs+ss[k]))
-                H[j, k] += Hydxxs
-
-    H = H/float(len(G[1]))
-
-    for i in xrange(nh):
-        m, v = g1.infer_diag(sp.matrix([[X_h[i, 0]]]), [[sp.NaN]])
-
-        for k in xrange(ns):
-            Hydx = 0.5*sp.log(2*sp.pi*sp.e*(v[0, 0]+ss[k]))
-            H[i, k] = Hydx-H[i, k]
-    return H
+#def inferH(G, X_h, ss):
+#
+#    nh = len(sp.array(X_h).flatten())
+#    ns = len(ss)
+#    H = sp.zeros([nh, ns])
+#    g1 = G[0]
+#    for Gi in G[1]:
+#        g = Gi[0]
+#        xs = Gi[1]
+#        for j in xrange(nh):
+#
+#            Xt = sp.matrix([[X_h[j, 0]], [xs]])
+#            Dt = [[sp.NaN], [sp.NaN]]
+#
+#            m, V = g.infer_full(Xt, Dt)
+#            # t1 = time.time()
+#            s = V[0, 0]+V[1, 1]-V[0, 1]-V[1, 0]
+#            mu = m[1, 0]-m[0, 0]
+#            alpha = mu/sp.sqrt(s)
+#            beta = sps.norm.pdf(alpha)/sps.norm.cdf(alpha)
+#
+#            vnxxs = V[0, 0]-beta*(beta+alpha)*(1./s)*(V[0, 0]-V[0, 1])**2
+#
+#            for k in xrange(ns):
+#                Hydxxs = 0.5*sp.log(2*sp.pi*sp.e*(vnxxs+ss[k]))
+#                H[j, k] += Hydxxs
+#
+#    H = H/float(len(G[1]))
+#
+#    for i in xrange(nh):
+#        m, v = g1.infer_diag(sp.matrix([[X_h[i, 0]]]), [[sp.NaN]])
+#
+#        for k in xrange(ns):
+#            Hydx = 0.5*sp.log(2*sp.pi*sp.e*(v[0, 0]+ss[k]))
+#            H[i, k] = Hydx-H[i, k]
+#    return H
 
 
 def slice_sample(dist, init, iters, sigma, step_out=True):
@@ -522,7 +519,7 @@ class EntPredictor():
         self.MLEflag = False
         return
 
-    def drawHypSamples(self, n, plot=False):
+    def drawHypSamples(self, n, plot='none'):
 
         if self.MLEflag:
             self.seekMLEkf()
@@ -534,7 +531,7 @@ class EntPredictor():
         for i in xrange(n):
             self.kfSam.append(self.kfgen([10**samples[0][i], 10**samples[1][i]]))
 
-        if plot:
+        if plot == 'verbose':
             plt.figure(figsize=(6,6))
             plt.xlabel('outputscale')
             plt.ylabel('lengthscale')
@@ -545,7 +542,7 @@ class EntPredictor():
         sys.stdout.flush()
         return
 
-    def initPredictor(self):
+    def initPredictor(self, plot='none'):
         if self.HypSampleflag:
             raise ValueError('no samples have been taken over the hyperparameters')
         print 'cov decomposition for inference over hyp samples'
@@ -558,7 +555,7 @@ class EntPredictor():
             sys.stdout.write('\r'+str(i))
             sys.stdout.flush()
             
-            g = makedraws(self.D, k, nd=1, nx_inner=self.nx_inner,mode=self.dmode, fig=False)
+            g = makedraws(self.D, k, nd=1, nx_inner=self.nx_inner,mode=self.dmode, fig=False, plot=plot)
             self.Pred[0].append(g[0][0])
             self.Pred[1].append(g[1][0])
             # print g
@@ -567,16 +564,17 @@ class EntPredictor():
             # except:
             #    print 'not using kf '+str(i)+' hyp: '+str(k)
         # print tmp
-        plt.figure(figsize=(6, 6))
-        # print tmp
-        plt.hist(tmp, 20)
+        if plot == 'verbose':
+            plt.figure(figsize=(6, 6))
+            print tmp
+            plt.hist(tmp, 20)
         # plt.axis([-1,1,0,len(tmp)])
         self.Predictorflag = False
         sys.stdout.write('\r           \n')
         sys.stdout.flush()
         return
 
-    def predictGraph(self,X,S):
+    def predictGraph(self,X,S, plot='none'):
         if self.Predictorflag:
             raise ValueError('no predictor has been set up')
         n = len(X)
@@ -586,15 +584,15 @@ class EntPredictor():
         for i in xrange(n):
             sys.stdout.write('\r'+str(i))
             sys.stdout.flush()
-            H[i] = inferHmulti(self.Pred, sp.matrix(X[i]).T, S, plot=False)
+            H[i] = inferHmulti(self.Pred, sp.matrix(X[i]).T, S, plot=plot)
         sys.stdout.write('\r             \n')
         sys.stdout.flush()
         
         return H
 
-    def searchAtS(self, lower, upper, S):
+    def searchAtS(self, lower, upper, S, plot='none'):
         if self.HypSampleflag:
-            self.drawHypSamples(self.HYPsamplen, plot=True)
+            self.drawHypSamples(self.HYPsamplen, plot=plot)
         if self.Predictorflag:
             self.initPredictor()
         searchmax = self.ENTsearchn
@@ -621,11 +619,11 @@ class EntPredictor():
         sys.stdout.write('\rMaxEnt at '+str(xmintrue)+'             ')
         return xmintrue
 
-    def showEntGraph(self, Xi, S):
+    def showEntGraph(self, Xi, S, plot='basic'):
         nx = len(Xi)
         ns = len(S)
         if self.HypSampleflag:
-            self.drawHypSamples(self.HYPsamplen, plot=True)
+            self.drawHypSamples(self.HYPsamplen, plot=plot)
         if self.Predictorflag:
             self.initPredictor()
         H = self.predictGraph(Xi, S)
@@ -633,9 +631,10 @@ class EntPredictor():
         for i in xrange(nx):
             for j in xrange(ns):
                 Hplot[i, j] = H[i][0, j]
-
+        
         plt.figure(figsize=(16, 16))
         a = GPd.plot1(self.gMLE, [-1], [1])
+        a2=a.twinx()
         for i in xrange(ns):
-            a.plot(Xi, Hplot[:, i].flatten())
+            a2.semilogy(Xi, Hplot[:, i].flatten(),'g')
         return a
