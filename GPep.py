@@ -53,7 +53,7 @@ class GPcore:
         self.invalidflag = True
         return
 
-    def runEP(self, plot=False):
+    def runEP(self, plot='none'):
         g = GPd.GPcore(self.X_c, self.Y_c, self.S_c, self.D_c, self.kf)
         # start by making the full inference at the inequality locations
         [m0, V0] = g.infer_full(self.X_z, self.D_z)
@@ -103,28 +103,33 @@ class GPcore:
                     yt[i, 0] = m_
                     St[i, 0] = 10**100
 
-            if plot:
-                print 'iter'
-                print yt
-                print St
+#            if plot:
+#                print 'iter'
+#                print yt
+#                print St
             ytR = sp.hstack([ytR, yt])
             StR = sp.hstack([StR, St])
-        if plot:
-            plt.figure()
-            sign = sp.zeros([self.n_z, self.nloops])
-            for i in xrange(self.n_z):
-                for j in xrange(self.nloops+1):
-                    if StR[i, j] <= 0:
-                        sign[i, j] = 1
-                    StR[i, j] = sp.log10(StR[i, j])
-
-            for j in xrange(self.n_z):
-                plt.plot(sp.array(StR[j, :]).flatten())
+#        if plot:
+#            plt.figure()
+#            sign = sp.zeros([self.n_z, self.nloops])
+#            for i in xrange(self.n_z):
+#                for j in xrange(self.nloops+1):
+#                    if StR[i, j] <= 0:
+#                        sign[i, j] = 1
+#                    StR[i, j] = sp.log10(StR[i, j])
+#
+#            for j in xrange(self.n_z):
+#                plt.plot(sp.array(StR[j, :]).flatten())
 
         Y_z = yt.copy()
         # Dz already defined
         S_z = St.copy()
-
+#        if plot=='verbose':
+#            print 'EP observations:'
+#            print 'x '+str(self.X_z)
+#            print 'y '+str(Y_z)
+#            print 's '+str(S_z)
+#            print 'de '+str(self.D_z)
         [Xep, Yep, Sep, Dep] = GPd.catObs([[self.X_c, self.Y_c, self.S_c, self.D_c], [self.X_z, Y_z, S_z, self.D_z]])
         self.gep = GPd.GPcore(Xep, Yep, Sep, Dep, self.kf)
 

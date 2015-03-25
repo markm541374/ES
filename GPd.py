@@ -32,10 +32,10 @@ def vec2trace(v):
     return M
 
 
-def plot1(g, llimit, ulimit):
+def plot1(g, llimit, ulimit, deriv=[[sp.NaN]]):
     n_p = 120
     X_p = sp.matrix(sp.linspace(llimit[0], ulimit[0], n_p)).T   # plot points
-    D_p = [[sp.NaN]]*n_p
+    D_p = deriv*n_p
 
     [m_p, V_p] = g.infer_diag(X_p, D_p)
 
