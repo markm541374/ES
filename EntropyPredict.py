@@ -88,8 +88,8 @@ def makedraws(D, kf, nd=400, nx_inner=101, mode='uniform', fig=False, plot='none
         Iz = sp.matrix([[Yo[Yo.argmin(), :][0, 0]], [0.]])
     # sign of the inequality
         Gz = [0, 0]
-        # Nz = [So[Yo.argmin(), :], 0.] #!!!!!this value is important, should it e the sigma for hte min obs or the posterior at that piont??
-        Nz = [0.000000001, 0.]
+        Nz = [So[Yo.argmin(), :], 0.] #!!!!!this value is important, should it e the sigma for hte min obs or the posterior at that piont??
+        
         g = GPep.GPcore(Xc, Yc, Sc, Dc, Xz, Dz, Iz, Gz, Nz, kf)
         
         if plot=='verbose':
@@ -122,7 +122,7 @@ def makedraws(D, kf, nd=400, nx_inner=101, mode='uniform', fig=False, plot='none
     return [[g1], allG]
 
 
-def singleG(X_h, ss, G, plot='none'):
+def singleG(X_h, ss, G, plot='none',obstype=[sp.NaN]):
     g = G[0]
     xs = G[1]
     nh = len(sp.array(X_h).flatten())
@@ -141,7 +141,7 @@ def singleG(X_h, ss, G, plot='none'):
     for j in xrange(nh):
 
         Xt = sp.matrix([[X_h[j, 0]], [xs]])
-        Dt = [[sp.NaN], [sp.NaN]]
+        Dt = [obstype, [sp.NaN]]
 
         m, V = g.infer_full(Xt, Dt)
 
@@ -224,7 +224,7 @@ def singleG(X_h, ss, G, plot='none'):
     return H
 
 
-def inferHmulti(G, X_h, ss, plot='none'):
+def inferHmulti(G, X_h, ss, plot='none', obstype=[sp.NaN]):
     
     nh = len(sp.array(X_h).flatten())
     ns = len(ss)
@@ -255,7 +255,7 @@ def inferHmulti(G, X_h, ss, plot='none'):
     for gi in g1:
 
         for i in xrange(nh):
-            m, v = gi.infer_diag(sp.matrix([[X_h[i, 0]]]), [[sp.NaN]])
+            m, v = gi.infer_diag(sp.matrix([[X_h[i, 0]]]), [obstype])
             Vnx.append(v[0,0]) # !!!!!!!!!!
             for k in xrange(ns):
                 Hydx = 0.5*sp.log(2*sp.pi*sp.e*(v[0, 0]+ss[k]))
@@ -435,7 +435,7 @@ class EntPredictor():
         sys.stdout.flush()
         return
 
-    def predictGraph(self,X,S, plot='none'):
+    def predictGraph(self,X,S, plot='none',obstype=[sp.NaN]):
         if self.Predictorflag:
             raise ValueError('no predictor has been set up')
         n = len(X)
@@ -445,13 +445,13 @@ class EntPredictor():
         for i in xrange(n):
             sys.stdout.write('\r'+str(i))
             sys.stdout.flush()
-            H[i] = inferHmulti(self.Pred, sp.matrix(X[i]).T, S, plot=plot)
+            H[i] = inferHmulti(self.Pred, sp.matrix(X[i]).T, S, plot=plot, obstype=obstype)
         sys.stdout.write('\r             \n')
         sys.stdout.flush()
         
         return H
 
-    def searchAtS(self, lower, upper, S, plot='none'):
+    def searchAtS(self, lower, upper, S, plot='none', obstype=[sp.NaN]):
         if self.HypSampleflag:
             self.drawHypSamples(self.HYPsamplen, plot=plot)
         if self.Predictorflag:
@@ -469,7 +469,7 @@ class EntPredictor():
             sys.stdout.write('\r'+str(sc)+' max found '+str(me))
             sys.stdout.flush()
             sc += 1
-            Ent = inferHmulti(self.Pred, sp.matrix(x).T, S)
+            Ent = inferHmulti(self.Pred, sp.matrix(x).T, S, obstype=obstype)
             if Ent > me:
                 me = Ent
             return (-Ent, 0)
@@ -480,14 +480,14 @@ class EntPredictor():
         sys.stdout.write('\rMaxEnt at '+str(xmintrue)+'             ')
         return xmintrue
 
-    def showEntGraph(self, Xi, S, plot='basic'):
+    def showEntGraph(self, Xi, S, plot='basic', obstype=[sp.NaN]):
         nx = len(Xi)
         ns = len(S)
         if self.HypSampleflag:
             self.drawHypSamples(self.HYPsamplen, plot=plot)
         if self.Predictorflag:
             self.initPredictor(plot=plot)
-        H = self.predictGraph(Xi, S)
+        H = self.predictGraph(Xi, S, obstype=obstype)
         Hplot = sp.zeros([nx, ns])
         for i in xrange(nx):
             for j in xrange(ns):
@@ -499,3 +499,162 @@ class EntPredictor():
         for i in xrange(ns):
             a2.semilogy(Xi, Hplot[:, i].flatten(),'g')
         return a
+
+    def inferPostGP(self, x, d, plot='none'):
+        if self.HypSampleflag:
+            self.drawHypSamples(self.HYPsamplen, plot=plot)
+        if self.Predictorflag:
+            self.initPredictor(plot=plot)
+        np=len(d)
+        acc0=sp.zeros(np)
+        acc1=sp.zeros(np)
+        vp=sp.zeros(np)
+        ng=len(self.Pred[0])
+        for g in self.Pred[0]:
+            [m,v]=g.infer_diag(sp.matrix(x).T,d)
+            for i in xrange(np):
+                acc0[i]+=1./v[i]
+                acc1[i]+=m[i]/v[i]
+                vp[i] += v[i]
+        mp=sp.zeros(np)
+        
+        for i in xrange(np):
+            mp[i]=acc1[i]/(acc0[i])
+            vp[i]=vp[i]/float(ng)
+        
+        return [mp,vp]
+
+    def plotPostGP(self, x, d, plotEI=False):
+        [m, v] = self.inferPostGP(x, d)
+        np = len(d)
+        ub = sp.zeros(np)
+        lb = sp.zeros(np)
+        for i in xrange(np):
+            ub[i] = m[i]+2*sp.sqrt(v[i])
+            lb[i] = m[i]-2*sp.sqrt(v[i])
+
+        f0 = plt.figure(figsize=(8, 8))
+        a0 = f0.add_subplot(111)
+        a0.plot(x, m)
+        a0.fill_between(x, lb, ub, facecolor='lightskyblue', alpha=0.5)
+
+        xs = sp.array(self.D[0]).flatten()
+        ys = sp.array(self.D[1]).flatten()
+        for i in xrange(len(self.D[3])):
+            if (sp.isnan(self.D[3][i])).any():
+                a0.plot(xs, ys, 'rx')
+                
+        if plotEI:
+            best = min(self.D[1])[0,0]
+            ei = sp.zeros(np)
+            for i in xrange(np):
+                ei[i]=EI(best,m[i],sp.sqrt(v[i]))
+            a1=a0.twinx()
+            a1.plot(x,ei,'r')
+        return a0
+
+    def plotMLEGP(self):
+        if self.MLEflag:
+            self.seekMLEkf()
+        a = GPd.plot1(self.gMLE, [-1], [1])
+        return
+        
+    def searchEI(self, lower, upper, plot='none'):
+        searchmax=400
+        best = min(self.D[1])[0,0]
+        
+        global sc
+        global me
+        sc = 0
+        me = 0
+        print 'searching over '+str(searchmax)+' iterations for maxEI'
+        def ee(x, y):
+            [m,v] = self.inferPostGP(x,[[sp.NaN]])
+            ei = EI(best,m[0],sp.sqrt(v[0]))
+            
+            global sc
+            global me
+            sc+=1
+            if ei[0,0]>me:
+                me=ei[0,0]
+            sys.stdout.write('\r'+str(sc)+' max found '+str(me)+'      ')
+            sys.stdout.flush()
+            
+            return (-ei, 0)
+
+        [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=searchmax)
+        del sc
+        del me
+        sys.stdout.write('\rMaxEI at '+str(xmintrue)+'             ')
+        
+        return xmintrue
+        
+class Optimizer():
+    def __init__(self, f, kfGen, kfPrior, lb, ub):
+        self.f = f
+        self.kfGen = kfGen
+        self.kfPrior = kfPrior
+        self.lb = lb
+        self.ub = ub
+        
+        self.MLEsearchn = 200
+        self.HYPsamplen = 50
+        self.ENTsearchn = 160
+        return
+        
+    def initrandobs(self, n_init, s_init):
+        x = sp.random.uniform(self.lb, self.ub, n_init)
+        y = map(self.f, x)+sp.random.normal(scale=sp.sqrt(s_init), size=n_init)
+        self.Xo = sp.matrix(x).T
+        self.Yo = sp.matrix(y).T
+        self.So = sp.matrix([[s_init]]*n_init)
+        self.Do = [[sp.NaN]]*n_init
+        
+        return
+        
+    def initspecobs(self, Xo, Yo, So, Do):
+        self.Xo = Xo
+        self.Yo = Yo
+        self.So = So
+        self.Do = Do
+        
+        return
+        
+    def searchats(self, s, obstype=[sp.NaN], method='Ent'):
+        e = EntPredictor([self.Xo, self.Yo, self.So, self.Do], self.lb, self.ub, self.kfGen, self.kfPrior)
+        e.MLEsearchn = self.MLEsearchn
+        e.HYPsamplen = self.HYPsamplen
+        e.ENTsearchn = self.ENTsearchn
+        
+        n = 150
+        Xi = sp.linspace(-1, 1, n)
+        if method=='Ent':
+            a = e.showEntGraph(Xi, [s], plot='basic', obstype=obstype)
+            xmin = e.searchAtS(self.lb, self.ub, [s], obstype=obstype)
+        if method=='EI':
+            a = e.plotPostGP(Xi,[[sp.NaN]]*n, plotEI=True)
+            xmin = e.searchEI(self.lb, self.ub)
+        a.plot(xmin, [0], 'go')
+        a.plot(xmin, self.f(xmin[0]), 'ro')
+        xIn = xmin[0]
+        yIn = self.f(xIn)+sp.random.normal(scale=sp.sqrt(s))
+
+        self.Xo = sp.vstack([self.Xo, xIn])
+        self.Yo = sp.vstack([self.Yo, yIn])
+        self.So = sp.vstack([self.So, s])
+        self.Do.append([sp.NaN])
+        plt.show()
+        
+        return
+    
+    def showinov(self, s, obstype=[sp.NaN]):
+        e = EntPredictor([self.Xo, self.Yo, self.So, self.Do], self.lb, self.ub, self.kfGen, self.kfPrior)
+        e.MLEsearchn = self.MLEsearchn
+        e.HYPsamplen = self.HYPsamplen
+        e.ENTsearchn = self.ENTsearchn
+        
+        n = 300
+        Xi = sp.linspace(-1, 1, n)
+        a = e.showEntGraph(Xi, [s], plot='basic', obstype=obstype)
+        return
+        

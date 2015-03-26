@@ -8,7 +8,22 @@ import scipy as sp
 from scipy import linalg as spl
 from scipy import interpolate
 import GPd
+from scipy.stats import norm as norms
+import numpy as np
 
+def EI(ER,mu,sigma):
+        alpha=(-ER+mu)/sigma
+        Z = norms.cdf(-alpha)
+        if Z==0.0:
+            return sp.matrix(0.0)
+	#print "alpha: "+str(alpha)
+	#print "Z: "+str(Z)
+        E=-mu+norms.pdf(alpha)*sigma/Z+ER
+        ei=Z*E
+        if np.isfinite(ei):
+            return sp.matrix(ei)
+        else:
+            return sp.matrix(0.0)
 
 class fgen1d():
     def __init__(self, lower, upper, npoints, kf):
