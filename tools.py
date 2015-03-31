@@ -109,8 +109,12 @@ def slice_sample(dist, init, iters, sigma, step_out=True):
 def squaresllk(xx, D, kfgen):
             hyp = [10**(i) for i in xx]
             kf = kfgen(hyp)
-            g = GPd.GPcore(D[0], D[1], D[2], D[3], kf)
-            lk = g.llk()
+            try:
+                g = GPd.GPcore(D[0], D[1], D[2], D[3], kf)
+                lk = g.llk()
+            except:
+                print 'warn: can''t get llk with: '+str(hyp)
+                lk=-999
             return lk
 
 
@@ -125,6 +129,7 @@ class dist_obj():
     def loglike(self, xx):
         P = self.prior(xx)
         L = self.llk(xx, self.D, self.kfgen)
+        
         # print str(L)+'  xx  '+str(P)
         # print L+P
         return L+P

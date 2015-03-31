@@ -385,8 +385,9 @@ class EntPredictor():
             self.seekMLEkf()
         print 'Drawing '+str(n)+' hyperparameter samples'
         w_0 = self.loghypMLE
-        sigma = 0.1*sp.ones(2)
+        sigma = 0.05*sp.ones(2)
         samples = slice_sample(self.dist, w_0, iters=n, sigma=sigma)
+        # print samples
         self.kfSam = []
         self.hySam = []
         for i in xrange(n):
@@ -598,7 +599,7 @@ class Optimizer():
         self.ub = ub
         
         self.MLEsearchn = 200
-        self.HYPsamplen = 50
+        self.HYPsamplen = 30
         self.ENTsearchn = 160
         return
         

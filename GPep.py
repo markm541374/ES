@@ -18,6 +18,7 @@ def plot1(g, llimit, ulimit):
 
 
 def gen_sqexp_k_d(theta):
+    # print 'genk: '+str(theta)
     k = partial(GPd.sqexp_k_d, theta)
     return k
 

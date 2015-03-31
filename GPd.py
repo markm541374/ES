@@ -74,7 +74,7 @@ def gen_sqexp_k(theta):
     D = sp.eye(N)
     for i in range(N):
         D[i, i] = 1./(d[i, 0]**2)
-    return lambda x, y: A*sp.exp(-0.5*(x-y)*D*(x-y).T)
+    return lambda x, y: (A**2)*sp.exp(-0.5*(x-y)*D*(x-y).T)
 
 
 # sqexp kernel generator
@@ -92,7 +92,7 @@ def sqexp_k_d(theta, x1, x2, d1=[sp.NaN], d2=[sp.NaN]):
     X = x1-x2
     # print X
     # print D
-    core = (A*sp.exp(-0.5*(X)*D*(X).T))[0, 0]
+    core = ((A**2)*sp.exp(-0.5*(X)*D*(X).T))[0, 0]
     # print core
     # d0 is the all the derivitive directions unsorted, then sorted
     d0 = []
@@ -109,97 +109,90 @@ def sqexp_k_d(theta, x1, x2, d1=[sp.NaN], d2=[sp.NaN]):
 
         if not sp.isnan(i):
             d0.append(i)
-  
+
     if len(d0) == 0:
         # print "basic kernel"
         # print core
         return core
-    if len(d0)==1:
-        #print "1st derivative"
-        l=D[d0[0],d0[0]]
-        
-        #print dx
-        x=X[0,d0[0]]
+    if len(d0) == 1:
+        # print "1st derivative"
+        l = D[d0[0], d0[0]]
+
+        # print dx
+        x = X[0, d0[0]]
         coef = -l*x
-        #print core
+        # print core
         return sign*coef*core
-    #print d0
+    # print d0
     d0.sort()
-    #print d0
-    im=d0[0]
-    #d1 is a list of lists witht each sublist for  derivative direction
-    d1=[[im]]
-    j=0
+    # print d0
+    im = d0[0]
+    # d1 is a list of lists witht each sublist for  derivative direction
+    d1 = [[im]]
+    j = 0
     for i in d0[1:]:
-        if i==im:
+        if i == im:
             d1[j].append(i)
-            im=i
+            im = i
         else:
             d1.append([i])
-            j+=1
-            im=i
-    #print d1
-    #d2 is the number of repeated derivatives in each direction
-    d2=[]
+            j += 1
+            im = i
+    # print d1
+    # d2 is the number of repeated derivatives in each direction
+    d2 = []
     for i in d1:
         d2.append(len(i))
-    #print d2
-    #d3 is the delta x for each direction
-    d3=[]
-    #d4 is the lengthscale in each direction
-    d4=[]
+    # print d2
+    # d3 is the delta x for each direction
+    d3 = []
+    # d4 is the lengthscale in each direction
+    d4 = []
     for i in d1:
-        d3.append((x2[0,i[0]]-x1[0,i[0]]))
-        d4.append(D[i[0],i[0]])
-        
-    
+        d3.append((x2[0, i[0]] - x1[0, i[0]]))
+        d4.append(D[i[0], i[0]])
 
-    
-    
-    d3=[x for (y,x) in sorted(zip(d2,d3))]
-    d4=[x for (y,x) in sorted(zip(d2,d4))]
+    d3 = [x for (y,x) in sorted(zip(d2,d3))]
+    d4 = [x for (y,x) in sorted(zip(d2,d4))]
     d2.sort()
+    # print d2
+    # print d3
+    # print d4
 
-   
-    #print d2
-    #print d3
-    #print d4
-    
-    
-    if d2==[1,1]:
-        #print "2nd derivative i!=j"
-        ai=d1[0][0]
-        aj=d1[1][0]
-        xi=X[0,ai]
-        xj=X[0,aj]
-        li=D[ai,ai]
-        lj=D[aj,aj]
-        
-        coef=xi*li*xj*lj
+    if d2 == [1, 1]:
+        # print "2nd derivative i!=j"
+        ai = d1[0][0]
+        aj = d1[1][0]
+        xi = X[0, ai]
+        xj = X[0, aj]
+        li = D[ai, ai]
+        lj = D[aj, aj]
+
+        coef = xi*li*xj*lj
         return sign*coef*core
         
-    elif d2==[2]:
-        #print "2nd derivative i==j"
-        ai=d1[0][0]
-        xi=X[0,ai]
-        li=D[ai,ai]
+    elif d2 == [2]:
+        # print "2nd derivative i==j"
+        ai = d1[0][0]
+        xi = X[0, ai]
+        li = D[ai, ai]
         
         coef = li*(li*xi**2-1)
         return sign*coef*core
         
-    elif d2==[1,1,1]:
+    elif d2 == [1, 1, 1]:
         #print "3nd derivative i!=j!=k"
-        ai=d1[0][0]
-        aj=d1[1][0]
-        ak=d1[2][0]
-        xi=X[0,ai]
-        xj=X[0,aj]
-        xk=X[0,ak]
-        li=D[ai,ai]
-        lj=D[aj,aj]
-        lk=D[ak,ak]
+        ai = d1[0][0]
+        aj = d1[1][0]
+        ak = d1[2][0]
+        xi = X[0, ai]
+        xj = X[0, aj]
+        xk = X[0, ak]
+        li = D[ai, ai]
+        lj = D[aj, aj]
+        lk = D[ak, ak]
         
-        coef=-xi*li*xj*lj*xk*lk
+        coef =- xi*li*xj*lj*xk*lk
         return sign*coef*core
         
     elif d2==[1,2]:
@@ -298,6 +291,7 @@ def sqexp_k_d(theta, x1, x2, d1=[sp.NaN], d2=[sp.NaN]):
 from functools import partial
 
 def gen_sqexp_k_d(theta):
+    # print 'genk: '+str(theta)
     k = partial(sqexp_k_d,theta)
     return k
 
@@ -330,20 +324,18 @@ def buildKsym_d(kf,x,d):
         return K
     
 class GPcore:
-    def __init__(self,X_s,Y_s,S_s,D_s,kf):
-        #print "GPcore init"
-        #print X_s.T
-        #print Y_s.T
-        #print S_s.T
-        self.D_s=D_s
-        self.X_s=X_s
-        self.Y_s=Y_s
-        #self.S_s=S_s
-        self.kf=kf
+    def __init__(self, X_s, Y_s, S_s, D_s, kf):
         
-        K_ss = buildKsym_d(kf,X_s,D_s)
-        (sign,self.logdet)=slogdet(K_ss)
-        self.K_ss_cf = spl.cho_factor(K_ss+vec2trace(S_s))
+        self.D_s = D_s
+        self.X_s = X_s
+        self.Y_s = Y_s
+        #self.S_s=S_s
+        self.kf = kf
+        
+        K_ss = buildKsym_d(kf, X_s, D_s)
+        (sign, self.logdet) = slogdet(K_ss)
+        self.K_ss_cf = spl.cho_factor(K_ss + vec2trace(S_s))
+        
         self.a = spl.cho_solve(self.K_ss_cf,Y_s)
         
         
