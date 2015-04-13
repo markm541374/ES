@@ -25,7 +25,7 @@ def makedraws(D, kf, nd=400, nx_inner=101, mode='uniform', fig=False, plot='none
     # nh=len(xs)
     # ns=len(ss)
     # X_h = sp.matrix(sp.linspace(-1,1,nh)).T
-    
+    # print 'x0'
     if mode == 'uniform':
         X_x = sp.matrix(sp.linspace(-1, 1, nx_inner)).T
     elif mode == 'slice':
@@ -35,7 +35,9 @@ def makedraws(D, kf, nd=400, nx_inner=101, mode='uniform', fig=False, plot='none
         mx = max(Yo)
         while nacc<nx_inner:
             X_prop = sp.matrix(sp.random.uniform(-1, 1)).T
+            
             Y_prop = g1.infer_m(X_prop, [[sp.NaN]])
+            
             # [m_, v_] = g1.infer_diag(X_prop, [[sp.NaN]])
             # print m_
             # print v_
@@ -50,15 +52,16 @@ def makedraws(D, kf, nd=400, nx_inner=101, mode='uniform', fig=False, plot='none
                 #print nacc
         X_x  = sp.vstack(X_tmp)
         # raise ValueError
+        #print 'x1'
     else:
         print 'invalid mode in makedraws'
         print mode
         raise ValueError
-
+    # print 'x1'
     D_x = [[sp.NaN]] * nx_inner
     mh, Vh = g1.infer_full(X_x, D_x)
     Vh_cho = spl.cholesky(Vh, lower=True)
-
+    # print 'x2'
     # ss=sp.logspace(4,-4,ns)
     allG = []
     for i in xrange(nd):
@@ -105,6 +108,7 @@ def makedraws(D, kf, nd=400, nx_inner=101, mode='uniform', fig=False, plot='none
         
         
         try:
+            #print 'x2'
             g.runEP(plot=plot)
             
         except:
@@ -353,6 +357,9 @@ class EntPredictor():
         self.kfgen = kfgen
         # function takes hyperparameters and returns ln(prior)
         self.kfprior = kfprior
+        
+        self.lb=lower
+        self.ub=upper
         # g1 = GPd.GPcore(self.Xo, self.Yo, self.So, self.Do, self.kf)
         self.MLEflag = True
         self.HypSampleflag = True
@@ -371,7 +378,7 @@ class EntPredictor():
 
         self.dist = dist_obj(squaresllk, self.D, self.kfprior, self.kfgen)
         ee = lambda hyp, y: (-self.dist.loglike(hyp), 0)
-        [xmintrue, miny, ierror] = DIRECT.solve(ee, [-4, -4], [4, 4], user_data=[], algmethod=1, maxf=self.MLEsearchn)
+        [xmintrue, miny, ierror] = DIRECT.solve(ee, [-3, -3], [5, 2], user_data=[], algmethod=1, maxf=self.MLEsearchn)
         print 'MLEhyperparameters: '+str([10**i for i in xmintrue])
         self.loghypMLE = xmintrue
         self.kfMLE = self.kfgen([10**i for i in xmintrue])
@@ -425,11 +432,15 @@ class EntPredictor():
             
             except:
                 print 'not using kf '+str(i)+' hyp: '+str(self.hySam[i])
+                
         
         if plot == 'verbose' or plot == 'basic':
             plt.figure(figsize=(6, 6))
-            
-            plt.hist(tmp, 20)
+            try:
+                plt.hist(tmp, 20)
+            except:
+                print 'histogram error'
+                print tmp
         # plt.axis([-1,1,0,len(tmp)])
         self.Predictorflag = False
         sys.stdout.write('\r           \n')
@@ -481,7 +492,53 @@ class EntPredictor():
         sys.stdout.write('\rMaxEnt at '+str(xmintrue)+'             ')
         return xmintrue
 
-    def showEntGraph(self, Xi, S, plot='basic', obstype=[sp.NaN]):
+    def searchOverS(self, lower, upper, S, U, plot='none', obstype=[sp.NaN]):
+        if self.HypSampleflag:
+            self.drawHypSamples(self.HYPsamplen, plot=plot)
+        if self.Predictorflag:
+            self.initPredictor()
+        searchmax = self.ENTsearchn
+        print 'searching over '+str(searchmax)+' iterations for maxEnt'
+        global sc
+        global me
+        sc = 0
+        me = 0
+        ns=len(S)
+        def ee(x, y):
+            global sc
+            global me
+            sys.stdout.write('\r'+str(sc)+' max found '+str(me))
+            sys.stdout.flush()
+            sc += 1
+            Ent = inferHmulti(self.Pred, sp.matrix(x).T, S, obstype=obstype)
+            EU=sp.zeros(ns)
+            for i in xrange(ns):
+                #print Ent[0]
+                EU[i]=(Ent[0][i])/float(U[i])
+            EUmax=max(EU)
+            if EUmax > me:
+                me = EUmax
+            return (-EUmax, 0)
+
+        [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=U, algmethod=1, maxf=searchmax)
+        del sc
+        del me
+        
+        Ent = inferHmulti(self.Pred, sp.matrix(xmintrue).T, S, obstype=obstype)
+        EU=sp.zeros(ns)
+        for i in xrange(ns):
+            EU[i]=Ent[0][i]/float(U[i])
+        j=sp.argmax(EU)
+        
+        sys.stdout.write('\rMaxEU at '+str(xmintrue)+'with s= '+str(S[j]))
+        return [xmintrue,j]
+        
+    def showEntGraph(self, Xi, S,U='none', plot='basic', obstype=[sp.NaN]):
+        if U=='none':
+            uflag=False
+            U=sp.ones(len(S))
+        else:
+            uflag=True
         nx = len(Xi)
         ns = len(S)
         if self.HypSampleflag:
@@ -492,13 +549,27 @@ class EntPredictor():
         Hplot = sp.zeros([nx, ns])
         for i in xrange(nx):
             for j in xrange(ns):
-                Hplot[i, j] = H[i][0, j]
+                Hplot[i, j] = (H[i][0, j])/float(U[j])
         
         plt.figure(figsize=(16, 16))
         a = GPd.plot1(self.gMLE, [-1], [1])
         a2=a.twinx()
         for i in xrange(ns):
-            a2.semilogy(Xi, Hplot[:, i].flatten(),'g')
+            try:
+                a2.semilogy(Xi, Hplot[:, i].flatten())
+            except:
+                print 'failed to plot entropy for s= '+str(S[i])
+                print Hplot[:, i].flatten()
+                
+            
+        if uflag:
+            uopt=sp.zeros(nx)
+            for i in xrange(nx):
+                j=sp.argmax(Hplot[i,:].flatten())
+                uopt[i]=U[j]
+            plt.figure()
+            #print uopt
+            plt.semilogy(Xi,uopt)
         return a
 
     def inferPostGP(self, x, d, plot='none'):
@@ -524,7 +595,15 @@ class EntPredictor():
             vp[i]=vp[i]/float(ng)
         
         return [mp,vp]
-
+    
+    def searchYminEst(self):
+        def ee(x,y):
+            [m,v] = self.inferPostGP(x,[[sp.NaN]])
+            return (m,0)
+            
+        [xmintrue, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=800)
+        return [xmintrue,miny]
+        
     def plotPostGP(self, x, d, plotEI=False):
         [m, v] = self.inferPostGP(x, d)
         np = len(d)
@@ -601,6 +680,8 @@ class Optimizer():
         self.MLEsearchn = 200
         self.HYPsamplen = 30
         self.ENTsearchn = 160
+        self.result=[]
+        self.Uo=[]
         return
         
     def initrandobs(self, n_init, s_init):
@@ -645,9 +726,38 @@ class Optimizer():
         self.So = sp.vstack([self.So, s])
         self.Do.append([sp.NaN])
         plt.show()
-        
+        print 'getting current min est'
+        res = e.searchYminEst()
+        print res
+        self.result.append(res)
         return
-    
+        
+    def searchOvers(self, s, u, obstype=[sp.NaN], method='Ent'):
+        e = EntPredictor([self.Xo, self.Yo, self.So, self.Do], self.lb, self.ub, self.kfGen, self.kfPrior)
+        e.MLEsearchn = self.MLEsearchn
+        e.HYPsamplen = self.HYPsamplen
+        e.ENTsearchn = self.ENTsearchn
+        
+        n = 150
+        Xi = sp.linspace(-1, 1, n)
+        a = e.showEntGraph(Xi, s,U=u, plot='basic', obstype=obstype)
+        [xmin,j] = e.searchOverS(self.lb, self.ub, s,u, obstype=obstype)
+        a.plot(xmin, [0], 'go')
+        a.plot(xmin, self.f(xmin[0]), 'ro')
+        xIn = xmin[0]
+        yIn = self.f(xIn)+sp.random.normal(scale=sp.sqrt(s[j]))
+        self.Uo.append(u[j])
+        self.Xo = sp.vstack([self.Xo, xIn])
+        self.Yo = sp.vstack([self.Yo, yIn])
+        self.So = sp.vstack([self.So, s[j]])
+        self.Do.append([sp.NaN])
+        plt.show()
+        print 'getting current min est'
+        res = e.searchYminEst()
+        print res
+        self.result.append(res)
+        return
+        
     def showinov(self, s, obstype=[sp.NaN]):
         e = EntPredictor([self.Xo, self.Yo, self.So, self.Do], self.lb, self.ub, self.kfGen, self.kfPrior)
         e.MLEsearchn = self.MLEsearchn

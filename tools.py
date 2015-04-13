@@ -114,7 +114,7 @@ def squaresllk(xx, D, kfgen):
                 lk = g.llk()
             except:
                 print 'warn: can''t get llk with: '+str(hyp)
-                lk=-999
+                lk=-sp.Inf
             return lk
 
 
