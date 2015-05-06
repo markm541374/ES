@@ -97,9 +97,9 @@ o.HYPsamplen=25
 mt='EI'
 reload(EntropyPredict)
 for i in xrange(15):
-    # o.searchOvers(sp.logspace(1,-7,30),sp.logspace(0,8,30), method='Ent')
+    o.searchOvers(sp.logspace(1,-7,30),sp.logspace(0,4,30), method='Ent')
     #o.searchOvers(Sset,Uset, method=mt)
-    o.searchats([sconst], method=mt)
+    #o.searchats([sconst], method=mt)
 
 # %%
 
