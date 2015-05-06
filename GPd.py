@@ -324,27 +324,33 @@ def buildKsym_d(kf,x,d):
         return K
     
 class GPcore:
-    def __init__(self, X_s, Y_s, S_s, D_s, kf):
+    def __init__(self, X_s, Y_s, S_s, D_s, kf,precom=True):
         
         self.D_s = D_s
         self.X_s = X_s
         self.Y_s = Y_s
         #self.S_s=S_s
         self.kf = kf
+        if precomp:
+            self.precompute()
+            self.invaldflag=False
+        else:
+            self.invalidflag=True
+        return
         
+    def precompute(self):
         K_ss = buildKsym_d(kf, X_s, D_s)
         (sign, self.logdet) = slogdet(K_ss)
         self.K_ss_cf = spl.cho_factor(K_ss + vec2trace(S_s))
         
         self.a = spl.cho_solve(self.K_ss_cf,Y_s)
+        self.invalidflag=False
         
-        
-        #print "----------"
         return
     
     def changeY(self,Y_s):
-        #print "changeY"
-        #print Y_s.T
+        if self.invalidflag:
+            self.precompute()
         
         self.a = spl.cho_solve(self.K_ss_cf,Y_s)
         #print "a"
@@ -352,11 +358,15 @@ class GPcore:
         return
     
     def infer_m(self,X_i,D_i):
+        if self.invalidflag:
+            self.precompute()
         K_si = buildKasym_d(self.kf,X_i,self.X_s,D_i,self.D_s)
         m = K_si*self.a
         return m
     
     def infer_full(self,X_i,D_i):
+        if self.invalidflag:
+            self.precompute()
         K_ii = buildKsym_d(self.kf,X_i,D_i)
         K_si = buildKasym_d(self.kf,X_i,self.X_s,D_i,self.D_s)
         
@@ -366,6 +376,8 @@ class GPcore:
         return [m,V]
     
     def infer_diag(self,X_i,D_i):
+        if self.invalidflag:
+            self.precompute()
         K_si = buildKasym_d(self.kf,X_i,self.X_s,D_i,self.D_s)
         
         m = K_si*self.a
@@ -376,5 +388,7 @@ class GPcore:
         return [m,V]
 
     def llk(self):
+        if self.invalidflag:
+            self.precompute()
        return (-0.5*self.Y_s.T*self.a -0.5*self.logdet-0.5*len(self.D_s)*sp.log(2*sp.pi))[0,0]
 #kf = gen_sqexp_k_d([1.,0.3])
