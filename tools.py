@@ -53,7 +53,7 @@ def slice_sample(dist, init, iters, sigma, step_out=True,burn=10):
     # set up empty sample holder
     D = len(init)
     samples = sp.zeros((D, iters+burn))
-
+    
     # initialize
     xx = init.copy()
 
@@ -99,12 +99,9 @@ def slice_sample(dist, init, iters, sigma, step_out=True,burn=10):
                 else:
                     raise RuntimeError('Slice sampler shrank too far.')
 
-        if i % 1000 == 0:
-            print 'iteration', i
-
         samples[:, i] = xx.copy().ravel()
-
-    return samples[burn:]
+    
+    return samples[:,burn:]
 
 def squaresllk(xx, D, kfgen):
             hyp = [10**(i) for i in xx]

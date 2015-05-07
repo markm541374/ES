@@ -31,6 +31,10 @@ class EntPredictor():
         self.ub=upper
          
         self.nHYPsamples = para[0]
+        self.HYPsearchLow = para[1]
+        self.HYPsearchHigh = para[2]
+        self.HYPMLEsearchn = para[3]
+        self.HYPsamSigma = para[4]
         return
         
     def setupEP(self):
@@ -42,10 +46,10 @@ class EntPredictor():
         print 'seeking MLE phyperparameters'
     
         dist = dist_obj(squaresllk, self.D, self.kfprior, self.kfgen)
-        searchn = 500
+        searchn = self.HYPMLEsearchn
         
         ee = lambda hyp, y: (-dist.loglike(hyp), 0)
-        [xmintrue, miny, ierror] = DIRECT.solve(ee, [-3, -3], [3, 3], user_data=[], algmethod=1, maxf=searchn, logfilename='/dev/null')
+        [xmintrue, miny, ierror] = DIRECT.solve(ee, self.HYPsearchLow, self.HYPsearchHigh, user_data=[], algmethod=1, maxf=searchn, logfilename='/dev/null')
 
         print 'MLEhyperparameters: '+str([10**i for i in xmintrue])
         self.logMLEHYPVal = xmintrue
@@ -56,10 +60,11 @@ class EntPredictor():
         n=self.nHYPsamples
         print 'Drawing '+str(n)+' hyperparameter samples'
         w_0 = self.logMLEHYPVal
-        sigma = 0.05*sp.ones(self.dim+1)
+        sigma = self.HYPsamSigma*sp.ones(self.dim+1)
         dist = dist_obj(squaresllk, self.D, self.kfprior, self.kfgen)
         
         samples = slice_sample(dist, w_0, iters=n, sigma=sigma)
+        
         # print samples
         kfSam = []
         hySam = []
@@ -78,10 +83,15 @@ class EntPredictor():
         a = f.add_subplot(111)
         for hs in self.HYPsampleVals:
             a.plot(hs[d0],hs[d1],'bx')
+        
         a.set_yscale('log')
         a.set_xscale('log')
         a.set_xlabel(str(d0)+'st hyperparameter')
         a.set_ylabel(str(d1)+'st hyperparameter')
+        try:
+            a.plot(10**self.logMLEHYPVal[d0], 10**self.logMLEHYPVal[d1],'ro')
+        except:
+            pass
         return [f,a]
         
         
