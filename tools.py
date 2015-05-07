@@ -40,7 +40,7 @@ class fgen1d():
         return f
 
 
-def slice_sample(dist, init, iters, sigma, step_out=True):
+def slice_sample(dist, init, iters, sigma, step_out=True,burn=10):
     """
     from http://isaacslavitt.com/2013/12/30/metropolis-hastings-and-
     slice-sampling/
@@ -52,12 +52,12 @@ def slice_sample(dist, init, iters, sigma, step_out=True):
 
     # set up empty sample holder
     D = len(init)
-    samples = sp.zeros((D, iters))
+    samples = sp.zeros((D, iters+burn))
 
     # initialize
     xx = init.copy()
 
-    for i in xrange(iters):
+    for i in xrange(iters+burn):
         if i % 10 == 0:
             print i
 
@@ -104,7 +104,7 @@ def slice_sample(dist, init, iters, sigma, step_out=True):
 
         samples[:, i] = xx.copy().ravel()
 
-    return samples
+    return samples[burn:]
 
 def squaresllk(xx, D, kfgen):
             hyp = [10**(i) for i in xx]
