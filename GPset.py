@@ -9,6 +9,8 @@ class to create a set of GPd andor GPep and make parallel inference over them
 from multiprocessing import Process, Pipe, Event
 import GPd
 import GPep
+import time
+import traceback
 
 class multiGP:
     def __init__(self):
@@ -17,11 +19,11 @@ class multiGP:
         self.exits = []
         return
     
-    def addGPd(self):
+    def addGPd(self, X_s, Y_s, S_s, D_s, kf):
         
         pconn,cconn=Pipe()
         ex = Event()
-        p = mGPd(cconn,ex)
+        p = mGPd(cconn,ex, X_s, Y_s, S_s, D_s, kf)
     
         self.processes.append(p)
         self.conns.append(pconn)
@@ -30,11 +32,11 @@ class multiGP:
         p.start()
         return
         
-    def addGPep(self):
+    def addGPep(self, X_c, Y_c, S_c, D_c, X_z, D_z, I_z, G_z, N_z, kf):
         
         pconn,cconn=Pipe()
         ex = Event()
-        p = mGPd(cconn,ex)
+        p = mGPd(cconn,ex, X_c, Y_c, S_c, D_c, X_z, D_z, I_z, G_z, N_z, kf)
     
         self.processes.append(p)
         self.conns.append(pconn)
@@ -89,7 +91,17 @@ class mGPd(Process):
         return
         
     def run(self):
-        self.GP.precompute()
+        try:
+            self.GP.precompute()
+        except:
+            err = traceback.format_exc()
+            while not self.exit_event.is_set():
+                if not self.conn.poll():
+                    time.sleep(0.1)
+                    continue
+                msg = self.conn.poll
+                self.conn.send([-2,err])
+                
         while not self.exit_event.is_set():
             if not self.conn.poll():
                 time.sleep(0.1)
@@ -98,18 +110,18 @@ class mGPd(Process):
             try:
                 
                 if code==0:
-                    res = self.GP.infer_full(X_i,Di)
+                    res = self.GP.infer_full(X_i,D_i)
                 elif code==1:
-                    res = self.GP.infer_diag(X_i,Di)
+                    res = self.GP.infer_diag(X_i,D_i)
                 elif code==2:
-                    res = self.GP.infer_m(X_i,Di)
+                    res = self.GP.infer_m(X_i,D_i)
                 elif code==3:
                     res = self.GP.llk()
                 else:
                     raise ValueError('code not supported')
                 self.conn.send([0, res])
             except:
-                self.conn.send([-1])
+                self.conn.send([-1,traceback.format_exc()])
 
 
         return
@@ -123,7 +135,17 @@ class mGPep(Process):
         return
         
     def run(self):
-        self.GP.runEP()
+        try:
+            self.GP.runEP()
+        except:
+            err = traceback.format_exc()
+            while not self.exit_event.is_set():
+                if not self.conn.poll():
+                    time.sleep(0.1)
+                    continue
+                msg = self.conn.poll
+                self.conn.send([-2,err])
+                
         while not self.exit_event.is_set():
             if not self.conn.poll():
                 time.sleep(0.1)
@@ -132,18 +154,18 @@ class mGPep(Process):
             try:
                 
                 if code==0:
-                    res = self.GP.infer_full(X_i,Di)
+                    res = self.GP.infer_full(X_i,D_i)
                 elif code==1:
-                    res = self.GP.infer_diag(X_i,Di)
+                    res = self.GP.infer_diag(X_i,D_i)
                 elif code==2:
-                    res = self.GP.infer_m(X_i,Di)
+                    res = self.GP.infer_m(X_i,D_i)
                 elif code==3:
                     res = self.GP.llk()
                 else:
                     raise ValueError('code not supported')
                 self.conn.send([0, res])
             except:
-                self.conn.send([-1])
+                self.conn.send([-1,traceback.format_exc()])
 
 
         return

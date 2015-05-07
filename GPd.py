@@ -329,9 +329,9 @@ class GPcore:
         self.D_s = D_s
         self.X_s = X_s
         self.Y_s = Y_s
-        #self.S_s=S_s
+        self.S_s=S_s
         self.kf = kf
-        if precomp:
+        if precom:
             self.precompute()
             self.invaldflag=False
         else:
@@ -339,11 +339,11 @@ class GPcore:
         return
         
     def precompute(self):
-        K_ss = buildKsym_d(kf, X_s, D_s)
+        K_ss = buildKsym_d(self.kf, self.X_s, self.D_s)
         (sign, self.logdet) = slogdet(K_ss)
-        self.K_ss_cf = spl.cho_factor(K_ss + vec2trace(S_s))
+        self.K_ss_cf = spl.cho_factor(K_ss + vec2trace(self.S_s))
         
-        self.a = spl.cho_solve(self.K_ss_cf,Y_s)
+        self.a = spl.cho_solve(self.K_ss_cf,self.Y_s)
         self.invalidflag=False
         
         return
@@ -390,5 +390,5 @@ class GPcore:
     def llk(self):
         if self.invalidflag:
             self.precompute()
-       return (-0.5*self.Y_s.T*self.a -0.5*self.logdet-0.5*len(self.D_s)*sp.log(2*sp.pi))[0,0]
+        return (-0.5*self.Y_s.T*self.a -0.5*self.logdet-0.5*len(self.D_s)*sp.log(2*sp.pi))[0,0]
 #kf = gen_sqexp_k_d([1.,0.3])
