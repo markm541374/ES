@@ -9,7 +9,9 @@ from scipy import linalg as spl
 from scipy import interpolate
 import GPd
 from scipy.stats import norm as norms
+import scipy.stats as sps
 import numpy as np
+from functools import partial
 
 def EI(ER,mu,sigma):
         alpha=(-ER+mu)/sigma
@@ -130,3 +132,20 @@ class dist_obj():
         # print str(L)+'  xx  '+str(P)
         # print L+P
         return L+P
+
+
+
+def sqExpPrior(paras, xx):
+    dim=len(paras)
+    p = 1
+    for i in xrange(dim):
+        
+        mul = sps.norm.pdf(((xx[i])-paras[i][0])/float(2*paras[i][1]))
+        p*=mul
+        
+    return sp.log(p)
+    
+def genSqExpPrior(para):
+    # print 'genk: '+str(theta)
+    k = partial(sqExpPrior,para)
+    return k

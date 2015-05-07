@@ -39,7 +39,7 @@ print miny
 
 plt.plot(xmintrue, miny, 'rx')
 # %%
-n_init = 18
+n_init = 15
 sconst=0.001
 x = sp.random.uniform(-1, 1, n_init)
 y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
@@ -63,17 +63,16 @@ OSLV=1.**2
 I1LM=0.
 #inputscaleLogvar
 I1LV=1.**2
-def sqexpprior(xx):
-    p = sps.norm.pdf(((xx[0])-OSLM)/(2*OSLV)) * sps.norm.pdf(((xx[1])-I1LM)/(2*I1LV))
-    return sp.log(p)
-kfprior = sqexpprior
 
-nHYPsam=200
+kfprior = genSqExpPrior([[OSLM,OSLV],[I1LM,I1LV]])
+
+nHYPsam=50
 HYPsearchLow = [-3, -3]
 HYPsearchHigh = [3, 3]
 HYPMLEsearchn = 800
 HYPsamSigma = 0.05
-para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma]
+HYPsamBurn = 12
+para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn]
 PO=EntropyPredict2.EntPredictor([Xo,Yo,So,Do], lower, upper, kfGen, kfprior, para )
 # %%
 PO.setupEP()

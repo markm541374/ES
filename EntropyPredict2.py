@@ -35,6 +35,7 @@ class EntPredictor():
         self.HYPsearchHigh = para[2]
         self.HYPMLEsearchn = para[3]
         self.HYPsamSigma = para[4]
+        self.HYPsamBurn = para[5]
         return
         
     def setupEP(self):
@@ -63,7 +64,7 @@ class EntPredictor():
         sigma = self.HYPsamSigma*sp.ones(self.dim+1)
         dist = dist_obj(squaresllk, self.D, self.kfprior, self.kfgen)
         
-        samples = slice_sample(dist, w_0, iters=n, sigma=sigma)
+        samples = slice_sample(dist, w_0, iters=n, sigma=sigma, burn=self.HYPsamBurn)
         
         # print samples
         kfSam = []
