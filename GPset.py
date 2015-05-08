@@ -65,10 +65,12 @@ class multiGP:
                 time.sleep(0.1)
             result.append(c.recv())
         return result
-        
+      
     def llk(self):
         return self.infer_any(3, [], [])
-        
+    
+    def status(self):
+        return self.infer_any(-1,[],[])
     
         
     def close(self):
@@ -88,6 +90,7 @@ class mGPd(Process):
         self.conn=conn
         self.exit_event=exit_event
         self.GP = GPd.GPcore(X_s, Y_s, S_s, D_s, kf,precom=False)
+        self.status=[0,0,0]
         return
         
     def run(self):
@@ -95,12 +98,13 @@ class mGPd(Process):
             self.GP.precompute()
         except:
             err = traceback.format_exc()
+            self.status=[-2,err]
             while not self.exit_event.is_set():
                 if not self.conn.poll():
                     time.sleep(0.1)
                     continue
                 msg = self.conn.poll
-                self.conn.send([-2,err])
+                self.conn.send(self.status)
                 
         while not self.exit_event.is_set():
             if not self.conn.poll():
@@ -108,8 +112,9 @@ class mGPd(Process):
                 continue
             [code, X_i, D_i] = self.conn.recv()
             try:
-                
-                if code==0:
+                if code==-1:
+                    res=self.status
+                elif code==0:
                     res = self.GP.infer_full(X_i,D_i)
                 elif code==1:
                     res = self.GP.infer_diag(X_i,D_i)
@@ -120,10 +125,12 @@ class mGPd(Process):
                 else:
                     raise ValueError('code not supported')
                 self.conn.send([0, res])
+                self.status[1]+=1
             except:
                 self.conn.send([-1,traceback.format_exc()])
-
-
+                self.status[0]=-1
+                self.status[1]+=1
+                self.status[2]+=1
         return
         
 class mGPep(Process):
@@ -132,6 +139,7 @@ class mGPep(Process):
         self.conn=conn
         self.exit_event=exit_event
         self.GP = GPep.GPcore(X_c, Y_c, S_c, D_c, X_z, D_z, I_z, G_z, N_z, kf)
+        self.status=[0,0,0]
         return
         
     def run(self):
@@ -139,12 +147,14 @@ class mGPep(Process):
             self.GP.runEP()
         except:
             err = traceback.format_exc()
+            self.status=[-2,err]
             while not self.exit_event.is_set():
                 if not self.conn.poll():
                     time.sleep(0.1)
                     continue
                 msg = self.conn.poll
-                self.conn.send([-2,err])
+                
+                self.conn.send(self.status)
                 
         while not self.exit_event.is_set():
             if not self.conn.poll():
@@ -152,8 +162,9 @@ class mGPep(Process):
                 continue
             [code, X_i, D_i] = self.conn.recv()
             try:
-                
-                if code==0:
+                if code==-1:
+                    res=self.status
+                elif code==0:
                     res = self.GP.infer_full(X_i,D_i)
                 elif code==1:
                     res = self.GP.infer_diag(X_i,D_i)
@@ -164,8 +175,10 @@ class mGPep(Process):
                 else:
                     raise ValueError('code not supported')
                 self.conn.send([0, res])
+                self.status[1]+=1
             except:
                 self.conn.send([-1,traceback.format_exc()])
-
-
+                self.status[0]=-1
+                self.status[1]+=1
+                self.status[2]+=1
         return

@@ -37,10 +37,19 @@ class EntPredictor():
         self.HYPsamSigma = para[4]
         self.HYPsamBurn = para[5]
         return
+    
+    def __del__(self):
+        try:
+            print 'closing FBinfer'
+            self.FBInfer.close()
+        except:
+            print traceback.format_exc()
+        return
         
     def setupEP(self):
         self.searchMLEHYP()
         self.drawHYPsamples()
+        self.initFBInfer()
         return
     
     def searchMLEHYP(self):
@@ -90,9 +99,19 @@ class EntPredictor():
         a.set_xlabel(str(d0)+'st hyperparameter')
         a.set_ylabel(str(d1)+'st hyperparameter')
         try:
-            a.plot(10**self.logMLEHYPVal[d0], 10**self.logMLEHYPVal[d1],'ro')
+            a.plot(10**self.logMLEHYPVal[d0], 10**self.logMLEHYPVal[d1],'bo')
         except:
             pass
         return [f,a]
         
+    def initFBInfer(self):
+        print 'seting up FB inference'
+        self.FBInfer = GPset.multiGP()
+        for kf in self.HYPsampleFns:
+            self.FBInfer.addGPd(self.D[0], self.D[1], self.D[2], self.D[3], kf)
+        status = self.FBInfer.status()
+        ns = len([i for i in status if i[0]==0])
+        nk = self.nHYPsamples
+        print str(ns)+' of '+str(nk)+' kernel draws inited sucessfuly'
+        return
         
