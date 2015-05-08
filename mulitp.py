@@ -5,7 +5,8 @@ Created on Tue May  5 15:22:15 2015
 @author: markm
 """
 
-from multiprocessing import Process, Pipe, Event
+from multiprocessing import Process, Pipe, Event, active_children
+
 import sys
 import GPd
 import GPep
@@ -39,8 +40,8 @@ print miny
 
 plt.plot(xmintrue, miny, 'rx')
 # %%
-n_init = 8
-sconst=0.001
+n_init = 12
+sconst=0.0001
 x = sp.random.uniform(-1, 1, n_init)
 y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
 Xo = sp.matrix(x).T
@@ -55,6 +56,9 @@ a = GPd.plot1(g1, [-1], [1])
 # %%
 reload(EntropyPredict2)
 reload(GPset)
+PO=[]
+for c in active_children():
+    c.terminate()
 #outputscaleLogmean
 OSLM=0.
 #outputscaleLogvar
@@ -66,18 +70,20 @@ I1LV=2.**2
 
 kfprior = genSqExpPrior([[OSLM,OSLV],[I1LM,I1LV]])
 
-nHYPsam=30
+nHYPsam=15
 HYPsearchLow = [-3, -3]
 HYPsearchHigh = [3, 3]
 HYPMLEsearchn = 800
 HYPsamSigma = 0.05
-HYPsamBurn = 12
+HYPsamBurn = 8
 para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn]
 PO=EntropyPredict2.EntPredictor([Xo,Yo,So,Do], lower, upper, kfGen, kfprior, para )
 # %%
 PO.setupEP()
 print PO.HYPsampleVals
 [f0,a0] = PO.plotHYPsamples(d0=0, d1=1)
+[f1,a1] = PO.plotFBpost()
+
 # %%
 for i in sp.linspace(-1,1,10):
     PO.FBInfer.infer_full(sp.matrix([0.1,0.2,03,0.4]).T,[[sp.NaN],[sp.NaN],[sp.NaN],[sp.NaN]])

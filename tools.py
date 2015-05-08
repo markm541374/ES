@@ -61,7 +61,8 @@ def slice_sample(dist, init, iters, sigma, step_out=True,burn=10):
     xx = init.copy()
 
     for i in xrange(iters+burn):
-        print '\r Drawn %d' % (i-burn+1),
+        mn=i-burn+1
+        print '\r Drawn %d    ' % mn,
         sys.stdout.flush()
 
         perm = range(D)

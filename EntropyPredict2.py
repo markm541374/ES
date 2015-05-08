@@ -19,6 +19,7 @@ from functools import partial
 from multiprocessing import pool
 from tools import *
 import sys
+import traceback
 
 class EntPredictor():
     def __init__(self, D, lower, upper, kfgen, kfprior, para):
@@ -114,4 +115,65 @@ class EntPredictor():
         nk = self.nHYPsamples
         print str(ns)+' of '+str(nk)+' kernel draws inited sucessfuly'
         return
+        
+    def inferFBpost(self,X_s, D_s):
+        #np=len(X_s)
+        infr = self.FBInfer.infer_diag(sp.matrix(X_s).T,D_s)
+    
+        n_hyp = len(self.FBInfer.processes)
+        clean = sp.zeros(n_hyp)
+        y_s = [[] for i in xrange(n_hyp)]
+        v_s = [[] for i in xrange(n_hyp)]
+        for j,r in enumerate(infr):
+            if r[0]==0:
+                y_s[j]=sp.array(r[1][0]).flatten()
+                v_s[j]=sp.array(r[1][1]).flatten()
+            else:
+                
+                clean[j]=-1
+        
+        
+        np=len(y_s[0])
+        y_r=sp.zeros(np)
+        v_r=sp.zeros(np)
+        n_c = len([i for i in clean if i==0])
+        for i,y in enumerate(y_s):
+            print y
+            if clean[i]==0:
+                for j in xrange(np):
+                    y_r[j]+=y[j]
+                    v_r[j]+=v_s[i][j]
+        
+        y_r = [y/float(n_c) for y in y_r]
+        v_r = [v/float(n_c) for v in v_r]
+        
+        return [y_r,v_r]
+        
+    def plotFBpost(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
+        print 'plotting'
+        X=[]
+        if point=='None':
+            point=sp.zeros(self.dim)
+        n_hyp = len(self.FBInfer.processes)
+        clean = sp.zeros(n_hyp)
+        x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
+        y_s = [[] for i in xrange(n_hyp)]
+        v_s = [[] for i in xrange(n_hyp)]
+        for i in x_r:
+            pi = point.copy()
+            pi[axis]=i
+            X.append(pi)
+        [m,v] = self.inferFBpost(sp.matrix(X).T,obstype*np)
+        
+        
+        u_b=sp.zeros(np)
+        l_b=sp.zeros(np)
+        for j in xrange(np):
+            u_b[j]=m[j]+2*sp.sqrt(v[j])
+            l_b[j]=m[j]-2*sp.sqrt(v[j])
+        f = plt.figure()
+        a = f.add_subplot(111)
+        a.plot(x_r,m,'b')
+        a.fill_between(x_r, l_b, u_b, facecolor='lightskyblue', alpha=0.5)
+        return [f,a]
         
