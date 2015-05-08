@@ -12,6 +12,7 @@ from scipy.stats import norm as norms
 import scipy.stats as sps
 import numpy as np
 from functools import partial
+import sys
 
 def EI(ER,mu,sigma):
         alpha=(-ER+mu)/sigma
@@ -60,8 +61,8 @@ def slice_sample(dist, init, iters, sigma, step_out=True,burn=10):
     xx = init.copy()
 
     for i in xrange(iters+burn):
-        if i % 10 == 0:
-            print i
+        print '\r Drawn %d' % (i-burn+1),
+        sys.stdout.flush()
 
         perm = range(D)
         sp.random.shuffle(perm)

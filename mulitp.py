@@ -39,7 +39,7 @@ print miny
 
 plt.plot(xmintrue, miny, 'rx')
 # %%
-n_init = 15
+n_init = 8
 sconst=0.001
 x = sp.random.uniform(-1, 1, n_init)
 y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
@@ -54,19 +54,19 @@ a = GPd.plot1(g1, [-1], [1])
 
 # %%
 reload(EntropyPredict2)
-
+reload(GPset)
 #outputscaleLogmean
 OSLM=0.
 #outputscaleLogvar
-OSLV=1.**2
+OSLV=2.**2
 #inputscalaLogmean
 I1LM=0.
 #inputscaleLogvar
-I1LV=1.**2
+I1LV=2.**2
 
 kfprior = genSqExpPrior([[OSLM,OSLV],[I1LM,I1LV]])
 
-nHYPsam=50
+nHYPsam=30
 HYPsearchLow = [-3, -3]
 HYPsearchHigh = [3, 3]
 HYPMLEsearchn = 800
@@ -79,7 +79,6 @@ PO.setupEP()
 print PO.HYPsampleVals
 [f0,a0] = PO.plotHYPsamples(d0=0, d1=1)
 # %%
-GS = GPset.multiGP()
-
-GS.addGPd(Xo, Yo, So, Do, kf)
-GS.infer_m(sp.matrix([0.1,0.2]).T,[[sp.NaN],[sp.NaN]])
+for i in sp.linspace(-1,1,10):
+    PO.FBInfer.infer_full(sp.matrix([0.1,0.2,03,0.4]).T,[[sp.NaN],[sp.NaN],[sp.NaN],[sp.NaN]])
+# %%
