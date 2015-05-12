@@ -40,7 +40,7 @@ print miny
 
 plt.plot(xmintrue, miny, 'rx')
 # %%
-n_init = 12
+n_init = 18
 sconst=0.0001
 x = sp.random.uniform(-1, 1, n_init)
 y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
@@ -80,11 +80,14 @@ para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsam
 PO=EntropyPredict2.EntPredictor([Xo,Yo,So,Do], lower, upper, kfGen, kfprior, para )
 # %%
 PO.setupEP()
-print PO.HYPsampleVals
+#print PO.HYPsampleVals
 [f0,a0] = PO.plotHYPsamples(d0=0, d1=1)
 [f1,a1] = PO.plotFBpost()
+[f2,a2] = PO.plotMLEpost()
 
 # %%
-for i in sp.linspace(-1,1,10):
-    PO.FBInfer.infer_full(sp.matrix([0.1,0.2,03,0.4]).T,[[sp.NaN],[sp.NaN],[sp.NaN],[sp.NaN]])
+
+j=sp.linspace(-1,1,100)
+plt.plot(PO.EIMLE(sp.matrix(j).T),'b')
+plt.plot(PO.EIFB(sp.matrix(j).T),'r')
 # %%

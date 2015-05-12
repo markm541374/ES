@@ -65,6 +65,7 @@ class EntPredictor():
         print 'MLEhyperparameters: '+str([10**i for i in xmintrue])
         self.logMLEHYPVal = xmintrue
         self.MLEHYPFn = self.kfgen([10**i for i in xmintrue])
+        self.MLEInfer = GPd.GPcore(self.D[0], self.D[1], self.D[2], self.D[3], self.MLEHYPFn)
         return
         
     def drawHYPsamples(self):
@@ -115,11 +116,42 @@ class EntPredictor():
         nk = self.nHYPsamples
         print str(ns)+' of '+str(nk)+' kernel draws inited sucessfuly'
         return
+    
+    def inferMLEpost(self,X_s,D_s):
+        
+        m,v = self.MLEInfer.infer_diag(X_s,D_s)
+        return [m,v]
+    
+    def plotMLEpost(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
+        print 'plotting MLEpost'
+        X=[]
+        if point=='None':
+            point=sp.zeros(self.dim)
+       
+        x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
+        
+        for i in x_r:
+            pi = point.copy()
+            pi[axis]=i
+            X.append(pi)
+        [m,v] = self.inferMLEpost(sp.matrix(X),obstype*np)
+        
+        u_b=sp.zeros(np)
+        l_b=sp.zeros(np)
+        for j in xrange(np):
+            u_b[j]=m[j]+2*sp.sqrt(v[j])
+            l_b[j]=m[j]-2*sp.sqrt(v[j])
+        f = plt.figure()
+        a = f.add_subplot(111)
+        a.plot(x_r,m,'b')
+        a.fill_between(x_r, l_b, u_b, facecolor='lightskyblue', alpha=0.5)
+        a.set_title('MLE')
+        return [f,a]
         
     def inferFBpost(self,X_s, D_s):
         #np=len(X_s)
         infr = self.FBInfer.infer_diag(sp.matrix(X_s).T,D_s)
-    
+        
         n_hyp = len(self.FBInfer.processes)
         clean = sp.zeros(n_hyp)
         y_s = [[] for i in xrange(n_hyp)]
@@ -138,7 +170,7 @@ class EntPredictor():
         v_r=sp.zeros(np)
         n_c = len([i for i in clean if i==0])
         for i,y in enumerate(y_s):
-            print y
+            
             if clean[i]==0:
                 for j in xrange(np):
                     y_r[j]+=y[j]
@@ -150,7 +182,7 @@ class EntPredictor():
         return [y_r,v_r]
         
     def plotFBpost(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
-        print 'plotting'
+        print 'plotting FBpost'
         X=[]
         if point=='None':
             point=sp.zeros(self.dim)
@@ -175,5 +207,29 @@ class EntPredictor():
         a = f.add_subplot(111)
         a.plot(x_r,m,'b')
         a.fill_between(x_r, l_b, u_b, facecolor='lightskyblue', alpha=0.5)
+        a.set_title('FB')
         return [f,a]
+    
+    def EIMLE(self, X_s):
+        X_s=sp.matrix(X_s)
+        np = X_s.shape[0]
+        D_s = [[sp.NaN]]*np
+        m,v = self.inferMLEpost(X_s, D_s)
+        E=sp.zeros(np)
+        best = self.D[1].min()
         
+        for i in xrange(np):
+            E[i] = EI(best, m[i],sp.sqrt(v[i]))
+        return E
+
+    def EIFB(self, X_s):
+        X_s=sp.matrix(X_s)
+        np = X_s.shape[0]
+        D_s = [[sp.NaN]]*np
+        m,v = self.inferFBpost(sp.matrix(X_s).T, D_s)
+        E=sp.zeros(np)
+        best = self.D[1].min()
+        
+        for i in xrange(np):
+            E[i] = EI(best, m[i],sp.sqrt(v[i]))
+        return E
