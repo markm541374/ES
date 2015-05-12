@@ -11,6 +11,9 @@ import GPd
 import GPep
 import time
 import traceback
+import scipy as sp
+import scipy.linalg as spl
+from scipy.stats import norm as norm
 
 class multiGP:
     def __init__(self):
@@ -72,6 +75,8 @@ class multiGP:
     def status(self):
         return self.infer_any(-1,[],[])
     
+    def drawmins(self,n_points,bound):
+        return self.infer_any(4,n_points,bound)
         
     def close(self):
         for ex in self.exits:
@@ -122,6 +127,10 @@ class mGPd(Process):
                     res = self.GP.infer_m(X_i,D_i)
                 elif code==3:
                     res = self.GP.llk()
+                elif code==4:
+                    n_points=X_i
+                    bound=D_i
+                    res=self.drawmin(n_points,bound)
                 else:
                     raise ValueError('code not supported')
                 self.conn.send([0, res])
@@ -132,6 +141,32 @@ class mGPd(Process):
                 self.status[1]+=1
                 self.status[2]+=1
         return
+        
+    def drawmin(self,n_points,bound):
+        ub=bound[1]
+        lb=bound[0]
+        mx = self.GP.Y_s.max()
+        mn = self.GP.Y_s.min()
+        nacc=0
+        X_tmp=[]
+        sp.random.seed()
+        while nacc<n_points:
+            X_prop = sp.matrix(sp.random.uniform(lb, ub)).T
+            Y_prop = self.GP.infer_m(X_prop, [[sp.NaN]])
+            theta = -(Y_prop[0,0]-mx)/(mx-mn)
+            p = norm.cdf(2*theta-1.)
+            
+            if sp.random.uniform(0,1)<=p:
+                nacc+=1
+                X_tmp.append(X_prop)
+        X_x  = sp.vstack(X_tmp)
+        D_x = [[sp.NaN]] * n_points
+        
+        mh, Vh = self.GP.infer_full(X_x, D_x)
+        Vh_cho = spl.cholesky(Vh, lower=True)
+        dr = mh+Vh_cho*sp.matrix(sp.random.normal(size=n_points)).T
+        xs = dr.argmin()
+        return X_x[xs,:]
         
 class mGPep(Process):
     def __init__(self,conn,exit_event,X_c, Y_c, S_c, D_c, X_z, D_z, I_z, G_z, N_z, kf):

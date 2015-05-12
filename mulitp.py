@@ -40,7 +40,7 @@ print miny
 
 plt.plot(xmintrue, miny, 'rx')
 # %%
-n_init = 18
+n_init = 5
 sconst=0.0001
 x = sp.random.uniform(-1, 1, n_init)
 y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
@@ -56,6 +56,7 @@ a = GPd.plot1(g1, [-1], [1])
 # %%
 reload(EntropyPredict2)
 reload(GPset)
+
 PO=[]
 for c in active_children():
     c.terminate()
@@ -76,7 +77,8 @@ HYPsearchHigh = [3, 3]
 HYPMLEsearchn = 800
 HYPsamSigma = 0.05
 HYPsamBurn = 8
-para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn]
+ENTnsam = 100
+para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam]
 PO=EntropyPredict2.EntPredictor([Xo,Yo,So,Do], lower, upper, kfGen, kfprior, para )
 # %%
 PO.setupEP()
@@ -84,9 +86,11 @@ PO.setupEP()
 [f0,a0] = PO.plotHYPsamples(d0=0, d1=1)
 [f1,a1] = PO.plotFBpost()
 [f2,a2] = PO.plotMLEpost()
+PO.drawmins()
 
 # %%
 
+# %%
 j=sp.linspace(-1,1,100)
 plt.plot(PO.EIMLE(sp.matrix(j).T),'b')
 plt.plot(PO.EIFB(sp.matrix(j).T),'r')

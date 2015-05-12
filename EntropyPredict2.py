@@ -37,6 +37,7 @@ class EntPredictor():
         self.HYPMLEsearchn = para[3]
         self.HYPsamSigma = para[4]
         self.HYPsamBurn = para[5]
+        self.ENTnsam = para[6]
         return
     
     def __del__(self):
@@ -233,3 +234,7 @@ class EntPredictor():
         for i in xrange(np):
             E[i] = EI(best, m[i],sp.sqrt(v[i]))
         return E
+
+    def drawmins(self):
+        res = self.FBInfer.drawmins(self.ENTnsam,[self.lb,self.ub])
+        return res
