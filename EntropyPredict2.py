@@ -58,6 +58,8 @@ class EntPredictor():
         self.searchMLEHYP()
         self.drawHYPsamples()
         self.initFBInfer()
+        self.drawmins()
+        self.initEPInfer()
         return
     
     def searchMLEHYP(self):
@@ -164,7 +166,16 @@ class EntPredictor():
         
         m,v = self.MLEInfer.infer_diag(X_s,D_s)
         return [m,v]
-    
+    def plotMinDraws(self):
+        #explicitly 1d
+        h = []
+        for j in self.ENTmindraws:
+            h.append(j[1][0,0])
+        f = plt.figure()
+        a = f.add_subplot(111)
+        a.hist(h,20)
+        return [f,a]        
+        
     def plotMLEpost(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
         print 'plotting MLEpost'
         X=[]

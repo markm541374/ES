@@ -40,7 +40,7 @@ print miny
 
 plt.plot(xmintrue, miny, 'rx')
 # %%
-n_init = 5
+n_init = 8
 sconst=0.0001
 x = sp.random.uniform(-1, 1, n_init)
 y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
@@ -87,8 +87,8 @@ PO.setupEP()
 [f0,a0] = PO.plotHYPsamples(d0=0, d1=1)
 [f1,a1] = PO.plotFBpost()
 [f2,a2] = PO.plotMLEpost()
-PO.drawmins()
-PO.initEPInfer()
+[f3,a3] = PO.plotMinDraws()
+
 # %%
 
 # %%
