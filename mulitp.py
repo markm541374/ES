@@ -78,7 +78,8 @@ HYPMLEsearchn = 800
 HYPsamSigma = 0.05
 HYPsamBurn = 8
 ENTnsam = 100
-para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam]
+ENTzeroprecision = 10**-6
+para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision]
 PO=EntropyPredict2.EntPredictor([Xo,Yo,So,Do], lower, upper, kfGen, kfprior, para )
 # %%
 PO.setupEP()
@@ -87,7 +88,7 @@ PO.setupEP()
 [f1,a1] = PO.plotFBpost()
 [f2,a2] = PO.plotMLEpost()
 PO.drawmins()
-
+PO.initEPInfer()
 # %%
 
 # %%
@@ -95,3 +96,6 @@ j=sp.linspace(-1,1,100)
 plt.plot(PO.EIMLE(sp.matrix(j).T),'b')
 plt.plot(PO.EIFB(sp.matrix(j).T),'r')
 # %%
+PO.FBInfer.addGPd(-1,-1,-1,-1,-1)
+# %%
+PO.FBInfer.infer_diag(sp.matrix(0),[[sp.NaN]])

@@ -38,12 +38,18 @@ class EntPredictor():
         self.HYPsamSigma = para[4]
         self.HYPsamBurn = para[5]
         self.ENTnsam = para[6]
+        self.ENTzeroprecision = para[7]
         return
     
     def __del__(self):
         try:
             print 'closing FBinfer'
             self.FBInfer.close()
+        except:
+            print traceback.format_exc()
+        try:
+            print 'closing EPinfer'
+            self.EPInfer.close()
         except:
             print traceback.format_exc()
         return
@@ -118,6 +124,42 @@ class EntPredictor():
         print str(ns)+' of '+str(nk)+' kernel draws inited sucessfuly'
         return
     
+    def initEPInfer(self):
+        Xo=self.D[0]
+        Yo=self.D[1]
+        So=self.D[2]
+        Do=self.D[3]
+        self.EPInfer = GPset.multiGP()
+        self.mask = sp.zeros(self.nHYPsamples)
+        for i in xrange(self.nHYPsamples):
+            md = self.ENTmindraws[i]
+            if not md[0]==0:
+                self.mask[i]=-1
+                #create a bad GP in the correct position so that others are alligned
+                self.EPInfer.addGPd(-1,-1,-1,-1,-1)
+                continue
+            xs = md[1][0,0]
+            Xg = sp.matrix([[xs]])
+            Yg = sp.matrix([[0.]])
+            Sg = sp.matrix([[self.ENTzeroprecision]])
+            Dg = [[0]]
+            
+            [Xc, Yc, Sc, Dc] = GPep.catObs([[Xo, Yo, So, Do], [Xg, Yg, Sg, Dg]])
+            
+            Xz = sp.matrix([[xs], [xs]])
+            Dz = [[sp.NaN], [0, 0]]
+            # the inequality
+            Iz = sp.matrix([[Yo[Yo.argmin(), :][0, 0]], [0.]])
+            # sign of the inequality
+            Gz = [0, 0]
+            Nz = [So[Yo.argmin(), :], 0.] #!!!!!this value is important, should it e the sigma for hte min obs or the posterior at that piont??
+        
+            self.EPInfer.addGPep(Xc, Yc, Sc, Dc, Xz, Dz, Iz, Gz, Nz, self.HYPsampleFns[i])
+            
+        
+        return
+        
+        
     def inferMLEpost(self,X_s,D_s):
         
         m,v = self.MLEInfer.infer_diag(X_s,D_s)
@@ -237,4 +279,5 @@ class EntPredictor():
 
     def drawmins(self):
         res = self.FBInfer.drawmins(self.ENTnsam,[self.lb,self.ub])
+        self.ENTmindraws = res
         return res

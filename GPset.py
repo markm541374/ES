@@ -39,7 +39,7 @@ class multiGP:
         
         pconn,cconn=Pipe()
         ex = Event()
-        p = mGPd(cconn,ex, X_c, Y_c, S_c, D_c, X_z, D_z, I_z, G_z, N_z, kf)
+        p = mGPep(cconn,ex, X_c, Y_c, S_c, D_c, X_z, D_z, I_z, G_z, N_z, kf)
     
         self.processes.append(p)
         self.conns.append(pconn)
@@ -170,7 +170,7 @@ class mGPd(Process):
         
 class mGPep(Process):
     def __init__(self,conn,exit_event,X_c, Y_c, S_c, D_c, X_z, D_z, I_z, G_z, N_z, kf):
-        super(mGPd, self).__init__()
+        super(mGPep, self).__init__()
         self.conn=conn
         self.exit_event=exit_event
         self.GP = GPep.GPcore(X_c, Y_c, S_c, D_c, X_z, D_z, I_z, G_z, N_z, kf)
