@@ -40,7 +40,7 @@ print miny
 
 plt.plot(xmintrue, miny, 'rx')
 # %%
-n_init = 4
+n_init = 8
 sconst=0.0001
 x = sp.random.uniform(-1, 1, n_init)
 y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
@@ -89,9 +89,11 @@ PO.setupEP()
 [f1,a1] = PO.plotFBpost()
 [f2,a2] = PO.plotMLEpost()
 [f3,a3] = PO.plotMinDraws()
-[f4,as4] = PO.plotEPchanges()
+#[f4,as4] = PO.plotEPchanges()
 # %%
-
+PO.findENT(0.,[sp.NaN],0.01)
+# %%
+PO.plotENT(0.01,np=100)
 
 # %%
 X_s=sp.matrix([0])

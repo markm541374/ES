@@ -286,6 +286,20 @@ class EntPredictor():
         
         return [y_r,v_r]
         
+    def findENT(self, xs, ds, ss):
+        n_hyp = self.nHYPsamples
+        [m0,v0,m1,v1,mask] = self.findMV(sp.matrix(xs).T,[ds])
+        H0 = sp.zeros(n_hyp)
+        H1 = sp.zeros(n_hyp)
+        for i in xrange(n_hyp):
+            if not mask[i]==0:
+                continue
+            H0[i] = 0.5*sp.log(2*sp.pi*sp.e*(v0[i]+ss))
+            H1[i] = 0.5*sp.log(2*sp.pi*sp.e*(v1[i]+ss))
+
+        H=(sum(H0)-sum(H1))/float(sum([1 for i in mask if i==0]))
+        return H
+        
     def plotEPchanges(self, axis=0,point='None',np=100,obstype=[[sp.NaN]]):
         print 'plotting EPchanges'
         X=[]
@@ -304,7 +318,7 @@ class EntPredictor():
             res = self.findMV(sp.matrix(pi),[[sp.NaN]])
             
             for j in xrange(n_hyp):
-                if True:#res[4][j]==0:
+                if res[4][j]==0:
                     m_0[j][i] = res[0][j]
                     v_0[j][i] = res[1][j]
                     m_1[j][i] = res[2][j]
@@ -324,6 +338,28 @@ class EntPredictor():
         
         return [f,axs]
         
+    def plotENT(self,ss,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
+        [f,a] = self.plotFBpost(axis=axis, point=point,np=np,obstype=obstype)
+        X=[]
+        if point=='None':
+            point=sp.zeros(self.dim)
+        n_hyp = len(self.FBInfer.processes)
+        
+        x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
+        
+        for i in x_r:
+            pi = point.copy()
+            pi[axis]=i
+            X.append(pi)
+        
+        H=sp.zeros(np)
+        for i in xrange(np):
+            x=X[i]
+            h=self.findENT(x,obstype[0],ss)
+            
+            H[i]=h
+        a.plot(x_r,H,'r')
+        return [f,a]
         
     def plotFBpost(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
         print 'plotting FBpost'
