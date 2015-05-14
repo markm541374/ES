@@ -163,9 +163,9 @@ class EntPredictor():
         
         
     def inferMLEpost(self,X_s,D_s):
-        
         m,v = self.MLEInfer.infer_diag(X_s,D_s)
         return [m,v]
+        
     def plotMinDraws(self):
         #explicitly 1d
         h = []
@@ -201,6 +201,51 @@ class EntPredictor():
         a.fill_between(x_r, l_b, u_b, facecolor='lightskyblue', alpha=0.5)
         a.set_title('MLE')
         return [f,a]
+    
+    def infer_both(self, X_s, D_s):
+        infr_before = self.FBInfer.infer_diag(sp.matrix(X_s).T,D_s)
+        infr_after = self.EPInfer.infer_diag(sp.matrix(X_s).T,D_s)
+        return [infr_before, infr_after]
+    
+    def findV(self, X_s, D_s):
+        i1 = self.FBInfer.infer_diag(X_s, D_s)
+        currentmask=sp.zeros(self.nHYPsamples)
+        Vydx = sp.zeros(self.nHYPsamples)
+        for i in xrange(self.nHYPsamples):
+            if not i1[i][0]==0:
+                currentmask[i]=-1
+                continue
+            Vydx[i] = i1[i][1][1][0,0]
+        
+        Vydxxs = sp.zeros(self.nHYPsamples)
+        Xmcs=[]
+        Dmcs=[]
+        for i in xrange(self.nHYPsamples):
+            X = sp.vstack([X_s,self.ENTmindraws[i][1]])
+            Xmcs.append(X)
+            Dmcs.append(D_s+[[sp.NaN]])
+        i2 = self.EPInfer.infer_full_var(Xmcs,Dmcs)
+        for i in xrange(self.nHYPsamples):
+            if not i1[i][0]==0:
+                currentmask[i]=-2
+                continue
+            V = i2[i][1][1]
+            m = i2[i][1][0]
+            
+            #<magic>
+            s = V[0, 0]+V[1, 1]-V[0, 1]-V[1, 0]
+            if s<=10**-10:
+                print 's<10**10'
+                print s
+            mu = m[1, 0]-m[0, 0] 
+            alpha = - mu / sp.sqrt(s) # sign difference compared to the paper because I am minimizing
+        
+            beta = sp.exp(sps.norm.logpdf(alpha) - sps.norm.logcdf(alpha))
+            coef = beta*(beta+alpha)*(1./s)*(V[0, 0]-V[0, 1])**2
+            vnxxs = V[0, 0]-coef
+            Vydxxs[i]=vnxxs
+            #</magic>
+        return [Vydx, Vydxxs, currentmask]
         
     def inferFBpost(self,X_s, D_s):
         #np=len(X_s)
@@ -292,3 +337,5 @@ class EntPredictor():
         res = self.FBInfer.drawmins(self.ENTnsam,[self.lb,self.ub])
         self.ENTmindraws = res
         return res
+        
+    

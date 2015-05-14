@@ -58,6 +58,16 @@ class multiGP:
     def infer_full(self, X_i, D_i):
         return self.infer_any(0, X_i, D_i)
     
+    def infer_full_var(self, X_is, D_is):
+        for i,c in enumerate(self.conns):        
+            c.send([0,X_is[i],D_is[i]])
+        result = []
+        for c in self.conns:
+            while not c.poll():
+                time.sleep(0.1)
+            result.append(c.recv())
+        return result
+        
     def infer_any(self,code, X_i, D_i):
         for c in self.conns:
             c.send([code,X_i,D_i])

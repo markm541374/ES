@@ -89,13 +89,17 @@ PO.setupEP()
 [f2,a2] = PO.plotMLEpost()
 [f3,a3] = PO.plotMinDraws()
 
-# %%
 
 # %%
-j=sp.linspace(-1,1,100)
-plt.plot(PO.EIMLE(sp.matrix(j).T),'b')
-plt.plot(PO.EIFB(sp.matrix(j).T),'r')
+PO.findV(sp.matrix([0.9]),[[sp.NaN]])
+
 # %%
-PO.FBInfer.addGPd(-1,-1,-1,-1,-1)
-# %%
-PO.FBInfer.infer_diag(sp.matrix(0),[[sp.NaN]])
+X_s=sp.matrix([0])
+D_s=[[sp.NaN]]
+Xmcs=[]
+Dmcs=[]
+for i in xrange(PO.nHYPsamples):
+    X = sp.vstack([X_s,PO.ENTmindraws[i][1]])
+    Xmcs.append(X)
+    Dmcs.append(D_s+[[sp.NaN]])
+i2 = PO.EPInfer.infer_full_var(Xmcs,Dmcs)
