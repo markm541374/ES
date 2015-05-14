@@ -207,17 +207,20 @@ class EntPredictor():
         infr_after = self.EPInfer.infer_diag(sp.matrix(X_s).T,D_s)
         return [infr_before, infr_after]
     
-    def findV(self, X_s, D_s):
+    def findMV(self, X_s, D_s):
         i1 = self.FBInfer.infer_diag(X_s, D_s)
         currentmask=sp.zeros(self.nHYPsamples)
         Vydx = sp.zeros(self.nHYPsamples)
+        Mydx = sp.zeros(self.nHYPsamples)
         for i in xrange(self.nHYPsamples):
             if not i1[i][0]==0:
                 currentmask[i]=-1
                 continue
             Vydx[i] = i1[i][1][1][0,0]
+            Mydx[i] = i1[i][1][0][0,0]
         
         Vydxxs = sp.zeros(self.nHYPsamples)
+        Mydxxs = sp.zeros(self.nHYPsamples)
         Xmcs=[]
         Dmcs=[]
         for i in xrange(self.nHYPsamples):
@@ -226,12 +229,14 @@ class EntPredictor():
             Dmcs.append(D_s+[[sp.NaN]])
         i2 = self.EPInfer.infer_full_var(Xmcs,Dmcs)
         for i in xrange(self.nHYPsamples):
-            if not i1[i][0]==0:
+            if not i2[i][0]==0:
                 currentmask[i]=-2
                 continue
+           
             V = i2[i][1][1]
-            m = i2[i][1][0]
             
+            m = i2[i][1][0]
+            #print V
             #<magic>
             s = V[0, 0]+V[1, 1]-V[0, 1]-V[1, 0]
             if s<=10**-10:
@@ -244,8 +249,9 @@ class EntPredictor():
             coef = beta*(beta+alpha)*(1./s)*(V[0, 0]-V[0, 1])**2
             vnxxs = V[0, 0]-coef
             Vydxxs[i]=vnxxs
+            Mydxxs[i]=m[0,0]
             #</magic>
-        return [Vydx, Vydxxs, currentmask]
+        return [Mydx, Vydx, Mydxxs, Vydxxs, currentmask]
         
     def inferFBpost(self,X_s, D_s):
         #np=len(X_s)
@@ -279,6 +285,45 @@ class EntPredictor():
         v_r = [v/float(n_c) for v in v_r]
         
         return [y_r,v_r]
+        
+    def plotEPchanges(self, axis=0,point='None',np=100,obstype=[[sp.NaN]]):
+        print 'plotting EPchanges'
+        X=[]
+        if point=='None':
+            point=sp.zeros(self.dim)
+        n_hyp = len(self.FBInfer.processes)
+        clean = sp.zeros(n_hyp)
+        x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
+        m_0 = [sp.zeros(np) for i in xrange(n_hyp)]
+        v_0 = [sp.zeros(np) for i in xrange(n_hyp)]
+        m_1 = [sp.zeros(np) for i in xrange(n_hyp)]
+        v_1 = [sp.zeros(np) for i in xrange(n_hyp)]
+        for i,x in enumerate(x_r):
+            pi = point.copy()
+            pi[axis]=x
+            res = self.findMV(sp.matrix(pi),[[sp.NaN]])
+            
+            for j in xrange(n_hyp):
+                if True:#res[4][j]==0:
+                    m_0[j][i] = res[0][j]
+                    v_0[j][i] = res[1][j]
+                    m_1[j][i] = res[2][j]
+                    v_1[j][i] = res[3][j]
+        split = int(sp.ceil(sp.sqrt(n_hyp)))
+       
+        [f,axs] = plt.subplots(split,split,sharex='col', sharey='row')
+        i=0;j=0;k=0
+        while i<n_hyp:
+            axs[j][k].plot(x_r,m_0[i],'b')
+            axs[j][k].plot(x_r,m_1[i],'r')
+            axs[j][k].set_ylim([-3,3])
+            i+=1
+            j=i/split
+            k=i%split
+            
+        
+        return [f,axs]
+        
         
     def plotFBpost(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
         print 'plotting FBpost'

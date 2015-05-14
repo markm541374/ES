@@ -40,7 +40,7 @@ print miny
 
 plt.plot(xmintrue, miny, 'rx')
 # %%
-n_init = 8
+n_init = 4
 sconst=0.0001
 x = sp.random.uniform(-1, 1, n_init)
 y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
@@ -54,6 +54,7 @@ a = GPd.plot1(g1, [-1], [1])
 
 
 # %%
+
 reload(EntropyPredict2)
 reload(GPset)
 
@@ -71,7 +72,7 @@ I1LV=2.**2
 
 kfprior = genSqExpPrior([[OSLM,OSLV],[I1LM,I1LV]])
 
-nHYPsam=15
+nHYPsam=16
 HYPsearchLow = [-3, -3]
 HYPsearchHigh = [3, 3]
 HYPMLEsearchn = 800
@@ -88,10 +89,9 @@ PO.setupEP()
 [f1,a1] = PO.plotFBpost()
 [f2,a2] = PO.plotMLEpost()
 [f3,a3] = PO.plotMinDraws()
-
-
+[f4,as4] = PO.plotEPchanges()
 # %%
-PO.findV(sp.matrix([0.9]),[[sp.NaN]])
+
 
 # %%
 X_s=sp.matrix([0])
