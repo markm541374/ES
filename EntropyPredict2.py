@@ -39,6 +39,7 @@ class EntPredictor():
         self.HYPsamBurn = para[5]
         self.ENTnsam = para[6]
         self.ENTzeroprecision = para[7]
+        self.ENTsearchn = para[8]
         return
     
     def __del__(self):
@@ -337,8 +338,23 @@ class EntPredictor():
             
         
         return [f,axs]
-        
+    def searchENTs(self,ss, obstype=[sp.NaN]):
+        print 'Searhing for MaxENT'
+        def ee(x,y):
+            global ENTsearchi
+            ENTsearchi+=1
+            ENTsearchi
+            print '\rIter: %d    ' % ENTsearchi,
+            return (-self.findENT(x, obstype,ss), 0)
+        global ENTsearchi
+        ENTsearchi=0
+        [xmin, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=self.ENTsearchn, logfilename='/dev/null')
+        del(ENTsearchi)
+        print 'maxENT '+str(xmin)
+        return [xmin, miny]
+            
     def plotENT(self,ss,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
+        print 'plotting predictive Entropy'
         [f,a] = self.plotFBpost(axis=axis, point=point,np=np,obstype=obstype)
         X=[]
         if point=='None':

@@ -104,7 +104,7 @@ def slice_sample(dist, init, iters, sigma, step_out=True,burn=10):
                     raise RuntimeError('Slice sampler shrank too far.')
 
         samples[:, i] = xx.copy().ravel()
-    
+    print ''
     return samples[:,burn:]
 
 def squaresllk(xx, D, kfgen):

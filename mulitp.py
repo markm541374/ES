@@ -72,7 +72,7 @@ I1LV=2.**2
 
 kfprior = genSqExpPrior([[OSLM,OSLV],[I1LM,I1LV]])
 
-nHYPsam=16
+nHYPsam=8
 HYPsearchLow = [-3, -3]
 HYPsearchHigh = [3, 3]
 HYPMLEsearchn = 800
@@ -80,7 +80,8 @@ HYPsamSigma = 0.05
 HYPsamBurn = 8
 ENTnsam = 100
 ENTzeroprecision = 10**-6
-para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision]
+ENTsearchn = 500
+para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
 PO=EntropyPredict2.EntPredictor([Xo,Yo,So,Do], lower, upper, kfGen, kfprior, para )
 # %%
 PO.setupEP()
@@ -89,19 +90,17 @@ PO.setupEP()
 [f1,a1] = PO.plotFBpost()
 [f2,a2] = PO.plotMLEpost()
 [f3,a3] = PO.plotMinDraws()
+PO.plotENT(0.01,np=100)
 #[f4,as4] = PO.plotEPchanges()
 # %%
-PO.findENT(0.,[sp.NaN],0.01)
-# %%
-PO.plotENT(0.01,np=100)
+PO.searchENTs(0.01)
+
 
 # %%
-X_s=sp.matrix([0])
-D_s=[[sp.NaN]]
-Xmcs=[]
-Dmcs=[]
-for i in xrange(PO.nHYPsamples):
-    X = sp.vstack([X_s,PO.ENTmindraws[i][1]])
-    Xmcs.append(X)
-    Dmcs.append(D_s+[[sp.NaN]])
-i2 = PO.EPInfer.infer_full_var(Xmcs,Dmcs)
+def ee(x,y):
+    f=x**2+0.5*x-1
+    print y
+    y+=1
+    return (f,0)
+i=0
+DIRECT.solve(ee, [-1], [1], user_data=i, algmethod=1, maxf=1000, logfilename='/dev/null')
