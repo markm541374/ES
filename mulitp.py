@@ -82,8 +82,12 @@ ENTnsam = 100
 ENTzeroprecision = 10**-6
 ENTsearchn = 500
 para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
-PO=EntropyPredict2.EntPredictor([Xo,Yo,So,Do], lower, upper, kfGen, kfprior, para )
 # %%
+
+O = EntropyPredict2.Optimizer(f,kfGen, kfPrior, lower, upper, para)
+O.initrandobs(8,0.01)
+# %%
+PO=EntropyPredict2.EntPredictor([Xo,Yo,So,Do], lower, upper, kfGen, kfprior, para )
 PO.setupEP()
 #print PO.HYPsampleVals
 [f0,a0] = PO.plotHYPsamples(d0=0, d1=1)
@@ -99,8 +103,11 @@ PO.searchENTs(0.01)
 # %%
 def ee(x,y):
     f=x**2+0.5*x-1
-    print y
-    y+=1
+    global i
+    print i
+    i+=1
     return (f,0)
+global i
+del(i)
 i=0
 DIRECT.solve(ee, [-1], [1], user_data=i, algmethod=1, maxf=1000, logfilename='/dev/null')

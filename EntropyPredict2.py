@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Thu May  7 16:30:38 2015
 Rework of EntropyPredict to use multiprocessing and hopefully be cleaner
@@ -174,7 +173,7 @@ class EntPredictor():
             h.append(j[1][0,0])
         f = plt.figure()
         a = f.add_subplot(111)
-        a.hist(h,20)
+        a.hist(h,40)
         return [f,a]        
         
     def plotMLEpost(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
@@ -444,4 +443,45 @@ class EntPredictor():
         self.ENTmindraws = res
         return res
         
-    
+class Optimizer():
+    def __init__(self, f, kfGen, kfPrior, lb, ub, para):
+        self.f = f
+        self.kfGen = kfGen
+        self.kfPrior = kfPrior
+        self.lb = lb
+        self.ub = ub
+        self.para=para
+        return
+        
+    def initrandobs(self, n_init, s_init):
+        x = sp.random.uniform(self.lb, self.ub, n_init)
+        y = map(self.f, x)+sp.random.normal(scale=sp.sqrt(s_init), size=n_init)
+        self.Xo = sp.matrix(x).T
+        self.Yo = sp.matrix(y).T
+        self.So = sp.matrix([[s_init]]*n_init)
+        self.Do = [[sp.NaN]]*n_init
+        return
+
+    def initspecobs(self, Xo, Yo, So, Do):
+        self.Xo = Xo
+        self.Yo = Yo
+        self.So = So
+        self.Do = Do
+        return
+        
+    def setupEP(self):
+        try:
+            del(self.EP)
+        except:
+            pass
+        self.EP = EntPredictor([self.Xo,self.Yo,self.So,self.Do], self.lb, self.ub, self.kfGen, self.kfPrior, self.para )
+        self.EP.setupEP()
+        return
+        
+    def plotstate(self):
+        [f0,a0] = self.EP.plotHYPsamples(d0=0, d1=1)
+        [f1,a1] = self.EP.plotFBpost()
+        [f2,a2] = self.EP.plotMLEpost()
+        [f3,a3] = self.EP.plotMinDraws()
+        [f4,a4] = self.EP.plotENT(0.01,np=100)
+        return
