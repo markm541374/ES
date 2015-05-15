@@ -273,18 +273,27 @@ class EntPredictor():
         
         np=len(y_s[0])
         y_r=sp.zeros(np)
-        v_r=sp.zeros(np)
+        y2_r=sp.zeros(np)
+        mv_r=sp.zeros(np)
+        
         n_c = len([i for i in clean if i==0])
         for i,y in enumerate(y_s):
             
             if clean[i]==0:
                 for j in xrange(np):
                     y_r[j]+=y[j]
-                    v_r[j]+=v_s[i][j]
-        
+                    y2_r[j]+=y[j]**2
+                    mv_r[j]+=v_s[i][j]
+        #mean of the mean
         y_r = [y/float(n_c) for y in y_r]
-        v_r = [v/float(n_c) for v in v_r]
-        
+        #mean of the variance
+        mv_r = [v/float(n_c) for v in mv_r]
+        #mean of the square of hte mean
+        y2_r = [y/float(n_c) for y in y2_r]
+        #variance of the mean
+        vy_r = [ y2-y_r[i]**2 for i,y2 in enumerate(y2_r)]
+        #posterior mean is mean of mean, posterior variance os mean of variance plus variance of mean
+        v_r = [mv+vy_r[i] for i,mv in enumerate(mv_r)]
         return [y_r,v_r]
         
     def findENT(self, xs, ds, ss):
