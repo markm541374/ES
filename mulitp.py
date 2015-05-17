@@ -40,7 +40,7 @@ print miny
 
 plt.plot(xmintrue, miny, 'rx')
 # %%
-n_init = 8
+n_init = 12
 sconst=0.0001
 x = sp.random.uniform(-1, 1, n_init)
 y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
@@ -84,8 +84,10 @@ ENTsearchn = 500
 para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
 # %%
 
-O = EntropyPredict2.Optimizer(f,kfGen, kfPrior, lower, upper, para)
+O = EntropyPredict2.Optimizer(f,kfGen, kfprior, lower, upper, para)
 O.initrandobs(8,0.01)
+O.setupEP()
+O.plotstate()
 # %%
 PO=EntropyPredict2.EntPredictor([Xo,Yo,So,Do], lower, upper, kfGen, kfprior, para )
 PO.setupEP()

@@ -170,6 +170,8 @@ class EntPredictor():
         #explicitly 1d
         h = []
         for j in self.ENTmindraws:
+            if not j[0]==0:
+                continue
             h.append(j[1][0,0])
         f = plt.figure()
         a = f.add_subplot(111)
@@ -382,8 +384,9 @@ class EntPredictor():
             h=self.findENT(x,obstype[0],ss)
             
             H[i]=h
-        a.plot(x_r,H,'r')
-        return [f,a]
+        a2 = a.twinx()
+        a2.plot(x_r,H,'r')
+        return [f,[a,a2]]
         
     def plotFBpost(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
         print 'plotting FBpost'
@@ -412,6 +415,10 @@ class EntPredictor():
         a.plot(x_r,m,'b')
         a.fill_between(x_r, l_b, u_b, facecolor='lightskyblue', alpha=0.5)
         a.set_title('FB')
+        #this bit is 1D
+        xs = sp.array(self.D[0]).flatten()
+        ys = sp.array(self.D[1]).flatten()
+        a.plot(xs, ys, 'rx')
         return [f,a]
     
     def EIMLE(self, X_s):
@@ -451,6 +458,7 @@ class Optimizer():
         self.lb = lb
         self.ub = ub
         self.para=para
+        
         return
         
     def initrandobs(self, n_init, s_init):
@@ -483,5 +491,14 @@ class Optimizer():
         [f1,a1] = self.EP.plotFBpost()
         [f2,a2] = self.EP.plotMLEpost()
         [f3,a3] = self.EP.plotMinDraws()
-        [f4,a4] = self.EP.plotENT(0.01,np=100)
+        [f4,as4] = self.EP.plotENT(0.01,np=100)
+        return
+    
+    def searchnextFixS(self,s,obstype=[sp.NaN]):
+        [x_n, H_e] = self.EP.searchENTs(s,obstype=obstype)
+        yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
+        self.Xo = sp.vstack([self.Xo, x_n])
+        self.Yo = sp.vstack([self.Yo, yIn])
+        self.So = sp.vstack([self.So, s])
+        self.Do.append(obstype)
         return
