@@ -458,7 +458,11 @@ class Optimizer():
         self.lb = lb
         self.ub = ub
         self.para=para
-        
+        self.searchmethod = para['searchmethod']
+        if self.searchmethod == 'fixs':
+            self.fixs = para['fixs']
+            self.obstype = para['obstype']
+        self.aq = []
         return
         
     def initrandobs(self, n_init, s_init):
@@ -497,8 +501,17 @@ class Optimizer():
     def searchnextFixS(self,s,obstype=[sp.NaN]):
         [x_n, H_e] = self.EP.searchENTs(s,obstype=obstype)
         yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
-        self.Xo = sp.vstack([self.Xo, x_n])
-        self.Yo = sp.vstack([self.Yo, yIn])
-        self.So = sp.vstack([self.So, s])
-        self.Do.append(obstype)
-        return
+        
+        return [x_n, yIn, s, obstype, H_e]
+        
+    def runopt(self,nsteps):
+        for i in xrange(nsteps):
+            self.setupEP()
+            if self.searchmethod == 'fixs':
+                [x, y, s, d, a] = self.searchnextFixS(self.fixs, obstype = self.obstype)
+                
+            self.Xo = sp.vstack([self.Xo, x])
+            self.Yo = sp.vstack([self.Yo, y])
+            self.So = sp.vstack([self.So, s])
+            self.Do.append(d)
+            self.aq.append(a)

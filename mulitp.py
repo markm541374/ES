@@ -69,16 +69,18 @@ I1LV=2.**2
 
 kfprior = genSqExpPrior([[OSLM,OSLV],[I1LM,I1LV]])
 para=dict()
-para['nHYPsam']=8
-para['HYPsearchLow'] = [-3, -3]
-para['HYPsearchHigh'] = [3, 3]
+para['nHYPsamples']=8
+para['HYPsearchLow'] = [-2, -2]
+para['HYPsearchHigh'] = [2, 2]
 para['HYPMLEsearchn'] = 800
 para['HYPsamSigma'] = 0.05
-para['HYPsamBurn'] = 8
+para['HYPsamBurn'] = 16
 para['ENTnsam'] = 100
 para['ENTzeroprecision'] = 10**-6
 para['ENTsearchn'] = 500
-
+para['searchmethod']='fixs'
+para['fixs'] = 0.01
+para['obstype'] = [sp.NaN]
 #para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
 # %%
 
@@ -90,7 +92,7 @@ O.initrandobs(8,0.01)
 O.setupEP()
 O.plotstate()
 # %%
-O.searchnextFixS(0.01)
+O.runopt(5)
 # %%
 
 O.setupEP()
