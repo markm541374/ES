@@ -30,15 +30,15 @@ class EntPredictor():
         self.lb=lower
         self.ub=upper
          
-        self.nHYPsamples = para[0]
-        self.HYPsearchLow = para[1]
-        self.HYPsearchHigh = para[2]
-        self.HYPMLEsearchn = para[3]
-        self.HYPsamSigma = para[4]
-        self.HYPsamBurn = para[5]
-        self.ENTnsam = para[6]
-        self.ENTzeroprecision = para[7]
-        self.ENTsearchn = para[8]
+        self.nHYPsamples = para['nHYPsamples']
+        self.HYPsearchLow = para['HYPsearchLow']
+        self.HYPsearchHigh = para['HYPsearchHigh']
+        self.HYPMLEsearchn = para['HYPMLEsearchn']
+        self.HYPsamSigma = para['HYPsamSigma']
+        self.HYPsamBurn = para['HYPsamBurn']
+        self.ENTnsam = para['ENTnsam']
+        self.ENTzeroprecision = para['ENTzeroprecision']
+        self.ENTsearchn = para['ENTsearchn']
         return
     
     def __del__(self):

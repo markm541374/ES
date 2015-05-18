@@ -40,8 +40,8 @@ print miny
 
 plt.plot(xmintrue, miny, 'rx')
 # %%
-n_init = 12
-sconst=0.0001
+n_init = 5
+sconst=0.001
 x = sp.random.uniform(-1, 1, n_init)
 y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
 Xo = sp.matrix(x).T
@@ -54,9 +54,6 @@ a = GPd.plot1(g1, [-1], [1])
 
 
 # %%
-
-reload(EntropyPredict2)
-reload(GPset)
 
 PO=[]
 for c in active_children():
@@ -71,45 +68,32 @@ I1LM=0.
 I1LV=2.**2
 
 kfprior = genSqExpPrior([[OSLM,OSLV],[I1LM,I1LV]])
+para=dict()
+para['nHYPsam']=8
+para['HYPsearchLow'] = [-3, -3]
+para['HYPsearchHigh'] = [3, 3]
+para['HYPMLEsearchn'] = 800
+para['HYPsamSigma'] = 0.05
+para['HYPsamBurn'] = 8
+para['ENTnsam'] = 100
+para['ENTzeroprecision'] = 10**-6
+para['ENTsearchn'] = 500
 
-nHYPsam=8
-HYPsearchLow = [-3, -3]
-HYPsearchHigh = [3, 3]
-HYPMLEsearchn = 800
-HYPsamSigma = 0.05
-HYPsamBurn = 8
-ENTnsam = 100
-ENTzeroprecision = 10**-6
-ENTsearchn = 500
-para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
+#para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
 # %%
+
+reload(EntropyPredict2)
+reload(GPset)
 
 O = EntropyPredict2.Optimizer(f,kfGen, kfprior, lower, upper, para)
 O.initrandobs(8,0.01)
 O.setupEP()
 O.plotstate()
 # %%
-PO=EntropyPredict2.EntPredictor([Xo,Yo,So,Do], lower, upper, kfGen, kfprior, para )
-PO.setupEP()
-#print PO.HYPsampleVals
-[f0,a0] = PO.plotHYPsamples(d0=0, d1=1)
-[f1,a1] = PO.plotFBpost()
-[f2,a2] = PO.plotMLEpost()
-[f3,a3] = PO.plotMinDraws()
-PO.plotENT(0.01,np=100)
-#[f4,as4] = PO.plotEPchanges()
+O.searchnextFixS(0.01)
 # %%
-PO.searchENTs(0.01)
 
+O.setupEP()
+O.plotstate()
 
 # %%
-def ee(x,y):
-    f=x**2+0.5*x-1
-    global i
-    print i
-    i+=1
-    return (f,0)
-global i
-del(i)
-i=0
-DIRECT.solve(ee, [-1], [1], user_data=i, algmethod=1, maxf=1000, logfilename='/dev/null')
