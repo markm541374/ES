@@ -69,7 +69,7 @@ I1LV=2.**2
 
 kfprior = genSqExpPrior([[OSLM,OSLV],[I1LM,I1LV]])
 para=dict()
-para['nHYPsamples']=2
+para['nHYPsamples']=12
 para['HYPsearchLow'] = [-2, -2]
 para['HYPsearchHigh'] = [2, 2]
 para['HYPMLEsearchn'] = 800
@@ -79,7 +79,7 @@ para['ENTnsam'] = 100
 para['ENTzeroprecision'] = 10**-6
 para['ENTsearchn'] = 500
 #para['searchmethod']='fixs'
-#para['fixs'] = 0.01
+#para['fixs'] = 0.0001
 para['searchmethod']='EIMLE'
 para['fixs'] = 0.0001
 
@@ -91,16 +91,16 @@ reload(EntropyPredict2)
 reload(GPset)
 
 O = EntropyPredict2.Optimizer(f,kfGen, kfprior, lower, upper, para)
-O.initrandobs(5,0.01)
+O.initrandobs(5,para['fixs'])
 O.setupEP()
 O.plotstate()
 # %%
-for i in xrange(10):
+for i in xrange(5):
     O.runopt(1)
     O.plotstate()
     plt.show()
 # %%
-
+O.savestate()
 
 
 

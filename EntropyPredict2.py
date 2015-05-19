@@ -19,6 +19,7 @@ from multiprocessing import pool
 from tools import *
 import sys
 import traceback
+import pickle
 
 class EntPredictor():
     def __init__(self, D, lower, upper, kfgen, kfprior, para):
@@ -436,7 +437,7 @@ class EntPredictor():
             EI[i]=h
         a2 = a.twinx()
         a2.plot(x_r,EI,'r')
-        a2.set_yscale('log')
+        #a2.set_yscale('log')
         return [f,[a,a2]]
     
     def plotFBpost(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
@@ -517,7 +518,15 @@ class Optimizer():
             self.fixs = para['fixs']
         else:
             raise KeyError('no searchmethod defined')
-        self.aq = []
+        
+        self.states=[dict()]
+        self.states[0]['para']=para
+        self.states[0]['lb']=lb
+        self.states[0]['ub']=ub
+        #self.states[0]['f']=f
+        #self.states[0]['kfGen']=kfGen
+        #self.states[0]['kfPrior']=kfPrior
+        
         return
         
     def initrandobs(self, n_init, s_init):
@@ -527,6 +536,7 @@ class Optimizer():
         self.Yo = sp.matrix(y).T
         self.So = sp.matrix([[s_init]]*n_init)
         self.Do = [[sp.NaN]]*n_init
+        self.states[0]['init']=[self.Xo, self.Yo, self.So, self.Do]
         return
 
     def initspecobs(self, Xo, Yo, So, Do):
@@ -534,6 +544,7 @@ class Optimizer():
         self.Yo = Yo
         self.So = So
         self.Do = Do
+        self.states[0]['init']=[self.Xo, self.Yo, self.So, self.Do]
         return
         
     def setupEP(self):
@@ -574,15 +585,28 @@ class Optimizer():
         
     def runopt(self,nsteps):
         for i in xrange(nsteps):
+            self.states.append(dict())
             self.setupEP()
             if self.searchmethod == 'fixs':
                 [x, y, s, d, a] = self.searchnextFixS(self.fixs, obstype = self.obstype)
+                self.states[-1]['HYPsamples']=self.EP.HYPsampleVals
+                self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
             elif self.searchmethod =='EIMLE':
                 [x, y, s, d, a] = self.searchnextEIMLE(self.fixs)
+                self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
             else:
                 raise KeyError('no searchmethod defined')
+            
             self.Xo = sp.vstack([self.Xo, x])
             self.Yo = sp.vstack([self.Yo, y])
             self.So = sp.vstack([self.So, s])
             self.Do.append(d)
-            self.aq.append(a)
+            
+            self.states[-1]['searchres']=[x,y,s,d,a]
+        return
+        
+    def savestate(self):
+        object = self.states
+        file_n = open('states.obj', 'wb') 
+        pickle.dump(object, file_n)
+        return
