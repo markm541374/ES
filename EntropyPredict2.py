@@ -29,7 +29,8 @@ class EntPredictor():
         
         self.lb=lower
         self.ub=upper
-         
+        self.para = para
+        
         self.nHYPsamples = para['nHYPsamples']
         self.HYPsearchLow = para['HYPsearchLow']
         self.HYPsearchHigh = para['HYPsearchHigh']
@@ -39,6 +40,7 @@ class EntPredictor():
         self.ENTnsam = para['ENTnsam']
         self.ENTzeroprecision = para['ENTzeroprecision']
         self.ENTsearchn = para['ENTsearchn']
+        
         return
     
     def __del__(self):
@@ -46,20 +48,25 @@ class EntPredictor():
             print 'closing FBinfer'
             self.FBInfer.close()
         except:
-            print traceback.format_exc()
+            pass
         try:
             print 'closing EPinfer'
             self.EPInfer.close()
         except:
-            print traceback.format_exc()
+            pass
         return
         
     def setupEP(self):
-        self.searchMLEHYP()
-        self.drawHYPsamples()
-        self.initFBInfer()
-        self.drawmins()
-        self.initEPInfer()
+        if self.para['searchmethod'] == 'fixs':
+            self.searchMLEHYP()
+            self.drawHYPsamples()
+            self.initFBInfer()
+            self.drawmins()
+            self.initEPInfer()
+        elif self.para['searchmethod'] == 'EIMLE':
+            self.searchMLEHYP()
+        else:
+            raise KeyError('no searchmethod defined')
         return
     
     def searchMLEHYP(self):
@@ -202,6 +209,10 @@ class EntPredictor():
         a.plot(x_r,m,'b')
         a.fill_between(x_r, l_b, u_b, facecolor='lightskyblue', alpha=0.5)
         a.set_title('MLE')
+        #this bit is 1D
+        xs = sp.array(self.D[0]).flatten()
+        ys = sp.array(self.D[1]).flatten()
+        a.plot(xs, ys, 'rx')
         return [f,a]
     
     def infer_both(self, X_s, D_s):
@@ -402,7 +413,32 @@ class EntPredictor():
         a2 = a.twinx()
         a2.plot(x_r,H,'r')
         return [f,[a,a2]]
+    
+    def plotEIMLE(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
+        print 'plotting EI MLE'
+        [f,a] = self.plotMLEpost(axis=axis, point=point,np=np,obstype=obstype)
+        X=[]
+        if point=='None':
+            point=sp.zeros(self.dim)
         
+        x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
+        
+        for i in x_r:
+            pi = point.copy()
+            pi[axis]=i
+            X.append(pi)
+        
+        EI=sp.zeros(np)
+        for i in xrange(np):
+            x=X[i]
+            h=self.EIMLE(x)
+            
+            EI[i]=h
+        a2 = a.twinx()
+        a2.plot(x_r,EI,'r')
+        a2.set_yscale('log')
+        return [f,[a,a2]]
+    
     def plotFBpost(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
         print 'plotting FBpost'
         X=[]
@@ -510,12 +546,19 @@ class Optimizer():
         return
         
     def plotstate(self):
-        [f0,a0] = self.EP.plotHYPsamples(d0=0, d1=1)
-        [f1,a1] = self.EP.plotFBpost()
-        [f2,a2] = self.EP.plotMLEpost()
-        [f3,a3] = self.EP.plotMinDraws()
+        if self.searchmethod == 'fixs':
+            [f0,a0] = self.EP.plotHYPsamples(d0=0, d1=1)
+            [f1,a1] = self.EP.plotFBpost()
+            [f3,a3] = self.EP.plotMinDraws()
+            [f4,as4] = self.EP.plotENT(0.01,np=100)
+        elif self.searchmethod =='EIMLE':
+            [f2,a2] = self.EP.plotEIMLE()
+            
+        else:
+            raise KeyError('no searchmethod defined')
         
-        [f4,as4] = self.EP.plotENT(0.01,np=100)
+        
+        
         return
     
     def searchnextFixS(self,s,obstype=[sp.NaN]):

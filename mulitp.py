@@ -40,17 +40,17 @@ print miny
 
 plt.plot(xmintrue, miny, 'rx')
 # %%
-n_init = 5
-sconst=0.001
-x = sp.random.uniform(-1, 1, n_init)
-y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
-Xo = sp.matrix(x).T
-Yo = sp.matrix(y).T
-So = sp.matrix([[sconst]]*n_init)
-# So = sp.matrix([[Sset[-1]]]*n_init)
-Do = [[sp.NaN]]*n_init
-g1 = GPd.GPcore(Xo, Yo, So, Do, kftrue)
-a = GPd.plot1(g1, [-1], [1])
+#n_init = 5
+#sconst=0.001
+#x = sp.random.uniform(-1, 1, n_init)
+#y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
+#Xo = sp.matrix(x).T
+#Yo = sp.matrix(y).T
+#So = sp.matrix([[sconst]]*n_init)
+## So = sp.matrix([[Sset[-1]]]*n_init)
+#Do = [[sp.NaN]]*n_init
+#g1 = GPd.GPcore(Xo, Yo, So, Do, kftrue)
+#a = GPd.plot1(g1, [-1], [1])
 
 
 # %%
@@ -69,7 +69,7 @@ I1LV=2.**2
 
 kfprior = genSqExpPrior([[OSLM,OSLV],[I1LM,I1LV]])
 para=dict()
-para['nHYPsamples']=8
+para['nHYPsamples']=2
 para['HYPsearchLow'] = [-2, -2]
 para['HYPsearchHigh'] = [2, 2]
 para['HYPMLEsearchn'] = 800
@@ -81,7 +81,7 @@ para['ENTsearchn'] = 500
 #para['searchmethod']='fixs'
 #para['fixs'] = 0.01
 para['searchmethod']='EIMLE'
-para['fixs'] = 0.01
+para['fixs'] = 0.0001
 
 para['obstype'] = [sp.NaN]
 #para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
@@ -91,14 +91,18 @@ reload(EntropyPredict2)
 reload(GPset)
 
 O = EntropyPredict2.Optimizer(f,kfGen, kfprior, lower, upper, para)
-O.initrandobs(8,0.01)
+O.initrandobs(5,0.01)
 O.setupEP()
 O.plotstate()
 # %%
-O.runopt(5)
+for i in xrange(10):
+    O.runopt(1)
+    O.plotstate()
+    plt.show()
 # %%
 
-O.setupEP()
-O.plotstate()
+
+
 
 # %%
+O.searchnextEIMLE(0.01)
