@@ -362,7 +362,22 @@ class EntPredictor():
         del(ENTsearchi)
         print 'maxENT '+str(xmin)
         return [xmin, miny]
-            
+        
+    def searchEIMLE(self):
+        print 'Searhing for MaxMLEEI'
+        def ee(x,y):
+            global EIsearchi
+            EIsearchi+=1
+            EIsearchi
+            print '\rIter: %d    ' % EIsearchi,
+            return (-self.EIMLE(x), 0)
+        global EIsearchi
+        EIsearchi=0
+        [xmin, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=self.ENTsearchn, logfilename='/dev/null')
+        del(EIsearchi)
+        print 'maxEIMLE '+str(xmin)
+        return [xmin, miny]
+        
     def plotENT(self,ss,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
         print 'plotting predictive Entropy'
         [f,a] = self.plotFBpost(axis=axis, point=point,np=np,obstype=obstype)
@@ -462,6 +477,10 @@ class Optimizer():
         if self.searchmethod == 'fixs':
             self.fixs = para['fixs']
             self.obstype = para['obstype']
+        elif self.searchmethod =='EIMLE':
+            self.fixs = para['fixs']
+        else:
+            raise KeyError('no searchmethod defined')
         self.aq = []
         return
         
@@ -495,6 +514,7 @@ class Optimizer():
         [f1,a1] = self.EP.plotFBpost()
         [f2,a2] = self.EP.plotMLEpost()
         [f3,a3] = self.EP.plotMinDraws()
+        
         [f4,as4] = self.EP.plotENT(0.01,np=100)
         return
     
@@ -503,13 +523,21 @@ class Optimizer():
         yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
         
         return [x_n, yIn, s, obstype, H_e]
+    
+    def searchnextEIMLE(self,s):
+        [x_n, EI] = self.EP.searchEIMLE()
+        yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
+        return [x_n, yIn, s, [sp.NaN], EI]
         
     def runopt(self,nsteps):
         for i in xrange(nsteps):
             self.setupEP()
             if self.searchmethod == 'fixs':
                 [x, y, s, d, a] = self.searchnextFixS(self.fixs, obstype = self.obstype)
-                
+            elif self.searchmethod =='EIMLE':
+                [x, y, s, d, a] = self.searchnextEIMLE(self.fixs)
+            else:
+                raise KeyError('no searchmethod defined')
             self.Xo = sp.vstack([self.Xo, x])
             self.Yo = sp.vstack([self.Yo, y])
             self.So = sp.vstack([self.So, s])

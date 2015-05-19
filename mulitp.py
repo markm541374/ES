@@ -78,8 +78,11 @@ para['HYPsamBurn'] = 16
 para['ENTnsam'] = 100
 para['ENTzeroprecision'] = 10**-6
 para['ENTsearchn'] = 500
-para['searchmethod']='fixs'
+#para['searchmethod']='fixs'
+#para['fixs'] = 0.01
+para['searchmethod']='EIMLE'
 para['fixs'] = 0.01
+
 para['obstype'] = [sp.NaN]
 #para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
 # %%
