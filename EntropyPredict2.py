@@ -19,7 +19,7 @@ from multiprocessing import pool
 from tools import *
 import sys
 import traceback
-import pickle
+import dill as pickle
 
 class EntPredictor():
     def __init__(self, D, lower, upper, kfgen, kfprior, para):
@@ -523,9 +523,9 @@ class Optimizer():
         self.states[0]['para']=para
         self.states[0]['lb']=lb
         self.states[0]['ub']=ub
-        #self.states[0]['f']=f
-        #self.states[0]['kfGen']=kfGen
-        #self.states[0]['kfPrior']=kfPrior
+        self.states[0]['f']=f
+        self.states[0]['kfGen']=kfGen
+        self.states[0]['kfPrior']=kfPrior
         
         return
         

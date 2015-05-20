@@ -39,18 +39,6 @@ xmintrue = xmintrue[0]
 print miny
 
 plt.plot(xmintrue, miny, 'rx')
-# %%
-#n_init = 5
-#sconst=0.001
-#x = sp.random.uniform(-1, 1, n_init)
-#y = map(f, x)+sp.random.normal(scale=0.01, size=n_init)
-#Xo = sp.matrix(x).T
-#Yo = sp.matrix(y).T
-#So = sp.matrix([[sconst]]*n_init)
-## So = sp.matrix([[Sset[-1]]]*n_init)
-#Do = [[sp.NaN]]*n_init
-#g1 = GPd.GPcore(Xo, Yo, So, Do, kftrue)
-#a = GPd.plot1(g1, [-1], [1])
 
 
 # %%
