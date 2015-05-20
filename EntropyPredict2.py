@@ -610,3 +610,25 @@ class Optimizer():
         file_n = open('states.obj', 'wb') 
         pickle.dump(object, file_n)
         return
+        
+    def gotostate(self,staten):
+        [self.Xo, self.Yo, self.So, self.Do] = self.states[0]['init']
+        for i in  xrange(staten):
+            [x,y,s,d,a] = self.states[i+1]['searchres']
+            self.Xo = sp.vstack([self.Xo, x])
+            self.Yo = sp.vstack([self.Yo, y])
+            self.So = sp.vstack([self.So, s])
+            self.Do.append(d)
+        return
+def restartOpt(fname):
+     states = pickle.load(open(fname, 'rb'))
+     para = states[0]['para']
+     lb = states[0]['lb']
+     ub = states[0]['ub']
+     f = states[0]['f']
+     kfGen = states[0]['kfGen']
+     kfPrior = states[0]['kfPrior']
+     O = Optimizer(f, kfGen, kfPrior,lb,ub,para)
+     O.states = states
+     O.gotostate(len(states)-1)
+     return O
