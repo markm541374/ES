@@ -17,6 +17,7 @@ from tools import *
 import DIRECT
 import EntropyPredict2
 import scipy.stats as sps
+import readlog
 %pylab inline
 
 # %%
@@ -88,7 +89,7 @@ O.initrandobs(5,para['fixs'])
 #O.setupEP()
 #O.plotstate()
 # %%
-for i in xrange(5):
+for i in xrange(15):
     O.runopt(1)
     O.plotstate()
     plt.show()
@@ -96,9 +97,8 @@ for i in xrange(5):
 O.savestate()
 
 # %%
-O2 = EntropyPredict2.restartOpt('states.obj')
-# %%
-O2.setupEP()
-O2.plotstate()
+E = readlog.OptEval('states.obj')
+
 # %%
 
+plt.semilogy(E.xerr())
