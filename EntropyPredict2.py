@@ -55,6 +55,7 @@ class EntPredictor():
             self.EPInfer.close()
         except:
             pass
+        print 'closed'
         return
         
     def setupEP(self):
@@ -552,6 +553,7 @@ class Optimizer():
             del(self.EP)
         except:
             pass
+        print 'setting new EP'
         self.EP = EntPredictor([self.Xo,self.Yo,self.So,self.Do], self.lb, self.ub, self.kfGen, self.kfPrior, self.para )
         self.EP.setupEP()
         return
@@ -573,6 +575,7 @@ class Optimizer():
         return
     
     def searchnextFixS(self,s,obstype=[sp.NaN]):
+        print 'searching under fixed s'
         [x_n, H_e] = self.EP.searchENTs(s,obstype=obstype)
         yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
         
@@ -582,15 +585,42 @@ class Optimizer():
         [x_n, EI] = self.EP.searchEIMLE()
         yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
         return [x_n, yIn, s, [sp.NaN], EI]
+
+    def searchminpost(self):
+        print 'finding IR location'
+        if self.searchmethod == 'fixs':
+                f = self.EP.inferFBpost
+        elif self.searchmethod =='EIMLE':
+                f = self.EP.inferMLEpost
+        else:
+            raise KeyError('no searchmethod defined')
+        global sn
+        sn=0
+        def ee(x,y):
+            global sn
+            sn+=1
+            print '\rIter: %d    ' % sn,
+            out = f(sp.matrix(x).T,[[sp.NaN]])[0]
+            return(out,0)
+        
+        [xmin, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=self.para['IRsearchn'], logfilename='/dev/null')
+        del(sn)
+        return [xmin,miny]
+
+        
         
     def runopt(self,nsteps):
         for i in xrange(nsteps):
             self.states.append(dict())
+            print 'starting next step'
             self.setupEP()
+            sys.stdout.flush()
             if self.searchmethod == 'fixs':
                 [x, y, s, d, a] = self.searchnextFixS(self.fixs, obstype = self.obstype)
                 self.states[-1]['HYPsamples']=self.EP.HYPsampleVals
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
+                print self.EP.FBInfer.status()
+                print self.EP.EPInfer.status()
             elif self.searchmethod =='EIMLE':
                 [x, y, s, d, a] = self.searchnextEIMLE(self.fixs)
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
@@ -603,32 +633,38 @@ class Optimizer():
             self.Do.append(d)
             
             self.states[-1]['searchres']=[x,y,s,d,a]
+            
+            [xminIR,yminIR] = self.searchminpost()
+            self.states[-1]['xminIR'] = xminIR
+            self.states[-1]['yminIR'] = yminIR
         return
-        
+   
     def savestate(self):
         object = self.states
-        file_n = open('states.obj', 'wb') 
+        file_n = open('states.obj', 'wb')
         pickle.dump(object, file_n)
         return
-        
-    def gotostate(self,staten):
+
+    def gotostate(self, staten):
         [self.Xo, self.Yo, self.So, self.Do] = self.states[0]['init']
-        for i in  xrange(staten):
-            [x,y,s,d,a] = self.states[i+1]['searchres']
+        for i in xrange(staten):
+            [x, y, s, d, a] = self.states[i+1]['searchres']
             self.Xo = sp.vstack([self.Xo, x])
             self.Yo = sp.vstack([self.Yo, y])
             self.So = sp.vstack([self.So, s])
             self.Do.append(d)
         return
+
+
 def restartOpt(fname):
-     states = pickle.load(open(fname, 'rb'))
-     para = states[0]['para']
-     lb = states[0]['lb']
-     ub = states[0]['ub']
-     f = states[0]['f']
-     kfGen = states[0]['kfGen']
-     kfPrior = states[0]['kfPrior']
-     O = Optimizer(f, kfGen, kfPrior,lb,ub,para)
-     O.states = states
-     O.gotostate(len(states)-1)
-     return O
+    states = pickle.load(open(fname, 'rb'))
+    para = states[0]['para']
+    lb = states[0]['lb']
+    ub = states[0]['ub']
+    f = states[0]['f']
+    kfGen = states[0]['kfGen']
+    kfPrior = states[0]['kfPrior']
+    O = Optimizer(f, kfGen, kfPrior, lb, ub, para)
+    O.states = states
+    O.gotostate(len(states)-1)
+    return O

@@ -68,15 +68,25 @@ class multiGP:
             result.append(c.recv())
         return result
         
-    def infer_any(self,code, X_i, D_i):
+    def infer_any(self,code, X_i, D_i,timeout=10.):
         for c in self.conns:
             c.send([code,X_i,D_i])
 
         result=[]
+        t0=time.time()
         for c in self.conns:
+            
+            err=False
             while not c.poll():
                 time.sleep(0.1)
-            result.append(c.recv())
+                if time.time()-t0>timeout:
+                    err=True
+                    print 'timeout ocured'
+                    break
+            if not err:
+                result.append(c.recv())
+            else:
+                result.append([-3,'timeout'])
         return result
       
     def llk(self):
