@@ -73,10 +73,10 @@ para['ENTnsam'] = 100
 para['ENTzeroprecision'] = 10**-6
 para['ENTsearchn'] = 500
 para['IRsearchn'] = 500
-para['searchmethod']='fixs'
-para['fixs'] = 0.0001
-#para['searchmethod']='EIMLE'
+#para['searchmethod']='fixs'
 #para['fixs'] = 0.0001
+para['searchmethod']='EIMLE'
+para['fixs'] = 0.0001
 
 para['obstype'] = [sp.NaN]
 #para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
@@ -89,12 +89,6 @@ O = EntropyPredict2.Optimizer(f,kfGen, kfprior, lower, upper, para)
 O.initrandobs(5,para['fixs'])
 O.setupEP()
 #O.plotstate()
-# %%
-for i in xrange(200):
-    print '\r'+'        '+str(i)
-    O.EP.findENT(sp.random.uniform(-1,1),[sp.NaN],0.001)
-    print O.EP.FBInfer.status()
-
 # %%
 for i in xrange(12):
     print 'optstep'+str(i)
