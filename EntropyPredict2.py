@@ -21,6 +21,7 @@ import sys
 import traceback
 import dill as pickle
 
+import time
 class EntPredictor():
     def __init__(self, D, lower, upper, kfgen, kfprior, para):
         self.D = D
@@ -223,7 +224,9 @@ class EntPredictor():
         return [infr_before, infr_after]
     
     def findMV(self, X_s, D_s):
+        #print '\rFindMV0      ',
         i1 = self.FBInfer.infer_diag(X_s, D_s)
+        #print '\rFindMV1      ',
         currentmask=sp.zeros(self.nHYPsamples)
         Vydx = sp.zeros(self.nHYPsamples)
         Mydx = sp.zeros(self.nHYPsamples)
@@ -233,7 +236,7 @@ class EntPredictor():
                 continue
             Vydx[i] = i1[i][1][1][0,0]
             Mydx[i] = i1[i][1][0][0,0]
-        
+        #print '\rFindMV2      ',
         Vydxxs = sp.zeros(self.nHYPsamples)
         Mydxxs = sp.zeros(self.nHYPsamples)
         Xmcs=[]
@@ -242,7 +245,9 @@ class EntPredictor():
             X = sp.vstack([X_s,self.ENTmindraws[i][1]])
             Xmcs.append(X)
             Dmcs.append(D_s+[[sp.NaN]])
+        #print '\rFindMV3     ',
         i2 = self.EPInfer.infer_full_var(Xmcs,Dmcs)
+        #print '\rFindMV4     ',
         for i in xrange(self.nHYPsamples):
             if not i2[i][0]==0:
                 currentmask[i]=-2
@@ -265,6 +270,7 @@ class EntPredictor():
             vnxxs = V[0, 0]-coef
             Vydxxs[i]=vnxxs
             Mydxxs[i]=m[0,0]
+            #print '\rFindMV5     ',
             #</magic>
         return [Mydx, Vydx, Mydxxs, Vydxxs, currentmask]
         
@@ -311,8 +317,10 @@ class EntPredictor():
         return [y_r,v_r]
         
     def findENT(self, xs, ds, ss):
+        #print '\rFindEnt0',
         n_hyp = self.nHYPsamples
         [m0,v0,m1,v1,mask] = self.findMV(sp.matrix(xs).T,[ds])
+        #print '\rFindEnt1',
         H0 = sp.zeros(n_hyp)
         H1 = sp.zeros(n_hyp)
         for i in xrange(n_hyp):
@@ -320,7 +328,7 @@ class EntPredictor():
                 continue
             H0[i] = 0.5*sp.log(2*sp.pi*sp.e*(v0[i]+ss))
             H1[i] = 0.5*sp.log(2*sp.pi*sp.e*(v1[i]+ss))
-
+        #print '\rFindEnt2',
         H=(sum(H0)-sum(H1))/float(sum([1 for i in mask if i==0]))
         return H
         
@@ -367,8 +375,10 @@ class EntPredictor():
             global ENTsearchi
             ENTsearchi+=1
             ENTsearchi
-            print '\rIter: %d    ' % ENTsearchi,
-            return (-self.findENT(x, obstype,ss), 0)
+            print '\rb'+str(x),
+            ret = -self.findENT(x, obstype,ss)
+            print '\ra'+str(x)+' '+'Iter: %d  ' % ENTsearchi +' '+str(ret),
+            return (ret, 0)
         global ENTsearchi
         ENTsearchi=0
         [xmin, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=self.ENTsearchn, logfilename='/dev/null')
@@ -610,7 +620,9 @@ class Optimizer():
         
         
     def runopt(self,nsteps):
+        
         for i in xrange(nsteps):
+            t0=time.time()
             self.states.append(dict())
             print 'starting next step'
             self.setupEP()
@@ -619,8 +631,8 @@ class Optimizer():
                 [x, y, s, d, a] = self.searchnextFixS(self.fixs, obstype = self.obstype)
                 self.states[-1]['HYPsamples']=self.EP.HYPsampleVals
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
-                print self.EP.FBInfer.status()
-                print self.EP.EPInfer.status()
+                print 'FBstatus '+str(sorted([s[0] for s in self.EP.FBInfer.status()]))
+                print 'EPstatus '+str(sorted([s[0] for s in self.EP.EPInfer.status()]))
             elif self.searchmethod =='EIMLE':
                 [x, y, s, d, a] = self.searchnextEIMLE(self.fixs)
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
@@ -637,11 +649,13 @@ class Optimizer():
             [xminIR,yminIR] = self.searchminpost()
             self.states[-1]['xminIR'] = xminIR
             self.states[-1]['yminIR'] = yminIR
+            
+            print '\n---> steptime '+str(time.time()-t0)
         return
    
-    def savestate(self):
+    def savestate(self,fname='states.obj'):
         object = self.states
-        file_n = open('states.obj', 'wb')
+        file_n = open(fname, 'wb')
         pickle.dump(object, file_n)
         return
 

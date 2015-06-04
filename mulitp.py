@@ -18,7 +18,8 @@ import DIRECT
 import EntropyPredict2
 import scipy.stats as sps
 import readlog
-%pylab inline
+from matplotlib import pyplot as plt
+#%pylab inline
 
 # %%
 hyptrue = [1., 0.20]
@@ -26,7 +27,7 @@ kfGen = GPep.gen_sqexp_k_d
 kftrue = GPep.gen_sqexp_k_d(hyptrue)
 upper = [1]
 lower = [-1]
-ff = fgen1d(lower[0], upper[0], 500, kftrue)
+ff = fgen1d(lower[0], upper[0], 300, kftrue)
 
 
 
@@ -67,15 +68,15 @@ para['HYPsearchLow'] = [-2, -2]
 para['HYPsearchHigh'] = [2, 2]
 para['HYPMLEsearchn'] = 800
 para['HYPsamSigma'] = 0.05
-para['HYPsamBurn'] = 16
+para['HYPsamBurn'] = 12
 para['ENTnsam'] = 100
 para['ENTzeroprecision'] = 10**-6
 para['ENTsearchn'] = 500
 para['IRsearchn'] = 500
-#para['searchmethod']='fixs'
-#para['fixs'] = 0.0001
-para['searchmethod']='EIMLE'
+para['searchmethod']='fixs'
 para['fixs'] = 0.0001
+#para['searchmethod']='EIMLE'
+#para['fixs'] = 0.0001
 
 para['obstype'] = [sp.NaN]
 #para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
@@ -86,19 +87,30 @@ reload(GPset)
 
 O = EntropyPredict2.Optimizer(f,kfGen, kfprior, lower, upper, para)
 O.initrandobs(5,para['fixs'])
-#O.setupEP()
+O.setupEP()
 #O.plotstate()
 # %%
-for i in xrange(15):
+for i in xrange(200):
+    print '\r'+'        '+str(i)
+    O.EP.findENT(sp.random.uniform(-1,1),[sp.NaN],0.001)
+    print O.EP.FBInfer.status()
+
+# %%
+for i in xrange(12):
+    print 'optstep'+str(i)
     O.runopt(1)
-    O.plotstate()
-    plt.show()
+    #O.plotstate()
+    #plt.show()
 # %%
 O.savestate()
 
 # %%
-E = readlog.OptEval('states.obj')
+E = readlog.OptEval('ENTstates.obj')
+plt.semilogy(E.xerr(),'b')
+E = readlog.OptEval('ENTstates2.obj')
+plt.semilogy(E.xerr(),'b')
+E = readlog.OptEval('EIstates.obj')
+plt.semilogy(E.xerr(),'r')
 
 # %%
 
-plt.semilogy(E.xerr())

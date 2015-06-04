@@ -69,24 +69,36 @@ class multiGP:
         return result
         
     def infer_any(self,code, X_i, D_i,timeout=10.):
+        #print '\rInfAny0      ',
         for c in self.conns:
             c.send([code,X_i,D_i])
-
+        time.sleep(0.01)
+        #print '\rInfAny1      ',
         result=[]
-        t0=time.time()
+        #t0=time.time()
+        #i=0
         for c in self.conns:
-            
+            #print '\rInfAnycon'+str(i)+'    ',
+            #i+=1
             err=False
+            #j=0
             while not c.poll():
+                #j+=1
+                #print '\r'+str(j),
                 time.sleep(0.1)
-                if time.time()-t0>timeout:
-                    err=True
-                    print 'timeout ocured'
-                    break
-            if not err:
-                result.append(c.recv())
-            else:
-                result.append([-3,'timeout'])
+                #print '\rb',
+                #if (time.time()-t0)>timeout:
+                #    err=True
+                #    print 'timeout ocured'
+                #    break
+                #print '\rc',
+            #print '\rd',
+            #if not err:
+            #    print '\re',
+            result.append(c.recv())
+            #else:
+            #    print '\rf',
+            #    result.append([-3,'timeout'])
         return result
       
     def llk(self):
