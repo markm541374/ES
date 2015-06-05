@@ -1,3 +1,8 @@
+"""
+Created on Thu May  7 16:30:38 2015
+Rework of EntropyPredict to use multiprocessing and hopefully be cleaner
+@author: mark
+"""
 import scipy as sp
 from matplotlib import pyplot as plt
 import scipy.stats as sps
@@ -5,6 +10,7 @@ import scipy.linalg as spl
 from scipy.stats import norm as norm
 import GPep
 import GPd
+import GPset
 # from scipy.optimize import minimize as mnz
 import DIRECT
 from functools import partial
@@ -12,676 +18,526 @@ from functools import partial
 from multiprocessing import pool
 from tools import *
 import sys
+import traceback
+import dill as pickle
 
-
-
-def makedraws(D, kf, nd=400, nx_inner=101, mode='uniform', fig=False, plot='none'):
-    Xo = D[0]
-    Yo = D[1]
-    So = D[2]
-    Do = D[3]
-    g1 = GPd.GPcore(Xo, Yo, So, Do, kf)
-    g1.infer_full(sp.matrix([0]),[[sp.NaN]])
-    # nh=len(xs)
-    # ns=len(ss)
-    # X_h = sp.matrix(sp.linspace(-1,1,nh)).T
-    # print 'x0'
-    if mode == 'uniform':
-        X_x = sp.matrix(sp.linspace(-1, 1, nx_inner)).T
-    elif mode == 'slice':
-        nacc = 0
-        X_tmp = []
-        mn = min(Yo)
-        mx = max(Yo)
-        while nacc<nx_inner:
-            X_prop = sp.matrix(sp.random.uniform(-1, 1)).T
-            
-            Y_prop = g1.infer_m(X_prop, [[sp.NaN]])
-            
-            # [m_, v_] = g1.infer_diag(X_prop, [[sp.NaN]])
-            # print m_
-            # print v_
-            # theta = -(m_+sp.sqrt(v_)-mx)/(mx-mn)
-            theta = -(Y_prop[0,0]-mx)/(mx-mn)
-            p = norm.cdf(2*theta-1.)
-            
-            if sp.random.uniform(0,1)<=p:
-                nacc+=1
-                X_tmp.append(X_prop)
-                #print X_prop
-                #print nacc
-        X_x  = sp.vstack(X_tmp)
-        # raise ValueError
-        #print 'x1'
-    else:
-        print 'invalid mode in makedraws'
-        print mode
-        raise ValueError
-    # print 'x1'
-    D_x = [[sp.NaN]] * nx_inner
-    mh, Vh = g1.infer_full(X_x, D_x)
-    Vh_cho = spl.cholesky(Vh, lower=True)
-    # print 'x2'
-    # ss=sp.logspace(4,-4,ns)
-    allG = []
-    for i in xrange(nd):
-        # if i%25==0:
-        #    print i
-        dr = mh+Vh_cho*sp.matrix(sp.random.normal(size=nx_inner)).T
-#        if not fig == False:
-#            fig.plot(sp.array(X_x).flatten(), sp.array(dr).flatten(),'.')
-        xsi = dr.argmin()
-        xs = X_x[xsi, :][0, 0]
-        # print xs
-    # eq constraint
-
-        Xg = sp.matrix([[xs]])
-        Yg = sp.matrix([[0.]])
-        Sg = sp.matrix([[0.001]])
-        Dg = [[0]]
-
-        [Xc, Yc, Sc, Dc] = GPep.catObs([[Xo, Yo, So, Do], [Xg, Yg, Sg, Dg]])
-# ineq constraints
-
-        Xz = sp.matrix([[xs], [xs]])
-        Dz = [[sp.NaN], [0, 0]]
-    # the inequality
-        
-        
-        Iz = sp.matrix([[Yo[Yo.argmin(), :][0, 0]], [0.]])
-    # sign of the inequality
-        Gz = [0, 0]
-        Nz = [So[Yo.argmin(), :], 0.] #!!!!!this value is important, should it e the sigma for hte min obs or the posterior at that piont??
-        
-        g = GPep.GPcore(Xc, Yc, Sc, Dc, Xz, Dz, Iz, Gz, Nz, kf)
-        
-        if plot=='verbose':
-            gp0=GPd.GPcore(Xo, Yo, So, Do, kf)
-            gp1=GPd.GPcore(Xc, Yc, Sc, Dc, kf)
-            xt=sp.linspace(-1,1,500)
-            [m0,v0] = gp0.infer_diag(sp.matrix(xt).T, [[sp.NaN]]*500)
-            [m1,v1] = gp1.infer_diag(sp.matrix(xt).T, [[sp.NaN]]*500)
-            plt.figure()
-            plt.semilogy(xt, sp.array(v0).flatten())
-            plt.semilogy(xt, sp.array(v1).flatten())
-            plt.xlabel('with/without grad obs')
-        
-        
-        try:
-            #print 'x2'
-            g.runEP(plot=plot)
-            
-        except:
-            
-            
-            import pickle
-            object = [[Xo, Yo, So, Do], [Xg, Yg, Sg, Dg],[Xz, Dz, Iz, Gz, Nz],kf]
-            file_pi = open('GPEPfail.obj', 'wb') 
-            pickle.dump(object, file_pi)
-            raise ValueError()
-        #if plot=='verbose':
-        #    a = GPd.plot1(g.gep,[-1],[1])
-            
-        allG.append([g, xs])
-    return [[g1], allG]
-
-
-def singleG(X_h, ss, G, plot='none',obstype=[sp.NaN]):
-    g = G[0]
-    xs = G[1]
-    nh = len(sp.array(X_h).flatten())
-
-    ns = len(ss)
-    H = sp.zeros([nh, ns])
-
-    VV=[]
-    Vr=[]
-    C=[]
-    Al = []
-    Be = []
-    S =[]
-    Mu =[]
-    Sq=[]
-    for j in xrange(nh):
-
-        Xt = sp.matrix([[X_h[j, 0]], [xs]])
-        Dt = [obstype, [sp.NaN]]
-
-        m, V = g.infer_full(Xt, Dt)
-
-        s = V[0, 0]+V[1, 1]-V[0, 1]-V[1, 0]
-        
-        
-        if s<=10**-10:
-            print 's<10**10'
-            print s
-            
-        mu = m[1, 0]-m[0, 0] 
-        alpha = - mu / sp.sqrt(s) # sign difference compared to the paper because I am minimizing
-        
-        beta = sp.exp(sps.norm.logpdf(alpha) - sps.norm.logcdf(alpha))
-        coef = beta*(beta+alpha)*(1./s)*(V[0, 0]-V[0, 1])**2
-        C.append(coef)
-        S.append(s)
-        Al.append(alpha)
-        Be.append(beta)
-        Mu.append(mu)
-        Sq.append((V[0, 0]-V[0, 1])**2)
-        
-        vnxxs = V[0, 0]-coef
-        VV.append(vnxxs)
-        Vr.append(V[0,0])
-        for k in xrange(ns):
-            Hydxxs = 0.5*sp.log(2*sp.pi*sp.e*(vnxxs+ss[k]))
-            if sp.iscomplex(Hydxxs):
-                import pickle 
-                object = [X_h, ss, G]
-                file_pi = open('filename_pi.obj', 'w') 
-                pickle.dump(object, file_pi)
-                
-            H[j, k] += Hydxxs
-#    if plot == 'verbose':
-#        
-#        plt.figure()
-#        plt.semilogy(sp.linspace(-1,1,nh),VV)
-#        plt.plot(xs,0,'ro')
-#        plt.ylabel('vnxxs')
-#        plt.savefig('foo0.png')
-#        plt.figure()
-#        plt.semilogy(sp.linspace(-1,1,nh),Vr)
-#        plt.ylabel('V00')
-#        plt.savefig('foo1.png')
-#        
-#        plt.figure()
-#        try:            
-#            plt.semilogy(sp.linspace(-1,1,nh),C)
-#        except:
-#            plt.plot(sp.linspace(-1,1,nh),C)
-#        plt.ylabel('coef')
-#        plt.savefig('foo3.png')
-#        
-#        plt.figure()
-#        plt.semilogy(sp.linspace(-1,1,nh),S)
-#        plt.ylabel('s')
-#        plt.savefig('foo4.png')
-#        plt.figure()
-#        plt.semilogy(sp.linspace(-1,1,nh),Al)
-#        plt.ylabel('alpha')
-#        plt.savefig('foo5.png')
-#        
-#        plt.figure()
-#        try:
-#            plt.semilogy(sp.linspace(-1,1,nh),Be)
-#        except:
-#            plt.plot(sp.linspace(-1,1,nh),Be)
-#        plt.ylabel('beta')
-#        plt.savefig('foo6.png')
-#        
-#        plt.figure()
-#        plt.plot(sp.linspace(-1,1,nh),Mu)
-#        plt.ylabel('mu')
-#        plt.savefig('foo7.png')
-#        plt.figure()
-#        plt.plot(sp.linspace(-1,1,nh),Sq)
-#        plt.ylabel('sq')
-#        plt.savefig('foo8.png')
-    return H
-
-
-def inferHmulti(G, X_h, ss, plot='none', obstype=[sp.NaN]):
-    
-    nh = len(sp.array(X_h).flatten())
-    ns = len(ss)
-    if nh<2:
-        plot='none'
-    Hp = partial(singleG, X_h, ss, plot=plot)
-    g1 = G[0]
-    p = pool.Pool(8)
-    allh = p.map(Hp, G[1])
-    ng = len(G[1])
-    p.close()
-    
-    H = sp.zeros([nh, ns])
-    for h in allh:
-        for j in xrange(nh):
-            for k in xrange(ns):
-                H[j, k] += h[j, k]
-    H = -H/float(ng)
-    if plot == 'verbose':
-        f=plt.figure(figsize=(8, 8))
-        ax0=f.add_subplot(111)
-        for k in xrange(ns):
-            ax0.plot(sp.array(X_h).flatten(),-H[:, k],'b')
-    
-    ing1 = 1./float(len(g1))
-    Vnx = [] #!!!!!
-    Htmp = sp.zeros([nh, ns])
-    for gi in g1:
-
-        for i in xrange(nh):
-            m, v = gi.infer_diag(sp.matrix([[X_h[i, 0]]]), [obstype])
-            Vnx.append(v[0,0]) # !!!!!!!!!!
-            for k in xrange(ns):
-                Hydx = 0.5*sp.log(2*sp.pi*sp.e*(v[0, 0]+ss[k]))
-                H[i, k] += ing1*Hydx
-                Htmp[i, k] += ing1*Hydx
-    
-    
-    if plot == 'verbose':
-        for k in xrange(ns):
-            ax0.plot(sp.array(X_h).flatten(), Htmp[:, k],'r')
-            plt.ylabel('b-Hmin r-Hexist')
-            plt.savefig('foo2.png')
-#    if plot:
-#        plt.figure()
-#        for k in xrange(ns):
-#            plt.plot(H[:, k],'g')
-    return H
-
-
-
-
-def slice_sample(dist, init, iters, sigma, step_out=True):
-    """
-    from http://isaacslavitt.com/2013/12/30/metropolis-hastings-and-
-    slice-sampling/
-    with some changes
-    based on http://homepages.inf.ed.ac.uk/imurray2/teaching/09mlss/
-    """
-
-    # dist = joint_dist()
-
-    # set up empty sample holder
-    D = len(init)
-    samples = sp.zeros((D, iters))
-
-    # initialize
-    xx = init.copy()
-
-    for i in xrange(iters):
-        sys.stdout.write('\r'+str(i))
-        sys.stdout.flush()
-
-        perm = range(D)
-        sp.random.shuffle(perm)
-        last_llh = dist.loglike(xx)
-
-        for d in perm:
-            llh0 = last_llh + sp.log(sp.random.rand())
-            rr = sp.random.rand(1)
-            x_l = xx.copy()
-            x_l[d] = x_l[d] - rr * sigma[d]
-            x_r = xx.copy()
-            x_r[d] = x_r[d] + (1 - rr) * sigma[d]
-
-            if step_out:
-                llh_l = dist.loglike(x_l)
-                while llh_l > llh0:
-                    # print x_l
-                    x_l[d] = x_l[d] - sigma[d]
-                    llh_l = dist.loglike(x_l)
-                llh_r = dist.loglike(x_r)
-                while llh_r > llh0:
-                    x_r[d] = x_r[d] + sigma[d]
-                    llh_r = dist.loglike(x_r)
-
-            x_cur = xx.copy()
-            while True:
-                xd = sp.random.rand() * (x_r[d] - x_l[d]) + x_l[d]
-                x_cur[d] = xd.copy()
-                last_llh = dist.loglike(x_cur)
-                if last_llh > llh0:
-                    xx[d] = xd.copy()
-                    break
-                elif xd > xx[d]:
-                    x_r[d] = xd
-                elif xd < xx[d]:
-                    x_l[d] = xd
-                else:
-                    raise RuntimeError('Slice sampler shrank too far.')
-
-        #if i % 1000 == 0:
-        #    print 'iteration', i
-
-        samples[:, i] = xx.copy().ravel()
-    sys.stdout.write('\r                   \n')
-    sys.stdout.flush()
-    return samples
-
-
-
+import time
 class EntPredictor():
-    def __init__(self, D, lower, upper, kfgen, kfprior):
+    def __init__(self, D, lower, upper, kfgen, kfprior, para):
         self.D = D
-        # function takes hyperparameters and returns a kernel fn
+        self.dim = len(lower)
         self.kfgen = kfgen
-        # function takes hyperparameters and returns ln(prior)
         self.kfprior = kfprior
         
         self.lb=lower
         self.ub=upper
-        # g1 = GPd.GPcore(self.Xo, self.Yo, self.So, self.Do, self.kf)
-        self.MLEflag = True
-        self.HypSampleflag = True
-        self.Predictorflag = True
+        self.para = para
         
-        self.nx_inner = 101
-        self.HYPsamplen = 100
-        self.MLEsearchn = 800
-        self.ENTsearchn = 500
-        self.dmode = 'slice'
+        self.nHYPsamples = para['nHYPsamples']
+        self.HYPsearchLow = para['HYPsearchLow']
+        self.HYPsearchHigh = para['HYPsearchHigh']
+        self.HYPMLEsearchn = para['HYPMLEsearchn']
+        self.HYPsamSigma = para['HYPsamSigma']
+        self.HYPsamBurn = para['HYPsamBurn']
+        self.ENTnsam = para['ENTnsam']
+        self.ENTzeroprecision = para['ENTzeroprecision']
+        self.ENTsearchn = para['ENTsearchn']
+        
         return
-
-    def seekMLEkf(self):
-        # searches for the MLE hyperparameters over +- 4 deacdes from unity
-        print 'seeking MLE phyperparameters'
-
-        self.dist = dist_obj(squaresllk, self.D, self.kfprior, self.kfgen)
-        ee = lambda hyp, y: (-self.dist.loglike(hyp), 0)
-        [xmintrue, miny, ierror] = DIRECT.solve(ee, [-3, -3], [5, 2], user_data=[], algmethod=1, maxf=self.MLEsearchn)
-        print 'MLEhyperparameters: '+str([10**i for i in xmintrue])
-        self.loghypMLE = xmintrue
-        self.kfMLE = self.kfgen([10**i for i in xmintrue])
-        self.gMLE = GPd.GPcore(self.D[0], self.D[1], self.D[2], self.D[3], self.kfMLE)
-        self.MLEflag = False
-        return
-
-    def drawHypSamples(self, n, plot='none'):
-
-        if self.MLEflag:
-            self.seekMLEkf()
-        print 'Drawing '+str(n)+' hyperparameter samples'
-        w_0 = self.loghypMLE
-        sigma = 0.05*sp.ones(2)
-        samples = slice_sample(self.dist, w_0, iters=n, sigma=sigma)
-        # print samples
-        self.kfSam = []
-        self.hySam = []
-        for i in xrange(n):
-            self.kfSam.append(self.kfgen([10**samples[0][i], 10**samples[1][i]]))
-            self.hySam.append([10**samples[0][i], 10**samples[1][i]])
-        if plot == 'verbose' or plot == 'basic':
-            plt.figure(figsize=(6,6))
-            plt.xlabel('outputscale')
-            plt.ylabel('lengthscale')
-            for i in xrange(n):
-                plt.loglog(10**samples[0][i], 10**samples[1][i], 'rx')
-        self.HypSampleflag = False
-        sys.stdout.write('\r              \n')
-        sys.stdout.flush()
-        return
-
-    def initPredictor(self, plot='none'):
-        if self.HypSampleflag:
-            raise ValueError('no samples have been taken over the hyperparameters')
-        print 'cov decomposition for inference over hyp samples'
-        self.Pred = [[], []]
-        # d = plt.figure(figsize=(8,8))
-        # drawplt = d.add_subplot(111)
-        
-        tmp=[]
-        for i, k in enumerate(self.kfSam):
-            sys.stdout.write('\r'+str(i))
-            sys.stdout.flush()
-            try:
-                g = makedraws(self.D, k, nd=1, nx_inner=self.nx_inner,mode=self.dmode, fig=False, plot=plot)
-                self.Pred[0].append(g[0][0])
-                self.Pred[1].append(g[1][0])
-            # print g
-                tmp.append(g[1][0][1])
-            
-            except:
-                print 'not using kf '+str(i)+' hyp: '+str(self.hySam[i])
-                
-        
-        if plot == 'verbose' or plot == 'basic':
-            plt.figure(figsize=(6, 6))
-            try:
-                plt.hist(tmp, 20)
-            except:
-                print 'histogram error'
-                print tmp
-        # plt.axis([-1,1,0,len(tmp)])
-        self.Predictorflag = False
-        sys.stdout.write('\r           \n')
-        sys.stdout.flush()
-        return
-
-    def predictGraph(self,X,S, plot='none',obstype=[sp.NaN]):
-        if self.Predictorflag:
-            raise ValueError('no predictor has been set up')
-        n = len(X)
-        print 'plotting entropy graph over ' + str(n) + ' points'
-
-        H = [[]]*n
-        for i in xrange(n):
-            sys.stdout.write('\r'+str(i))
-            sys.stdout.flush()
-            H[i] = inferHmulti(self.Pred, sp.matrix(X[i]).T, S, plot=plot, obstype=obstype)
-        sys.stdout.write('\r             \n')
-        sys.stdout.flush()
-        
-        return H
-
-    def searchAtS(self, lower, upper, S, plot='none', obstype=[sp.NaN]):
-        if self.HypSampleflag:
-            self.drawHypSamples(self.HYPsamplen, plot=plot)
-        if self.Predictorflag:
-            self.initPredictor()
-        searchmax = self.ENTsearchn
-        print 'searching over '+str(searchmax)+' iterations for maxEnt'
-        global sc
-        global me
-        sc = 0
-        me = 0
-
-        def ee(x, y):
-            global sc
-            global me
-            sys.stdout.write('\r'+str(sc)+' max found '+str(me))
-            sys.stdout.flush()
-            sc += 1
-            Ent = inferHmulti(self.Pred, sp.matrix(x).T, S, obstype=obstype)
-            if Ent > me:
-                me = Ent
-            return (-Ent, 0)
-
-        [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=searchmax)
-        del sc
-        del me
-        sys.stdout.write('\rMaxEnt at '+str(xmintrue)+'             ')
-        return xmintrue
-
-    def searchOverS(self, lower, upper, S, U, plot='none', obstype=[sp.NaN]):
-        if self.HypSampleflag:
-            self.drawHypSamples(self.HYPsamplen, plot=plot)
-        if self.Predictorflag:
-            self.initPredictor()
-        searchmax = self.ENTsearchn
-        print 'searching over '+str(searchmax)+' iterations for maxEnt'
-        global sc
-        global me
-        sc = 0
-        me = 0
-        ns=len(S)
-        def ee(x, y):
-            global sc
-            global me
-            sys.stdout.write('\r'+str(sc)+' max found '+str(me))
-            sys.stdout.flush()
-            sc += 1
-            Ent = inferHmulti(self.Pred, sp.matrix(x).T, S, obstype=obstype)
-            EU=sp.zeros(ns)
-            for i in xrange(ns):
-                #print Ent[0]
-                EU[i]=(Ent[0][i])/float(U[i])
-            EUmax=max(EU)
-            if EUmax > me:
-                me = EUmax
-            return (-EUmax, 0)
-
-        [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=U, algmethod=1, maxf=searchmax)
-        del sc
-        del me
-        
-        Ent = inferHmulti(self.Pred, sp.matrix(xmintrue).T, S, obstype=obstype)
-        EU=sp.zeros(ns)
-        for i in xrange(ns):
-            EU[i]=Ent[0][i]/float(U[i])
-        j=sp.argmax(EU)
-        
-        sys.stdout.write('\rMaxEU at '+str(xmintrue)+'with s= '+str(S[j]))
-        return [xmintrue,j]
-        
-    def showEntGraph(self, Xi, S,U='none', plot='basic', obstype=[sp.NaN]):
-        if U=='none':
-            uflag=False
-            U=sp.ones(len(S))
-        else:
-            uflag=True
-        nx = len(Xi)
-        ns = len(S)
-        if self.HypSampleflag:
-            self.drawHypSamples(self.HYPsamplen, plot=plot)
-        if self.Predictorflag:
-            self.initPredictor(plot=plot)
-        H = self.predictGraph(Xi, S, obstype=obstype)
-        Hplot = sp.zeros([nx, ns])
-        for i in xrange(nx):
-            for j in xrange(ns):
-                Hplot[i, j] = (H[i][0, j])/float(U[j])
-        
-        plt.figure(figsize=(16, 16))
-        a = GPd.plot1(self.gMLE, [-1], [1])
-        a2=a.twinx()
-        for i in xrange(ns):
-            try:
-                a2.semilogy(Xi, Hplot[:, i].flatten())
-            except:
-                print 'failed to plot entropy for s= '+str(S[i])
-                print Hplot[:, i].flatten()
-                
-            
-        if uflag:
-            uopt=sp.zeros(nx)
-            for i in xrange(nx):
-                j=sp.argmax(Hplot[i,:].flatten())
-                uopt[i]=U[j]
-            plt.figure()
-            #print uopt
-            plt.semilogy(Xi,uopt)
-        return a
-
-    def inferPostGP(self, x, d, plot='none'):
-        if self.HypSampleflag:
-            self.drawHypSamples(self.HYPsamplen, plot=plot)
-        if self.Predictorflag:
-            self.initPredictor(plot=plot)
-        np=len(d)
-        acc0=sp.zeros(np)
-        acc1=sp.zeros(np)
-        vp=sp.zeros(np)
-        ng=len(self.Pred[0])
-        for g in self.Pred[0]:
-            [m,v]=g.infer_diag(sp.matrix(x).T,d)
-            for i in xrange(np):
-                acc0[i]+=1./v[i]
-                acc1[i]+=m[i]/v[i]
-                vp[i] += v[i]
-        mp=sp.zeros(np)
-        
-        for i in xrange(np):
-            mp[i]=acc1[i]/(acc0[i])
-            vp[i]=vp[i]/float(ng)
-        
-        return [mp,vp]
     
-    def searchYminEst(self):
-        def ee(x,y):
-            [m,v] = self.inferPostGP(x,[[sp.NaN]])
-            return (m,0)
-            
-        [xmintrue, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=800)
-        return [xmintrue,miny]
+    def __del__(self):
+        try:
+            print 'closing FBinfer'
+            self.FBInfer.close()
+        except:
+            pass
+        try:
+            print 'closing EPinfer'
+            self.EPInfer.close()
+        except:
+            pass
+        print 'closed'
+        return
         
-    def plotPostGP(self, x, d, plotEI=False):
-        [m, v] = self.inferPostGP(x, d)
-        np = len(d)
-        ub = sp.zeros(np)
-        lb = sp.zeros(np)
-        for i in xrange(np):
-            ub[i] = m[i]+2*sp.sqrt(v[i])
-            lb[i] = m[i]-2*sp.sqrt(v[i])
+    def setupEP(self):
+        if self.para['searchmethod'] == 'fixs':
+            self.searchMLEHYP()
+            self.drawHYPsamples()
+            self.initFBInfer()
+            self.drawmins()
+            self.initEPInfer()
+        elif self.para['searchmethod'] == 'EIMLE':
+            self.searchMLEHYP()
+        else:
+            raise KeyError('no searchmethod defined')
+        return
+    
+    def searchMLEHYP(self):
+        print 'seeking MLE phyperparameters'
+    
+        dist = dist_obj(squaresllk, self.D, self.kfprior, self.kfgen)
+        searchn = self.HYPMLEsearchn
+        
+        ee = lambda hyp, y: (-dist.loglike(hyp), 0)
+        [xmintrue, miny, ierror] = DIRECT.solve(ee, self.HYPsearchLow, self.HYPsearchHigh, user_data=[], algmethod=1, maxf=searchn, logfilename='/dev/null')
 
-        f0 = plt.figure(figsize=(8, 8))
-        a0 = f0.add_subplot(111)
-        a0.plot(x, m)
-        a0.fill_between(x, lb, ub, facecolor='lightskyblue', alpha=0.5)
-
+        print 'MLEhyperparameters: '+str([10**i for i in xmintrue])
+        self.logMLEHYPVal = xmintrue
+        self.MLEHYPFn = self.kfgen([10**i for i in xmintrue])
+        self.MLEInfer = GPd.GPcore(self.D[0], self.D[1], self.D[2], self.D[3], self.MLEHYPFn)
+        return
+        
+    def drawHYPsamples(self):
+        n=self.nHYPsamples
+        print 'Drawing '+str(n)+' hyperparameter samples'
+        w_0 = self.logMLEHYPVal
+        sigma = self.HYPsamSigma*sp.ones(self.dim+1)
+        dist = dist_obj(squaresllk, self.D, self.kfprior, self.kfgen)
+        
+        samples = slice_sample(dist, w_0, iters=n, sigma=sigma, burn=self.HYPsamBurn)
+        
+        # print samples
+        kfSam = []
+        hySam = []
+        for i in xrange(n):
+            kfSam.append(self.kfgen([10**samples[0][i], 10**samples[1][i]]))
+            hySam.append([10**samples[0][i], 10**samples[1][i]])
+        
+        self.HYPsampleVals=hySam
+        self.HYPsampleFns=kfSam
+        
+        return
+    
+    def plotHYPsamples(self, d0=0, d1=1):
+        #plts hyperparameter samples. defaults to first two values but can specify others
+        f = plt.figure()
+        a = f.add_subplot(111)
+        for hs in self.HYPsampleVals:
+            a.plot(hs[d0],hs[d1],'bx')
+        
+        a.set_yscale('log')
+        a.set_xscale('log')
+        a.set_xlabel(str(d0)+'st hyperparameter')
+        a.set_ylabel(str(d1)+'st hyperparameter')
+        try:
+            a.plot(10**self.logMLEHYPVal[d0], 10**self.logMLEHYPVal[d1],'bo')
+        except:
+            pass
+        return [f,a]
+        
+    def initFBInfer(self):
+        print 'seting up FB inference'
+        self.FBInfer = GPset.multiGP()
+        for kf in self.HYPsampleFns:
+            self.FBInfer.addGPd(self.D[0], self.D[1], self.D[2], self.D[3], kf)
+        status = self.FBInfer.status()
+        ns = len([i for i in status if i[0]==0])
+        nk = self.nHYPsamples
+        print str(ns)+' of '+str(nk)+' kernel draws inited sucessfuly'
+        return
+    
+    def initEPInfer(self):
+        Xo=self.D[0]
+        Yo=self.D[1]
+        So=self.D[2]
+        Do=self.D[3]
+        self.EPInfer = GPset.multiGP()
+        self.mask = sp.zeros(self.nHYPsamples)
+        for i in xrange(self.nHYPsamples):
+            md = self.ENTmindraws[i]
+            if not md[0]==0:
+                self.mask[i]=-1
+                #create a bad GP in the correct position so that others are alligned
+                self.EPInfer.addGPd(-1,-1,-1,-1,-1)
+                continue
+            xs = md[1][0,0]
+            Xg = sp.matrix([[xs]])
+            Yg = sp.matrix([[0.]])
+            Sg = sp.matrix([[self.ENTzeroprecision]])
+            Dg = [[0]]
+            
+            [Xc, Yc, Sc, Dc] = GPep.catObs([[Xo, Yo, So, Do], [Xg, Yg, Sg, Dg]])
+            
+            Xz = sp.matrix([[xs], [xs]])
+            Dz = [[sp.NaN], [0, 0]]
+            # the inequality
+            Iz = sp.matrix([[Yo[Yo.argmin(), :][0, 0]], [0.]])
+            # sign of the inequality
+            Gz = [0, 0]
+            Nz = [So[Yo.argmin(), :], 0.] #!!!!!this value is important, should it e the sigma for hte min obs or the posterior at that piont??
+        
+            self.EPInfer.addGPep(Xc, Yc, Sc, Dc, Xz, Dz, Iz, Gz, Nz, self.HYPsampleFns[i])
+            
+        
+        return
+        
+        
+    def inferMLEpost(self,X_s,D_s):
+        m,v = self.MLEInfer.infer_diag(X_s,D_s)
+        return [m,v]
+        
+    def plotMinDraws(self):
+        #explicitly 1d
+        h = []
+        for j in self.ENTmindraws:
+            if not j[0]==0:
+                continue
+            h.append(j[1][0,0])
+        f = plt.figure()
+        a = f.add_subplot(111)
+        a.hist(h,40)
+        return [f,a]        
+        
+    def plotMLEpost(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
+        print 'plotting MLEpost'
+        X=[]
+        if point=='None':
+            point=sp.zeros(self.dim)
+       
+        x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
+        
+        for i in x_r:
+            pi = point.copy()
+            pi[axis]=i
+            X.append(pi)
+        [m,v] = self.inferMLEpost(sp.matrix(X),obstype*np)
+        
+        u_b=sp.zeros(np)
+        l_b=sp.zeros(np)
+        for j in xrange(np):
+            u_b[j]=m[j]+2*sp.sqrt(v[j])
+            l_b[j]=m[j]-2*sp.sqrt(v[j])
+        f = plt.figure()
+        a = f.add_subplot(111)
+        a.plot(x_r,m,'b')
+        a.fill_between(x_r, l_b, u_b, facecolor='lightskyblue', alpha=0.5)
+        a.set_title('MLE')
+        #this bit is 1D
         xs = sp.array(self.D[0]).flatten()
         ys = sp.array(self.D[1]).flatten()
-        for i in xrange(len(self.D[3])):
-            if (sp.isnan(self.D[3][i])).any():
-                a0.plot(xs, ys, 'rx')
+        a.plot(xs, ys, 'rx')
+        return [f,a]
+    
+    def infer_both(self, X_s, D_s):
+        infr_before = self.FBInfer.infer_diag(sp.matrix(X_s).T,D_s)
+        infr_after = self.EPInfer.infer_diag(sp.matrix(X_s).T,D_s)
+        return [infr_before, infr_after]
+    
+    def findMV(self, X_s, D_s):
+        #print '\rFindMV0      ',
+        i1 = self.FBInfer.infer_diag(X_s, D_s)
+        #print '\rFindMV1      ',
+        currentmask=sp.zeros(self.nHYPsamples)
+        Vydx = sp.zeros(self.nHYPsamples)
+        Mydx = sp.zeros(self.nHYPsamples)
+        for i in xrange(self.nHYPsamples):
+            if not i1[i][0]==0:
+                currentmask[i]=-1
+                continue
+            Vydx[i] = i1[i][1][1][0,0]
+            Mydx[i] = i1[i][1][0][0,0]
+        #print '\rFindMV2      ',
+        Vydxxs = sp.zeros(self.nHYPsamples)
+        Mydxxs = sp.zeros(self.nHYPsamples)
+        Xmcs=[]
+        Dmcs=[]
+        for i in xrange(self.nHYPsamples):
+            X = sp.vstack([X_s,self.ENTmindraws[i][1]])
+            Xmcs.append(X)
+            Dmcs.append(D_s+[[sp.NaN]])
+        #print '\rFindMV3     ',
+        i2 = self.EPInfer.infer_full_var(Xmcs,Dmcs)
+        #print '\rFindMV4     ',
+        for i in xrange(self.nHYPsamples):
+            if not i2[i][0]==0:
+                currentmask[i]=-2
+                continue
+           
+            V = i2[i][1][1]
+            
+            m = i2[i][1][0]
+            #print V
+            #<magic>
+            s = V[0, 0]+V[1, 1]-V[0, 1]-V[1, 0]
+            if s<=10**-10:
+                print 's<10**10'
+                print s
+            mu = m[1, 0]-m[0, 0] 
+            alpha = - mu / sp.sqrt(s) # sign difference compared to the paper because I am minimizing
+        
+            beta = sp.exp(sps.norm.logpdf(alpha) - sps.norm.logcdf(alpha))
+            coef = beta*(beta+alpha)*(1./s)*(V[0, 0]-V[0, 1])**2
+            vnxxs = V[0, 0]-coef
+            Vydxxs[i]=vnxxs
+            Mydxxs[i]=m[0,0]
+            #print '\rFindMV5     ',
+            #</magic>
+        return [Mydx, Vydx, Mydxxs, Vydxxs, currentmask]
+        
+    def inferFBpost(self,X_s, D_s):
+        #np=len(X_s)
+        infr = self.FBInfer.infer_diag(sp.matrix(X_s).T,D_s)
+        
+        n_hyp = len(self.FBInfer.processes)
+        clean = sp.zeros(n_hyp)
+        y_s = [[] for i in xrange(n_hyp)]
+        v_s = [[] for i in xrange(n_hyp)]
+        for j,r in enumerate(infr):
+            if r[0]==0:
+                y_s[j]=sp.array(r[1][0]).flatten()
+                v_s[j]=sp.array(r[1][1]).flatten()
+            else:
                 
-        if plotEI:
-            best = min(self.D[1])[0,0]
-            ei = sp.zeros(np)
-            for i in xrange(np):
-                ei[i]=EI(best,m[i],sp.sqrt(v[i]))
-            a1=a0.twinx()
-            a1.plot(x,ei,'r')
-        return a0
-
-    def plotMLEGP(self):
-        if self.MLEflag:
-            self.seekMLEkf()
-        a = GPd.plot1(self.gMLE, [-1], [1])
-        return
+                clean[j]=-1
         
-    def searchEI(self, lower, upper, plot='none'):
-        searchmax=400
-        best = min(self.D[1])[0,0]
         
-        global sc
-        global me
-        sc = 0
-        me = 0
-        print 'searching over '+str(searchmax)+' iterations for maxEI'
-        def ee(x, y):
-            [m,v] = self.inferPostGP(x,[[sp.NaN]])
-            ei = EI(best,m[0],sp.sqrt(v[0]))
+        np=len(y_s[0])
+        y_r=sp.zeros(np)
+        y2_r=sp.zeros(np)
+        mv_r=sp.zeros(np)
+        
+        n_c = len([i for i in clean if i==0])
+        for i,y in enumerate(y_s):
             
-            global sc
-            global me
-            sc+=1
-            if ei[0,0]>me:
-                me=ei[0,0]
-            sys.stdout.write('\r'+str(sc)+' max found '+str(me)+'      ')
-            sys.stdout.flush()
-            
-            return (-ei, 0)
-
-        [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=searchmax)
-        del sc
-        del me
-        sys.stdout.write('\rMaxEI at '+str(xmintrue)+'             ')
+            if clean[i]==0:
+                for j in xrange(np):
+                    y_r[j]+=y[j]
+                    y2_r[j]+=y[j]**2
+                    mv_r[j]+=v_s[i][j]
+        #mean of the mean
+        y_r = [y/float(n_c) for y in y_r]
+        #mean of the variance
+        mv_r = [v/float(n_c) for v in mv_r]
+        #mean of the square of hte mean
+        y2_r = [y/float(n_c) for y in y2_r]
+        #variance of the mean
+        vy_r = [ y2-y_r[i]**2 for i,y2 in enumerate(y2_r)]
+        #posterior mean is mean of mean, posterior variance os mean of variance plus variance of mean
+        v_r = [mv+vy_r[i] for i,mv in enumerate(mv_r)]
+        return [y_r,v_r]
         
-        return xmintrue
+    def findENT(self, xs, ds, ss):
+        #print '\rFindEnt0',
+        n_hyp = self.nHYPsamples
+        [m0,v0,m1,v1,mask] = self.findMV(sp.matrix(xs).T,[ds])
+        #print '\rFindEnt1',
+        H0 = sp.zeros(n_hyp)
+        H1 = sp.zeros(n_hyp)
+        for i in xrange(n_hyp):
+            if not mask[i]==0:
+                continue
+            H0[i] = 0.5*sp.log(2*sp.pi*sp.e*(v0[i]+ss))
+            H1[i] = 0.5*sp.log(2*sp.pi*sp.e*(v1[i]+ss))
+        #print '\rFindEnt2',
+        H=(sum(H0)-sum(H1))/float(sum([1 for i in mask if i==0]))
+        return H
+        
+    def plotEPchanges(self, axis=0,point='None',np=100,obstype=[[sp.NaN]]):
+        print 'plotting EPchanges'
+        X=[]
+        if point=='None':
+            point=sp.zeros(self.dim)
+        n_hyp = len(self.FBInfer.processes)
+        clean = sp.zeros(n_hyp)
+        x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
+        m_0 = [sp.zeros(np) for i in xrange(n_hyp)]
+        v_0 = [sp.zeros(np) for i in xrange(n_hyp)]
+        m_1 = [sp.zeros(np) for i in xrange(n_hyp)]
+        v_1 = [sp.zeros(np) for i in xrange(n_hyp)]
+        for i,x in enumerate(x_r):
+            pi = point.copy()
+            pi[axis]=x
+            res = self.findMV(sp.matrix(pi),[[sp.NaN]])
+            
+            for j in xrange(n_hyp):
+                if res[4][j]==0:
+                    m_0[j][i] = res[0][j]
+                    v_0[j][i] = res[1][j]
+                    m_1[j][i] = res[2][j]
+                    v_1[j][i] = res[3][j]
+        split = int(sp.ceil(sp.sqrt(n_hyp)))
+       
+        [f,axs] = plt.subplots(split,split,sharex='col', sharey='row')
+        i=0;j=0;k=0
+        while i<n_hyp:
+            axs[j][k].plot(x_r,m_0[i],'b')
+            axs[j][k].plot(x_r,m_1[i],'r')
+            axs[j][k].set_ylim([-3,3])
+            i+=1
+            j=i/split
+            k=i%split
+            
+        
+        return [f,axs]
+    def searchENTs(self,ss, obstype=[sp.NaN]):
+        print 'Searhing for MaxENT'
+        def ee(x,y):
+            global ENTsearchi
+            ENTsearchi+=1
+            ENTsearchi
+            print '\rb'+str(x),
+            ret = -self.findENT(x, obstype,ss)
+            print '\ra'+str(x)+' '+'Iter: %d  ' % ENTsearchi +' '+str(ret),
+            return (ret, 0)
+        global ENTsearchi
+        ENTsearchi=0
+        [xmin, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=self.ENTsearchn, logfilename='/dev/null')
+        del(ENTsearchi)
+        print 'maxENT '+str(xmin)
+        return [xmin, miny]
+        
+    def searchEIMLE(self):
+        print 'Searhing for MaxMLEEI'
+        def ee(x,y):
+            global EIsearchi
+            EIsearchi+=1
+            EIsearchi
+            print '\rIter: %d    ' % EIsearchi,
+            return (-self.EIMLE(x), 0)
+        global EIsearchi
+        EIsearchi=0
+        [xmin, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=self.ENTsearchn, logfilename='/dev/null')
+        del(EIsearchi)
+        print 'maxEIMLE '+str(xmin)
+        return [xmin, miny]
+        
+    def plotENT(self,ss,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
+        print 'plotting predictive Entropy'
+        [f,a] = self.plotFBpost(axis=axis, point=point,np=np,obstype=obstype)
+        X=[]
+        if point=='None':
+            point=sp.zeros(self.dim)
+        n_hyp = len(self.FBInfer.processes)
+        
+        x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
+        
+        for i in x_r:
+            pi = point.copy()
+            pi[axis]=i
+            X.append(pi)
+        
+        H=sp.zeros(np)
+        for i in xrange(np):
+            x=X[i]
+            h=self.findENT(x,obstype[0],ss)
+            
+            H[i]=h
+        a2 = a.twinx()
+        a2.plot(x_r,H,'r')
+        return [f,[a,a2]]
+    
+    def plotEIMLE(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
+        print 'plotting EI MLE'
+        [f,a] = self.plotMLEpost(axis=axis, point=point,np=np,obstype=obstype)
+        X=[]
+        if point=='None':
+            point=sp.zeros(self.dim)
+        
+        x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
+        
+        for i in x_r:
+            pi = point.copy()
+            pi[axis]=i
+            X.append(pi)
+        
+        EI=sp.zeros(np)
+        for i in xrange(np):
+            x=X[i]
+            h=self.EIMLE(x)
+            
+            EI[i]=h
+        a2 = a.twinx()
+        a2.plot(x_r,EI,'r')
+        #a2.set_yscale('log')
+        return [f,[a,a2]]
+    
+    def plotFBpost(self,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
+        print 'plotting FBpost'
+        X=[]
+        if point=='None':
+            point=sp.zeros(self.dim)
+        n_hyp = len(self.FBInfer.processes)
+        clean = sp.zeros(n_hyp)
+        x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
+        y_s = [[] for i in xrange(n_hyp)]
+        v_s = [[] for i in xrange(n_hyp)]
+        for i in x_r:
+            pi = point.copy()
+            pi[axis]=i
+            X.append(pi)
+        [m,v] = self.inferFBpost(sp.matrix(X).T,obstype*np)
+        
+        
+        u_b=sp.zeros(np)
+        l_b=sp.zeros(np)
+        for j in xrange(np):
+            u_b[j]=m[j]+2*sp.sqrt(v[j])
+            l_b[j]=m[j]-2*sp.sqrt(v[j])
+        f = plt.figure()
+        a = f.add_subplot(111)
+        a.plot(x_r,m,'b')
+        a.fill_between(x_r, l_b, u_b, facecolor='lightskyblue', alpha=0.5)
+        a.set_title('FB')
+        #this bit is 1D
+        xs = sp.array(self.D[0]).flatten()
+        ys = sp.array(self.D[1]).flatten()
+        a.plot(xs, ys, 'rx')
+        return [f,a]
+    
+    def EIMLE(self, X_s):
+        X_s=sp.matrix(X_s)
+        np = X_s.shape[0]
+        D_s = [[sp.NaN]]*np
+        m,v = self.inferMLEpost(X_s, D_s)
+        E=sp.zeros(np)
+        best = self.D[1].min()
+        
+        for i in xrange(np):
+            E[i] = EI(best, m[i],sp.sqrt(v[i]))
+        return E
+
+    def EIFB(self, X_s):
+        X_s=sp.matrix(X_s)
+        np = X_s.shape[0]
+        D_s = [[sp.NaN]]*np
+        m,v = self.inferFBpost(sp.matrix(X_s).T, D_s)
+        E=sp.zeros(np)
+        best = self.D[1].min()
+        
+        for i in xrange(np):
+            E[i] = EI(best, m[i],sp.sqrt(v[i]))
+        return E
+
+    def drawmins(self):
+        res = self.FBInfer.drawmins(self.ENTnsam,[self.lb,self.ub])
+        self.ENTmindraws = res
+        return res
         
 class Optimizer():
-    def __init__(self, f, kfGen, kfPrior, lb, ub):
+    def __init__(self, f, kfGen, kfPrior, lb, ub, para):
         self.f = f
         self.kfGen = kfGen
         self.kfPrior = kfPrior
         self.lb = lb
         self.ub = ub
+        self.para=para
+        self.searchmethod = para['searchmethod']
+        if self.searchmethod == 'fixs':
+            self.fixs = para['fixs']
+            self.obstype = para['obstype']
+        elif self.searchmethod =='EIMLE':
+            self.fixs = para['fixs']
+        else:
+            raise KeyError('no searchmethod defined')
         
-        self.MLEsearchn = 200
-        self.HYPsamplen = 30
-        self.ENTsearchn = 160
-        self.result=[]
-        self.Uo=[]
+        self.states=[dict()]
+        self.states[0]['para']=para
+        self.states[0]['lb']=lb
+        self.states[0]['ub']=ub
+        self.states[0]['f']=f
+        self.states[0]['kfGen']=kfGen
+        self.states[0]['kfPrior']=kfPrior
+        
         return
         
     def initrandobs(self, n_init, s_init):
@@ -691,81 +547,138 @@ class Optimizer():
         self.Yo = sp.matrix(y).T
         self.So = sp.matrix([[s_init]]*n_init)
         self.Do = [[sp.NaN]]*n_init
-        
+        self.states[0]['init']=[self.Xo, self.Yo, self.So, self.Do]
         return
-        
+
     def initspecobs(self, Xo, Yo, So, Do):
         self.Xo = Xo
         self.Yo = Yo
         self.So = So
         self.Do = Do
-        
+        self.states[0]['init']=[self.Xo, self.Yo, self.So, self.Do]
         return
         
-    def searchats(self, s, obstype=[sp.NaN], method='Ent'):
-        e = EntPredictor([self.Xo, self.Yo, self.So, self.Do], self.lb, self.ub, self.kfGen, self.kfPrior)
-        e.MLEsearchn = self.MLEsearchn
-        e.HYPsamplen = self.HYPsamplen
-        e.ENTsearchn = self.ENTsearchn
+    def setupEP(self):
+        try:
+            del(self.EP)
+        except:
+            pass
+        print 'setting new EP'
+        self.EP = EntPredictor([self.Xo,self.Yo,self.So,self.Do], self.lb, self.ub, self.kfGen, self.kfPrior, self.para )
+        self.EP.setupEP()
+        return
         
-        n = 150
-        Xi = sp.linspace(-1, 1, n)
-        if method=='Ent':
-            a = e.showEntGraph(Xi, [s], plot='basic', obstype=obstype)
-            xmin = e.searchAtS(self.lb, self.ub, [s], obstype=obstype)
-        if method=='EI':
-            a = e.plotPostGP(Xi,[[sp.NaN]]*n, plotEI=True)
-            xmin = e.searchEI(self.lb, self.ub)
-        a.plot(xmin, [0], 'go')
-        a.plot(xmin, self.f(xmin[0]), 'ro')
-        xIn = xmin[0]
-        yIn = self.f(xIn)+sp.random.normal(scale=sp.sqrt(s))
+    def plotstate(self):
+        if self.searchmethod == 'fixs':
+            [f0,a0] = self.EP.plotHYPsamples(d0=0, d1=1)
+            [f1,a1] = self.EP.plotFBpost()
+            [f3,a3] = self.EP.plotMinDraws()
+            [f4,as4] = self.EP.plotENT(0.01,np=100)
+        elif self.searchmethod =='EIMLE':
+            [f2,a2] = self.EP.plotEIMLE()
+            
+        else:
+            raise KeyError('no searchmethod defined')
+        
+        
+        
+        return
+    
+    def searchnextFixS(self,s,obstype=[sp.NaN]):
+        print 'searching under fixed s'
+        [x_n, H_e] = self.EP.searchENTs(s,obstype=obstype)
+        yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
+        
+        return [x_n, yIn, s, obstype, H_e]
+    
+    def searchnextEIMLE(self,s):
+        [x_n, EI] = self.EP.searchEIMLE()
+        yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
+        return [x_n, yIn, s, [sp.NaN], EI]
 
-        self.Xo = sp.vstack([self.Xo, xIn])
-        self.Yo = sp.vstack([self.Yo, yIn])
-        self.So = sp.vstack([self.So, s])
-        self.Do.append([sp.NaN])
-        plt.show()
-        print 'getting current min est'
-        res = e.searchYminEst()
-        print res
-        self.result.append(res)
+    def searchminpost(self):
+        print 'finding IR location'
+        if self.searchmethod == 'fixs':
+                f = self.EP.inferFBpost
+        elif self.searchmethod =='EIMLE':
+                f = self.EP.inferMLEpost
+        else:
+            raise KeyError('no searchmethod defined')
+        global sn
+        sn=0
+        def ee(x,y):
+            global sn
+            sn+=1
+            print '\rIter: %d    ' % sn,
+            out = f(sp.matrix(x).T,[[sp.NaN]])[0]
+            return(out,0)
+        
+        [xmin, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=self.para['IRsearchn'], logfilename='/dev/null')
+        del(sn)
+        return [xmin,miny]
+
+        
+        
+    def runopt(self,nsteps):
+        
+        for i in xrange(nsteps):
+            t0=time.time()
+            self.states.append(dict())
+            print 'starting next step'
+            self.setupEP()
+            sys.stdout.flush()
+            if self.searchmethod == 'fixs':
+                [x, y, s, d, a] = self.searchnextFixS(self.fixs, obstype = self.obstype)
+                self.states[-1]['HYPsamples']=self.EP.HYPsampleVals
+                self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
+                print 'FBstatus '+str(sorted([s[0] for s in self.EP.FBInfer.status()]))
+                print 'EPstatus '+str(sorted([s[0] for s in self.EP.EPInfer.status()]))
+            elif self.searchmethod =='EIMLE':
+                [x, y, s, d, a] = self.searchnextEIMLE(self.fixs)
+                self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
+            else:
+                raise KeyError('no searchmethod defined')
+            
+            self.Xo = sp.vstack([self.Xo, x])
+            self.Yo = sp.vstack([self.Yo, y])
+            self.So = sp.vstack([self.So, s])
+            self.Do.append(d)
+            
+            self.states[-1]['searchres']=[x,y,s,d,a]
+            
+            [xminIR,yminIR] = self.searchminpost()
+            self.states[-1]['xminIR'] = xminIR
+            self.states[-1]['yminIR'] = yminIR
+            
+            print '\n---> steptime '+str(time.time()-t0)
         return
-        
-    def searchOvers(self, s, u, obstype=[sp.NaN], method='Ent'):
-        e = EntPredictor([self.Xo, self.Yo, self.So, self.Do], self.lb, self.ub, self.kfGen, self.kfPrior)
-        e.MLEsearchn = self.MLEsearchn
-        e.HYPsamplen = self.HYPsamplen
-        e.ENTsearchn = self.ENTsearchn
-        
-        n = 150
-        Xi = sp.linspace(-1, 1, n)
-        a = e.showEntGraph(Xi, s,U=u, plot='basic', obstype=obstype)
-        [xmin,j] = e.searchOverS(self.lb, self.ub, s,u, obstype=obstype)
-        a.plot(xmin, [0], 'go')
-        a.plot(xmin, self.f(xmin[0]), 'ro')
-        xIn = xmin[0]
-        yIn = self.f(xIn)+sp.random.normal(scale=sp.sqrt(s[j]))
-        self.Uo.append(u[j])
-        self.Xo = sp.vstack([self.Xo, xIn])
-        self.Yo = sp.vstack([self.Yo, yIn])
-        self.So = sp.vstack([self.So, s[j]])
-        self.Do.append([sp.NaN])
-        plt.show()
-        print 'getting current min est'
-        res = e.searchYminEst()
-        print res
-        self.result.append(res)
+   
+    def savestate(self,fname='states.obj'):
+        object = self.states
+        file_n = open(fname, 'wb')
+        pickle.dump(object, file_n)
         return
-        
-    def showinov(self, s, obstype=[sp.NaN]):
-        e = EntPredictor([self.Xo, self.Yo, self.So, self.Do], self.lb, self.ub, self.kfGen, self.kfPrior)
-        e.MLEsearchn = self.MLEsearchn
-        e.HYPsamplen = self.HYPsamplen
-        e.ENTsearchn = self.ENTsearchn
-        
-        n = 300
-        Xi = sp.linspace(-1, 1, n)
-        a = e.showEntGraph(Xi, [s], plot='basic', obstype=obstype)
+
+    def gotostate(self, staten):
+        [self.Xo, self.Yo, self.So, self.Do] = self.states[0]['init']
+        for i in xrange(staten):
+            [x, y, s, d, a] = self.states[i+1]['searchres']
+            self.Xo = sp.vstack([self.Xo, x])
+            self.Yo = sp.vstack([self.Yo, y])
+            self.So = sp.vstack([self.So, s])
+            self.Do.append(d)
         return
-        
+
+
+def restartOpt(fname):
+    states = pickle.load(open(fname, 'rb'))
+    para = states[0]['para']
+    lb = states[0]['lb']
+    ub = states[0]['ub']
+    f = states[0]['f']
+    kfGen = states[0]['kfGen']
+    kfPrior = states[0]['kfPrior']
+    O = Optimizer(f, kfGen, kfPrior, lb, ub, para)
+    O.states = states
+    O.gotostate(len(states)-1)
+    return O
