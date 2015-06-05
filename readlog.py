@@ -15,11 +15,11 @@ from tools import *
 import sys
 import traceback
 import dill as pickle
-import EntropyPredict2
+import EntropyPredict
 
 class OptEval():
     def __init__(self,fname):
-        self.O = EntropyPredict2.restartOpt(fname)
+        self.O = EntropyPredict.restartOpt(fname)
         return
         
     def xerr(self):

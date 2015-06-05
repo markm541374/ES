@@ -82,10 +82,10 @@ para['obstype'] = [sp.NaN]
 #para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
 # %%
 
-reload(EntropyPredict2)
+reload(EntropyPredict)
 reload(GPset)
 
-O = EntropyPredict2.Optimizer(f,kfGen, kfprior, lower, upper, para)
+O = EntropyPredict.Optimizer(f,kfGen, kfprior, lower, upper, para)
 O.initrandobs(5,para['fixs'])
 O.setupEP()
 #O.plotstate()
