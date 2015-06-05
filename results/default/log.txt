@@ -1,7 +1,10 @@
-runGPGO started at 15:21:42 on Fri 5 June 2015 on dunvegan
+runGPGO started at 18:18:02 on Fri 5 June 2015 on dunvegan
 
 INPUT from default:
-{'ENTnsam': 100,
+
+Optimisation parameters:
+{'D': 1,
+ 'ENTnsam': 100,
  'ENTsearchn': 500,
  'ENTzeroprecision': 1e-06,
  'HYPMLEsearchn': 800,
@@ -9,10 +12,25 @@ INPUT from default:
  'HYPsamSigma': 0.05,
  'HYPsearchHigh': [2, 2],
  'HYPsearchLow': [-2, -2],
+ 'I1LM': 0.0,
+ 'I1LV': 4.0,
  'IRsearchn': 500,
+ 'OSLM': 0.0,
+ 'OSLV': 4.0,
+ 'covtype': 'sqexp',
  'fixs': 0.0001,
+ 'inittype': 'rand',
  'nHYPsamples': 8,
+ 'nrand': 5,
  'obstype': [nan],
  'searchmethod': 'EIMLE'}
 
-runGPGO exited at 15:21:42 on Fri 5 June 2015
+Objective function parameters:
+{'D': 1,
+ 'covgen': 'sqexp',
+ 'hyp': [1.0, 0.2],
+ 'lower': [-1.0],
+ 'type': 'drawfromcov',
+ 'upper': [1.0]}
+
+runGPGO exited at 18:18:47 on Fri 5 June 2015

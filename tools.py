@@ -34,7 +34,7 @@ class fgen1d():
         self.Xi = sp.matrix(sp.linspace(lower, upper, npoints)).T
         V_p = GPd.buildKsym_d(kf, self.Xi, [[sp.NaN]]*npoints)
         self.vpCho = spl.cholesky(V_p, lower=True)
-        print 'done'
+        
         return
 
     def genfun(self):
