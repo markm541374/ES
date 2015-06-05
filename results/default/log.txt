@@ -1,0 +1,18 @@
+runGPGO started at 15:21:42 on Fri 5 June 2015 on dunvegan
+
+INPUT from default:
+{'ENTnsam': 100,
+ 'ENTsearchn': 500,
+ 'ENTzeroprecision': 1e-06,
+ 'HYPMLEsearchn': 800,
+ 'HYPsamBurn': 12,
+ 'HYPsamSigma': 0.05,
+ 'HYPsearchHigh': [2, 2],
+ 'HYPsearchLow': [-2, -2],
+ 'IRsearchn': 500,
+ 'fixs': 0.0001,
+ 'nHYPsamples': 8,
+ 'obstype': [nan],
+ 'searchmethod': 'EIMLE'}
+
+runGPGO exited at 15:21:42 on Fri 5 June 2015
