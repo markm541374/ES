@@ -80,7 +80,7 @@ for i in xrange(paras.runs['nopts']):
     xmintrue = xmintrue[0]
     paras.optpara['xmintrue']=xmintrue
     paras.optpara['ymintrue']=miny
-    O = EntropyPredict.Optimizer(f,optkfGen, optkfprior, lower, upper, paras.optpara)
+    O = EntropyPredict.Optimizer(f,optkfGen, optkfprior, lower, upper, paras.optpara,logf=logf)
     if paras.optpara['inittype']=='rand':
         O.initrandobs(paras.optpara['nrand'],paras.optpara['fixs'])
     O.runopt(paras.runs['nsteps'])

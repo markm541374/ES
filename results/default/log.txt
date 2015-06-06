@@ -1,4 +1,4 @@
-runGPGO started at 18:18:02 on Fri 5 June 2015 on dunvegan
+runGPGO started at 11:45:12 on Sat 6 June 2015 on dunvegan
 
 INPUT from default:
 
@@ -33,4 +33,92 @@ Objective function parameters:
  'type': 'drawfromcov',
  'upper': [1.0]}
 
-runGPGO exited at 18:18:47 on Fri 5 June 2015
+initialised optimiser
+added random initial observations
+starting step 0
+setting new EP object
+searching under EIMLE
+finding IR location
+step 0completed in 1.26707291603
+starting step 1
+setting new EP object
+searching under EIMLE
+finding IR location
+step 1completed in 1.62244296074
+starting step 2
+setting new EP object
+searching under EIMLE
+finding IR location
+step 2completed in 1.94518303871
+starting step 3
+setting new EP object
+searching under EIMLE
+finding IR location
+step 3completed in 2.2517080307
+starting step 4
+setting new EP object
+searching under EIMLE
+finding IR location
+step 4completed in 2.72072196007
+starting step 5
+setting new EP object
+searching under EIMLE
+finding IR location
+step 5completed in 3.17511606216
+starting step 6
+setting new EP object
+searching under EIMLE
+finding IR location
+step 6completed in 3.58536100388
+starting step 7
+setting new EP object
+searching under EIMLE
+finding IR location
+step 7completed in 4.28352689743
+Completed 8steps in 20.8511810303
+saving opt as results/default/trace0.obj
+initialised optimiser
+added random initial observations
+starting step 0
+setting new EP object
+searching under EIMLE
+finding IR location
+step 0completed in 1.31411194801
+starting step 1
+setting new EP object
+searching under EIMLE
+finding IR location
+step 1completed in 1.58779501915
+starting step 2
+setting new EP object
+searching under EIMLE
+finding IR location
+step 2completed in 1.86837506294
+starting step 3
+setting new EP object
+searching under EIMLE
+finding IR location
+step 3completed in 2.23628997803
+starting step 4
+setting new EP object
+searching under EIMLE
+finding IR location
+step 4completed in 2.59152007103
+starting step 5
+setting new EP object
+searching under EIMLE
+finding IR location
+step 5completed in 3.03251695633
+starting step 6
+setting new EP object
+searching under EIMLE
+finding IR location
+step 6completed in 3.74652981758
+starting step 7
+setting new EP object
+searching under EIMLE
+finding IR location
+step 7completed in 4.35376596451
+Completed 8steps in 20.7309570312
+saving opt as results/default/trace1.obj
+runGPGO exited at 11:45:56 on Sat 6 June 2015
