@@ -20,8 +20,10 @@ from tools import *
 import sys
 import traceback
 import dill as pickle
-
 import time
+import logging
+logger=logging.getLogger()
+
 class EntPredictor():
     def __init__(self, D, lower, upper, kfgen, kfprior, para):
         self.D = D
@@ -514,8 +516,8 @@ class EntPredictor():
         return res
         
 class Optimizer():
-    def __init__(self, f, kfGen, kfPrior, lb, ub, para, logf=sys.stdout):
-        self.logf=logf
+    def __init__(self, f, kfGen, kfPrior, lb, ub, para):
+        
         self.f = f
         self.kfGen = kfGen
         self.kfPrior = kfPrior
@@ -538,7 +540,7 @@ class Optimizer():
         self.states[0]['f']=f
         self.states[0]['kfGen']=kfGen
         self.states[0]['kfPrior']=kfPrior
-        self.logf.write('initialised optimiser\n')
+        logger.debug('initialised optimiser')
         return
         
     def initrandobs(self, n_init, s_init):
@@ -549,7 +551,7 @@ class Optimizer():
         self.So = sp.matrix([[s_init]]*n_init)
         self.Do = [[sp.NaN]]*n_init
         self.states[0]['init']=[self.Xo, self.Yo, self.So, self.Do]
-        self.logf.write('added random initial observations\n')
+        logger.info('added '+str(n_init)+ ' random initial observations')
         return
 
     def initspecobs(self, Xo, Yo, So, Do):
@@ -558,7 +560,7 @@ class Optimizer():
         self.So = So
         self.Do = Do
         self.states[0]['init']=[self.Xo, self.Yo, self.So, self.Do]
-        self.logf.write('added specified initial observations')
+        logger.info('added '+str(len(Do))+' specified initial observations')
         return
         
     def setupEP(self):
@@ -566,7 +568,7 @@ class Optimizer():
             del(self.EP)
         except:
             pass
-        self.logf.write('setting new EP object\n')
+        logger.debug('setting new EP object')
         self.EP = EntPredictor([self.Xo,self.Yo,self.So,self.Do], self.lb, self.ub, self.kfGen, self.kfPrior, self.para )
         self.EP.setupEP()
         return
@@ -588,20 +590,20 @@ class Optimizer():
         return
     
     def searchnextFixS(self,s,obstype=[sp.NaN]):
-        self.logf.write('searching under fixed s\n')
+        logger.info('searching under fixed s')
         [x_n, H_e] = self.EP.searchENTs(s,obstype=obstype)
         yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
         
         return [x_n, yIn, s, obstype, H_e]
     
     def searchnextEIMLE(self,s):
-        self.logf.write('searching under EIMLE\n')
+        logger.info('searching under EIMLE')
         [x_n, EI] = self.EP.searchEIMLE()
         yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
         return [x_n, yIn, s, [sp.NaN], EI]
 
     def searchminpost(self):
-        self.logf.write('finding IR location\n')
+        logger.debug('finding IR location')
         if self.searchmethod == 'fixs':
                 f = self.EP.inferFBpost
         elif self.searchmethod =='EIMLE':
@@ -628,7 +630,7 @@ class Optimizer():
         for i in xrange(nsteps):
             t0=time.time()
             self.states.append(dict())
-            self.logf.write('starting step '+str(i)+'\n')
+            logger.debug('starting step '+str(i))
             self.setupEP()
             sys.stdout.flush()
             if self.searchmethod == 'fixs':
@@ -654,19 +656,19 @@ class Optimizer():
             self.states[-1]['xminIR'] = xminIR
             self.states[-1]['yminIR'] = yminIR
             
-            self.logf.write('step '+str(i)+'completed in '+str(time.time()-t0)+'\n')
-        self.logf.write('Completed '+str(nsteps)+'steps in '+str(time.time()-ti)+'\n')
+            logger.info('step '+str(i)+' completed in '+str(time.time()-t0))
+        logger.info('Completed '+str(nsteps)+' steps in '+str(time.time()-ti))
         return
    
     def savestate(self,fname='states.obj'):
-        self.logf.write('saving opt as '+fname+'\n')
+        logger.info('saving opt as '+fname)
         object = self.states
         file_n = open(fname, 'wb')
         pickle.dump(object, file_n)
         return
 
     def gotostate(self, staten):
-        self.logf.write('moving to step '+str('staten'))
+        logger.debug('moving to step '+str('staten'))
         [self.Xo, self.Yo, self.So, self.Do] = self.states[0]['init']
         for i in xrange(staten):
             [x, y, s, d, a] = self.states[i+1]['searchres']

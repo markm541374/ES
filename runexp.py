@@ -17,7 +17,7 @@ import GPep
 import GPd
 import DIRECT
 import EntropyPredict
-
+import logging
 #commandline input parser
 parser=argparse.ArgumentParser(prog='runGPGO')
 parser.add_argument('-p','--paras', nargs='?', default='default')
@@ -47,15 +47,28 @@ else:
     pass
 
 #print header to logfile
-logf = open(os.path.join(rpath,'log.txt'),'w')
-logf.write(parser.prog+ ' started at '+time.strftime('%H:%M:%S on %a %-d %B %Y') +' on ' +os.uname()[1]+'\n\n')
+logger=logging.getLogger()
+logger.setLevel(logging.DEBUG)
+db=logging.FileHandler(os.path.join(rpath,'debug.log'))
+db.setLevel(logging.DEBUG)
+inf=logging.FileHandler(os.path.join(rpath,'info.log'))
+inf.setLevel(logging.INFO)
+formatter=logging.Formatter('%(levelname)s:%(module)s:%(message)s')
+db.setFormatter(formatter)
+inf.setFormatter(formatter)
+logger.addHandler(db)
+logger.addHandler(inf)
 
-logf.write('INPUT from '+args.paras+':\n\nOptimisation parameters:\n')
-pprint.pprint(paras.optpara,logf)
-logf.write('\nObjective function parameters:\n')
-pprint.pprint(paras.objf,logf)
-logf.write('\n')
-
+header=''
+header+=parser.prog+ ' started at '+time.strftime('%H:%M:%S on %a %-d %B %Y') +' on ' +os.uname()[1]+'\n\n'
+header+='INPUT from '+args.paras+':\n\nOptimisation parameters:\n'
+logger.info(header)
+detail=''
+detail+=pprint.pformat(paras.optpara)
+detail+='\n\nObjective function parameters:\n'
+detail+=pprint.pformat(paras.objf)
+detail += '\n'
+logger.debug(detail)
 #make the generator function ofor the objective function
 
 if paras.objf['type']=='drawfromcov':
@@ -73,6 +86,7 @@ if paras.optpara['covtype']=='sqexp':
     optkfprior = genSqExpPrior([[paras.optpara['OSLM'],paras.optpara['OSLV']],[paras.optpara['I1LM'],paras.optpara['I1LV']]])
 
 for i in xrange(paras.runs['nopts']):
+    logger.info('starting run '+str(i)+'\n')
     #draw an objective function
     f=functiongenerator.genfun()
     ee = lambda x, y: (f(x), 0)
@@ -80,7 +94,7 @@ for i in xrange(paras.runs['nopts']):
     xmintrue = xmintrue[0]
     paras.optpara['xmintrue']=xmintrue
     paras.optpara['ymintrue']=miny
-    O = EntropyPredict.Optimizer(f,optkfGen, optkfprior, lower, upper, paras.optpara,logf=logf)
+    O = EntropyPredict.Optimizer(f,optkfGen, optkfprior, lower, upper, paras.optpara)
     if paras.optpara['inittype']=='rand':
         O.initrandobs(paras.optpara['nrand'],paras.optpara['fixs'])
     O.runopt(paras.runs['nsteps'])
@@ -88,5 +102,4 @@ for i in xrange(paras.runs['nopts']):
         
     
     
-logf.write(parser.prog+ ' exited at '+time.strftime('%H:%M:%S on %a %-d %B %Y'))
-logf.close()
+logger.info(parser.prog+ ' exited at '+time.strftime('%H:%M:%S on %a %-d %B %Y'))
