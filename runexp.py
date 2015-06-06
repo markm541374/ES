@@ -97,7 +97,10 @@ for i in xrange(paras.runs['nopts']):
     O = EntropyPredict.Optimizer(f,optkfGen, optkfprior, lower, upper, paras.optpara)
     if paras.optpara['inittype']=='rand':
         O.initrandobs(paras.optpara['nrand'],paras.optpara['fixs'])
-    O.runopt(paras.runs['nsteps'])
+    try:
+        O.runopt(paras.runs['nsteps'])
+    except:
+        logger.warn('optimisation did not complete cleanly')
     O.savestate(os.path.join(rpath,'trace'+str(i)+'.obj'))
         
     

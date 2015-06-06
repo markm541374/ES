@@ -4,7 +4,7 @@ Created on Fri Jun  5 14:27:46 2015
 
 @author: mark
 """
-
+#optimisation run parameters
 
 optpara=dict()
 optpara['D']=1
@@ -46,5 +46,5 @@ objf['upper']=[1.]
 
 
 runs=dict()
-runs['nopts']=2
-runs['nsteps']=8
+runs['nopts']=4
+runs['nsteps']=12

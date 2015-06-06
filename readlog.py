@@ -29,3 +29,17 @@ class OptEval():
             xminest = sp.matrix(s['xminIR'])
             xerr.append(spl.norm(xmintrue-xminest, ord='fro'))
         return xerr
+        
+        
+        
+def plotany(xdata ,ydata, p):
+    f = plt.figure()
+    a = f.add_subplot(111)
+    for i,xs in enumerate(xdata):
+        for j,x in enumerate(xs):
+            a.plot(x,ydata[i][j],p['colorcodes'][i])
+    a.set_yscale(p['yscale'])
+    a.set_xscale(p['xscale'])
+    a.set_title(p['title'])
+    
+    return [f,a]
