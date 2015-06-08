@@ -29,17 +29,33 @@ class OptEval():
             xminest = sp.matrix(s['xminIR'])
             xerr.append(spl.norm(xmintrue-xminest, ord='fro'))
         return xerr
-        
-        
-        
-def plotany(xdata ,ydata, p):
-    f = plt.figure()
-    a = f.add_subplot(111)
-    for i,xs in enumerate(xdata):
-        for j,x in enumerate(xs):
-            a.plot(x,ydata[i][j],p['colorcodes'][i])
-    a.set_yscale(p['yscale'])
-    a.set_xscale(p['xscale'])
-    a.set_title(p['title'])
     
+    def yIR(self):
+        yIR=[]
+        ymintrue = self.O.para['ymintrue']
+        for s in self.O.states[1:]:
+            xminest = sp.matrix(s['xminIR'])
+            yIR.append(abs(self.O.f(xminest)[0,0]-ymintrue))
+        
+        return sp.array(yIR)
+        
+
+    
+def plotset(Y,x,f,a,c,extras=[]):
+    
+    if f==None:
+        f = plt.figure()
+        a = f.add_subplot(111)
+    for i in xrange(Y.shape[0]):
+        a.plot(x,Y[i,:],c)
+    for e in extras:
+        if e=='median':
+            plt.plot(x,getmedian(Y),'r')
     return [f,a]
+    
+def getmedian(X):
+    #median along each column
+    m=[]
+    for j in xrange(X.shape[1]):
+        m.append(sp.median(X[:,j]))
+    return m

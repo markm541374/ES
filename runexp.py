@@ -18,6 +18,7 @@ import GPd
 import DIRECT
 import EntropyPredict
 import logging
+import traceback
 #commandline input parser
 parser=argparse.ArgumentParser(prog='runGPGO')
 parser.add_argument('-p','--paras', nargs='?', default='default')
@@ -100,7 +101,7 @@ for i in xrange(paras.runs['nopts']):
     try:
         O.runopt(paras.runs['nsteps'])
     except:
-        logger.warn('optimisation did not complete cleanly')
+        logger.error('optimisation did not complete cleanly\n'+traceback.format_exc())
     O.savestate(os.path.join(rpath,'trace'+str(i)+'.obj'))
         
     

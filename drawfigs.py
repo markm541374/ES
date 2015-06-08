@@ -57,7 +57,25 @@ for dp in dpaths:
 
 for plot in para.plots:
     if plot['name']=='xerr':
-        ydata=[[r.xerr() for r in d] for d in data]
-        xdata=[[range(len(x)) for x in xs] for xs in ydata]
-        [f,a] = readlog.plotany(xdata,ydata,plot)
+        f = plt.figure()
+        a = f.add_subplot(111)
+        for i,d in enumerate(data):
+            ydata=sp.vstack([r.xerr() for r in d])
+            xdata=range(len(ydata[0]))
+            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'])
+        a.set_yscale(plot['yscale'])
+        a.set_xscale(plot['xscale'])
+        a.set_title(plot['title'])
         f.savefig(os.path.join(rpath,'xerr.png'))
+        
+    if plot['name']=='IR':        
+        f = plt.figure()
+        a = f.add_subplot(111)
+        for i,d in enumerate(data):
+            ydata=sp.vstack([r.yIR() for r in d])
+            xdata=range(len(ydata[0]))
+            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'])
+        a.set_yscale(plot['yscale'])
+        a.set_xscale(plot['xscale'])
+        a.set_title(plot['title'])
+        f.savefig(os.path.join(rpath,'yIR.png'))
