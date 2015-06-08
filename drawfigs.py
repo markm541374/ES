@@ -56,26 +56,27 @@ for dp in dpaths:
     data.append([readlog.OptEval(os.path.join(dp,f)) for f in os.listdir(dp) if f[-4:]=='.obj'])
 
 for plot in para.plots:
+    f = plt.figure()
+    a = f.add_subplot(111)
     if plot['name']=='xerr':
-        f = plt.figure()
-        a = f.add_subplot(111)
         for i,d in enumerate(data):
             ydata=sp.vstack([r.xerr() for r in d])
             xdata=range(len(ydata[0]))
             readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'])
-        a.set_yscale(plot['yscale'])
-        a.set_xscale(plot['xscale'])
-        a.set_title(plot['title'])
-        f.savefig(os.path.join(rpath,'xerr.png'))
         
     if plot['name']=='IR':        
-        f = plt.figure()
-        a = f.add_subplot(111)
         for i,d in enumerate(data):
             ydata=sp.vstack([r.yIR() for r in d])
             xdata=range(len(ydata[0]))
             readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'])
-        a.set_yscale(plot['yscale'])
-        a.set_xscale(plot['xscale'])
-        a.set_title(plot['title'])
-        f.savefig(os.path.join(rpath,'yIR.png'))
+              
+    if plot['name']=='times':        
+        for i,d in enumerate(data):
+            ydata=sp.vstack([r.steptimes() for r in d])
+            xdata=range(len(ydata[0]))
+            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'])
+    
+    a.set_yscale(plot['yscale'])
+    a.set_xscale(plot['xscale'])
+    a.set_title(plot['title'])
+    f.savefig(os.path.join(rpath,plot['name']+'.png'))

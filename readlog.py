@@ -38,8 +38,12 @@ class OptEval():
             yIR.append(abs(self.O.f(xminest)[0,0]-ymintrue))
         
         return sp.array(yIR)
-        
-
+    
+    def steptimes(self):
+        t=[]
+        for s in self.O.states[1:]:
+            t.append(s['time'])
+        return sp.array(t)
     
 def plotset(Y,x,f,a,c,extras=[]):
     
@@ -51,6 +55,8 @@ def plotset(Y,x,f,a,c,extras=[]):
     for e in extras:
         if e=='median':
             plt.plot(x,getmedian(Y),'r')
+        if e=='mean':
+            plt.plot(x,getmean(Y),'g')
     return [f,a]
     
 def getmedian(X):
@@ -58,4 +64,11 @@ def getmedian(X):
     m=[]
     for j in xrange(X.shape[1]):
         m.append(sp.median(X[:,j]))
+    return m
+    
+def getmean(X):
+    #median along each column
+    m=[]
+    for j in xrange(X.shape[1]):
+        m.append(sp.mean(X[:,j]))
     return m

@@ -70,6 +70,10 @@ class EntPredictor():
             self.initEPInfer()
         elif self.para['searchmethod'] == 'EIMLE':
             self.searchMLEHYP()
+        elif self.para['searchmethod'] == 'EIFB':
+            self.searchMLEHYP()
+            self.drawHYPsamples()
+            self.initFBInfer()
         else:
             raise KeyError('no searchmethod defined')
         return
@@ -403,6 +407,22 @@ class EntPredictor():
         print 'maxEIMLE '+str(xmin)
         return [xmin, miny]
         
+    def searchEIFB(self):
+        print 'Searhing for MaxFBEI'
+        def ee(x,y):
+            global EIsearchi
+            EIsearchi+=1
+            EIsearchi
+            print '\rIter: %d    ' % EIsearchi,
+            return (-self.EIFB(x), 0)
+        global EIsearchi
+        EIsearchi=0
+        [xmin, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=self.ENTsearchn, logfilename='/dev/null')
+        del(EIsearchi)
+        print 'maxEIFB '+str(xmin)
+        return [xmin, miny]
+        
+        
     def plotENT(self,ss,axis=0,point='None',np=100,obstype=[[sp.NaN]]):
         print 'plotting predictive Entropy'
         [f,a] = self.plotFBpost(axis=axis, point=point,np=np,obstype=obstype)
@@ -530,6 +550,8 @@ class Optimizer():
             self.obstype = para['obstype']
         elif self.searchmethod =='EIMLE':
             self.fixs = para['fixs']
+        elif self.searchmethod =='EIFB':
+            self.fixs = para['fixs']
         else:
             raise KeyError('no searchmethod defined')
         
@@ -540,6 +562,7 @@ class Optimizer():
         self.states[0]['f']=f
         self.states[0]['kfGen']=kfGen
         self.states[0]['kfPrior']=kfPrior
+        
         logger.debug('initialised optimiser')
         return
         
@@ -602,12 +625,20 @@ class Optimizer():
         yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
         return [x_n, yIn, s, [sp.NaN], EI]
 
+    def searchnextEIFB(self,s):
+        logger.info('searching under EIFB')
+        [x_n, EI] = self.EP.searchEIFB()
+        yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
+        return [x_n, yIn, s, [sp.NaN], EI]
+
     def searchminpost(self):
         logger.debug('finding IR location')
         if self.searchmethod == 'fixs':
                 f = self.EP.inferFBpost
         elif self.searchmethod =='EIMLE':
                 f = self.EP.inferMLEpost
+        elif self.searchmethod =='EIFB':
+                f = self.EP.inferFBpost
         else:
             raise KeyError('no searchmethod defined')
         global sn
@@ -642,6 +673,9 @@ class Optimizer():
             elif self.searchmethod =='EIMLE':
                 [x, y, s, d, a] = self.searchnextEIMLE(self.fixs)
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
+            elif self.searchmethod =='EIFB':
+                [x, y, s, d, a] = self.searchnextEIFB(self.fixs)
+                self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
             else:
                 raise KeyError('no searchmethod defined')
             
@@ -655,8 +689,9 @@ class Optimizer():
             [xminIR,yminIR] = self.searchminpost()
             self.states[-1]['xminIR'] = xminIR
             self.states[-1]['yminIR'] = yminIR
-            
-            logger.info('step '+str(i)+' completed in '+str(time.time()-t0))
+            steptime=time.time()-t0
+            self.states[-1]['time']=steptime
+            logger.info('step '+str(i)+' completed in '+str(steptime))
         logger.info('Completed '+str(nsteps)+' steps in '+str(time.time()-ti))
         return
    
