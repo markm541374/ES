@@ -19,6 +19,7 @@ import EntropyPredict
 import scipy.stats as sps
 import readlog
 from matplotlib import pyplot as plt
+import cProfile, pstats, StringIO
 #%pylab inline
 
 # %%
@@ -63,25 +64,24 @@ para=dict()
 para['xmintrue'] = xmintrue
 para['ymintrue'] = miny
 
-para['nHYPsamples']=8
+para['nHYPsamples']=12
 para['HYPsearchLow'] = [-2, -2]
 para['HYPsearchHigh'] = [2, 2]
-para['HYPMLEsearchn'] = 800
+para['HYPMLEsearchn'] = 1000
 para['HYPsamSigma'] = 0.05
 para['HYPsamBurn'] = 12
 para['ENTnsam'] = 100
 para['ENTzeroprecision'] = 10**-6
-para['ENTsearchn'] = 500
-para['IRsearchn'] = 500
+para['ENTsearchn'] = 1000
+para['IRsearchn'] = 1000
 #para['searchmethod']='fixs'
 #para['fixs'] = 0.0001
-para['searchmethod']='EIMLE'
+para['searchmethod']='EIFB'
 para['fixs'] = 0.0001
 
 para['obstype'] = [sp.NaN]
 #para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
 # %%
-
 reload(EntropyPredict)
 reload(GPset)
 
@@ -90,16 +90,26 @@ O.initrandobs(5,para['fixs'])
 O.setupEP()
 #O.plotstate()
 # %%
-for i in xrange(12):
+pr = cProfile.Profile()
+pr.enable()
+
+for i in xrange(2):
     print 'optstep'+str(i)
     O.runopt(1)
     #O.plotstate()
     #plt.show()
+pr.disable()
+s = StringIO.StringIO()
+sortby = 'cumulative'
+ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+ps.print_stats()
+print s.getvalue()
+
 # %%
 O.savestate()
 
 # %%
-E = readlog.OptEval('ENTstates.obj')
+E = readlog.OptEval('states.obj')
 plt.semilogy(E.xerr(),'b')
 E = readlog.OptEval('ENTstates2.obj')
 plt.semilogy(E.xerr(),'b')

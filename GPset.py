@@ -64,7 +64,7 @@ class multiGP:
         result = []
         for c in self.conns:
             while not c.poll():
-                time.sleep(0.1)
+                time.sleep(0.000001)
             result.append(c.recv())
         return result
         
@@ -72,7 +72,7 @@ class multiGP:
         #print '\rInfAny0      ',
         for c in self.conns:
             c.send([code,X_i,D_i])
-        time.sleep(0.01)
+        time.sleep(0.000001)
         #print '\rInfAny1      ',
         result=[]
         #t0=time.time()
@@ -85,7 +85,7 @@ class multiGP:
             while not c.poll():
                 #j+=1
                 #print '\r'+str(j),
-                time.sleep(0.1)
+                time.sleep(0.000001)
                 #print '\rb',
                 #if (time.time()-t0)>timeout:
                 #    err=True
@@ -138,14 +138,14 @@ class mGPd(Process):
             self.status=[-2,err]
             while not self.exit_event.is_set():
                 if not self.conn.poll():
-                    time.sleep(0.1)
+                    time.sleep(0.000001)
                     continue
                 msg = self.conn.poll
                 self.conn.send(self.status)
                 
         while not self.exit_event.is_set():
             if not self.conn.poll():
-                time.sleep(0.1)
+                time.sleep(0.000001)
                 continue
             [code, X_i, D_i] = self.conn.recv()
             try:
@@ -217,7 +217,7 @@ class mGPep(Process):
             self.status=[-2,err]
             while not self.exit_event.is_set():
                 if not self.conn.poll():
-                    time.sleep(0.1)
+                    time.sleep(0.000001)
                     continue
                 msg = self.conn.poll
                 
@@ -225,7 +225,7 @@ class mGPep(Process):
                 
         while not self.exit_event.is_set():
             if not self.conn.poll():
-                time.sleep(0.1)
+                time.sleep(0.000001)
                 continue
             [code, X_i, D_i] = self.conn.recv()
             try:
