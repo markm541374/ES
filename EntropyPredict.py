@@ -21,6 +21,7 @@ import sys
 import traceback
 import dill as pickle
 import time
+from multiprocessing import Process, Pipe, Event, active_children
 import logging
 logger=logging.getLogger()
 
@@ -693,6 +694,8 @@ class Optimizer():
             self.states[-1]['time']=steptime
             logger.info('step '+str(i)+' completed in '+str(steptime))
         logger.info('Completed '+str(nsteps)+' steps in '+str(time.time()-ti))
+        for c in active_children():
+            c.terminate()
         return
    
     def savestate(self,fname='states.obj'):

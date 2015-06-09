@@ -53,10 +53,10 @@ def plotset(Y,x,f,a,c,extras=[]):
     for i in xrange(Y.shape[0]):
         a.plot(x,Y[i,:],c)
     for e in extras:
-        if e=='median':
-            plt.plot(x,getmedian(Y),'r')
-        if e=='mean':
-            plt.plot(x,getmean(Y),'g')
+        if e['name']=='median':
+            plt.plot(x,getmedian(Y),e['colorcode'])
+        if e['name']=='mean':
+            plt.plot(x,getmean(Y),e['colorcode'])
     return [f,a]
     
 def getmedian(X):

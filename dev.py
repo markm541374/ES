@@ -76,7 +76,7 @@ para['ENTsearchn'] = 1000
 para['IRsearchn'] = 1000
 #para['searchmethod']='fixs'
 #para['fixs'] = 0.0001
-para['searchmethod']='EIFB'
+para['searchmethod']='EIMLE'
 para['fixs'] = 0.0001
 
 para['obstype'] = [sp.NaN]
@@ -111,10 +111,7 @@ O.savestate()
 # %%
 E = readlog.OptEval('states.obj')
 plt.semilogy(E.xerr(),'b')
-E = readlog.OptEval('ENTstates2.obj')
-plt.semilogy(E.xerr(),'b')
-E = readlog.OptEval('EIstates.obj')
-plt.semilogy(E.xerr(),'r')
+
 
 # %%
 

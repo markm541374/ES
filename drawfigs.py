@@ -16,6 +16,7 @@ import pprint
 from tools import *
 import GPep
 import GPd
+import GPset
 import DIRECT
 import EntropyPredict
 import logging
@@ -53,28 +54,32 @@ else:
 dpaths=[os.path.join('results',p) for p in para.datasets]
 data=[]
 for dp in dpaths:
-    data.append([readlog.OptEval(os.path.join(dp,f)) for f in os.listdir(dp) if f[-4:]=='.obj'])
-
+    try:
+        data.append([readlog.OptEval(os.path.join(dp,f)) for f in os.listdir(dp) if f[-4:]=='.obj'])
+    except:
+        print data
+        raise KeyboardInterrupt
 for plot in para.plots:
     f = plt.figure()
     a = f.add_subplot(111)
-    if plot['name']=='xerr':
-        for i,d in enumerate(data):
+    for i,d in enumerate([d for i,d in enumerate(data) if plot['dsets'][i]]):
+        if plot['name']=='xerr':
+        
             ydata=sp.vstack([r.xerr() for r in d])
             xdata=range(len(ydata[0]))
-            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'])
+            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
         
-    if plot['name']=='IR':        
-        for i,d in enumerate(data):
+        if plot['name']=='IR':        
+        
             ydata=sp.vstack([r.yIR() for r in d])
             xdata=range(len(ydata[0]))
-            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'])
+            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
               
-    if plot['name']=='times':        
-        for i,d in enumerate(data):
+        if plot['name']=='times':        
+        
             ydata=sp.vstack([r.steptimes() for r in d])
             xdata=range(len(ydata[0]))
-            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'])
+            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
     
     a.set_yscale(plot['yscale'])
     a.set_xscale(plot['xscale'])
