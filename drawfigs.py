@@ -61,26 +61,42 @@ for dp in dpaths:
         raise KeyboardInterrupt
 for plot in para.plots:
     f = plt.figure()
-    a = f.add_subplot(111)
+    
     for i,d in enumerate([d for i,d in enumerate(data) if plot['dsets'][i]]):
         if plot['name']=='xerr':
-        
+            a = f.add_subplot(111)
             ydata=sp.vstack([r.xerr() for r in d])
             xdata=range(len(ydata[0]))
             readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
         
         if plot['name']=='IR':        
-        
+            a = f.add_subplot(111)
             ydata=sp.vstack([r.yIR() for r in d])
             xdata=range(len(ydata[0]))
             readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
               
         if plot['name']=='times':        
-        
+            a = f.add_subplot(111)
             ydata=sp.vstack([r.steptimes() for r in d])
             xdata=range(len(ydata[0]))
             readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
-    
+            
+        if plot['name']=='MLEhyp':
+            alldata = [r.MLEhyp() for r in d]
+            ydata=[]
+            D=len(alldata[0][0])
+           
+            for j in xrange(D):
+                ydata.append(sp.vstack([[h[j] for h in x] for x in alldata]))
+            xdata=range(len(alldata[0]))
+            for j in xrange(D):
+                a = f.add_subplot(D,1,j)
+                readlog.plotset(ydata[j],xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
+                a.set_yscale(plot['yscale'])
+                a.set_xscale(plot['xscale'])
+                a.set_title(plot['title'])
+                
+                
     a.set_yscale(plot['yscale'])
     a.set_xscale(plot['xscale'])
     a.set_title(plot['title'])

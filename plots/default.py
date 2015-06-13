@@ -7,7 +7,7 @@ Created on Sat Jun  6 14:51:25 2015
 
 #ploting parameters
 
-datasets=['EIMLE_20_40','EIFB_20_401']
+datasets=['EIMLE_20_401','EIFB_20_401']
 plots=[]
 
 #xmintrueplot
@@ -61,10 +61,21 @@ p['title']='time vs. steps'
 
 ex1=[dict()]
 ex1[0]['name']='mean'
-ex1[0]['colorcode']=['r']
+ex1[0]['colorcode']='r'
 ex2=[dict()]
 ex2[0]['name']='mean'
-ex2[0]['colorcode']=['g']
+ex2[0]['colorcode']='g'
 
 p['extras']=[ex1,ex2]
+plots.append(p)
+
+#MLEhyperparameters
+p=dict()
+p['name']='MLEhyp'
+p['dsets']=[False,True]
+p['colorcodes']=['lightblue','lightgreen']
+p['xscale']='linear'
+p['yscale']='log'
+p['title']='MLYHYP vs. steps'
+p['extras']=[[],[]]
 plots.append(p)

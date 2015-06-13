@@ -64,7 +64,7 @@ para=dict()
 para['xmintrue'] = xmintrue
 para['ymintrue'] = miny
 
-para['nHYPsamples']=12
+para['nHYPsamples']=1
 para['HYPsearchLow'] = [-2, -2]
 para['HYPsearchHigh'] = [2, 2]
 para['HYPMLEsearchn'] = 1000
@@ -74,10 +74,10 @@ para['ENTnsam'] = 100
 para['ENTzeroprecision'] = 10**-6
 para['ENTsearchn'] = 1000
 para['IRsearchn'] = 1000
-#para['searchmethod']='fixs'
-#para['fixs'] = 0.0001
-para['searchmethod']='EIMLE'
+para['searchmethod']='fixs'
 para['fixs'] = 0.0001
+#para['searchmethod']='EIMLE'
+#para['fixs'] = 0.0001
 
 para['obstype'] = [sp.NaN]
 #para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
@@ -93,9 +93,9 @@ O.setupEP()
 pr = cProfile.Profile()
 pr.enable()
 
-for i in xrange(2):
+for i in xrange(1):
     print 'optstep'+str(i)
-    O.runopt(1)
+    O.runopt(2)
     #O.plotstate()
     #plt.show()
 pr.disable()
@@ -114,4 +114,6 @@ plt.semilogy(E.xerr(),'b')
 
 
 # %%
-
+for j in xrange(1000):
+    print j
+    O.EP.EPInfer.infer_full_var([sp.matrix([sp.random.uniform()]).T]*12,[[[sp.NaN]]]*12)

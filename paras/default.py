@@ -8,7 +8,7 @@ Created on Fri Jun  5 14:27:46 2015
 
 optpara=dict()
 optpara['D']=1
-optpara['nHYPsamples']=8
+optpara['nHYPsamples']=6
 optpara['HYPsearchLow'] = [-2, -2]
 optpara['HYPsearchHigh'] = [2, 2]
 optpara['HYPMLEsearchn'] = 800
@@ -18,7 +18,7 @@ optpara['ENTnsam'] = 100
 optpara['ENTzeroprecision'] = 10**-6
 optpara['ENTsearchn'] = 500
 optpara['IRsearchn'] = 500
-optpara['searchmethod']='EIMLE'
+optpara['searchmethod']='fixs'
 optpara['fixs'] = 0.0001
 from scipy import NaN as nan
 optpara['obstype'] = [nan]
@@ -46,5 +46,5 @@ objf['upper']=[1.]
 
 
 runs=dict()
-runs['nopts']=4
-runs['nsteps']=12
+runs['nopts']=2
+runs['nsteps']=3

@@ -66,9 +66,12 @@ class EntPredictor():
         if self.para['searchmethod'] == 'fixs':
             self.searchMLEHYP()
             self.drawHYPsamples()
-            self.initFBInfer()
+            s0 = self.initFBInfer()
             self.drawmins()
-            self.initEPInfer()
+            s1 = self.initEPInfer()
+            if not s0==0 and s1==1:
+                logger.error('fixs failed to init')
+                raise ValueError('fixs failed to init')
         elif self.para['searchmethod'] == 'EIMLE':
             self.searchMLEHYP()
         elif self.para['searchmethod'] == 'EIFB':
@@ -138,10 +141,14 @@ class EntPredictor():
         for kf in self.HYPsampleFns:
             self.FBInfer.addGPd(self.D[0], self.D[1], self.D[2], self.D[3], kf)
         status = self.FBInfer.status()
-        ns = len([i for i in status if i[0]==0])
-        nk = self.nHYPsamples
-        print str(ns)+' of '+str(nk)+' kernel draws inited sucessfuly'
-        return
+        flag = False
+        for s in status:
+            if not  s[0]==0:
+                flag = True
+        if flag:
+            logger.error('FBInfer failed to init \n'+str(status))
+            return -1
+        return 0
     
     def initEPInfer(self):
         Xo=self.D[0]
@@ -171,12 +178,19 @@ class EntPredictor():
             Iz = sp.matrix([[Yo[Yo.argmin(), :][0, 0]], [0.]])
             # sign of the inequality
             Gz = [0, 0]
-            Nz = [So[Yo.argmin(), :], 0.] #!!!!!this value is important, should it e the sigma for hte min obs or the posterior at that piont??
-        
+            Nz = [So[Yo.argmin(), :], 0.]  #!!!!!this value is important, should it e the sigma for hte min obs or the posterior at that piont??
+
             self.EPInfer.addGPep(Xc, Yc, Sc, Dc, Xz, Dz, Iz, Gz, Nz, self.HYPsampleFns[i])
-            
-        
-        return
+
+        status = self.EPInfer.status()
+        flag = False
+        for s in status:
+            if not s[0] == 0:
+                flag = True
+        if flag:
+            logger.error('EPInfer failed to init \n'+str(status))
+            return -1
+        return 0
         
         
     def inferMLEpost(self,X_s,D_s):
@@ -341,11 +355,11 @@ class EntPredictor():
         
     def plotEPchanges(self, axis=0,point='None',np=100,obstype=[[sp.NaN]]):
         print 'plotting EPchanges'
-        X=[]
+        #X=[]
         if point=='None':
             point=sp.zeros(self.dim)
         n_hyp = len(self.FBInfer.processes)
-        clean = sp.zeros(n_hyp)
+        #clean = sp.zeros(n_hyp)
         x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
         m_0 = [sp.zeros(np) for i in xrange(n_hyp)]
         v_0 = [sp.zeros(np) for i in xrange(n_hyp)]
@@ -377,12 +391,39 @@ class EntPredictor():
         
         return [f,axs]
     def searchENTs(self,ss, obstype=[sp.NaN]):
+        EPstatus = self.EPInfer.status()
+        FBstatus = self.FBInfer.status()
+        
+        
+        flag=False        
+        for s in EPstatus:
+            if not s[0]==0:
+                flag=True
+        for s in FBstatus:
+            if not s[0]==0:
+                flag=True
+                
+        if flag:
+            logger.error('FBstatus before search: '+str(FBstatus))
+            logger.error('EPstatus before search: '+str(EPstatus))
+            print 'search not started'
+            print 'EP: '+str(EPstatus)
+            print 'FB: '+str(FBstatus)
+            del(self.EPInfer)
+            del(self.FBInfer)
+            for c in active_children():
+                c.terminate()
+            raise ValueError('epic fail')
+            return -1
+            
+            
+        
         print 'Searhing for MaxENT'
         def ee(x,y):
             global ENTsearchi
             ENTsearchi+=1
             ENTsearchi
-            print '\rb'+str(x),
+            #print '\rb'+str(x),
             ret = -self.findENT(x, obstype,ss)
             print '\ra'+str(x)+' '+'Iter: %d  ' % ENTsearchi +' '+str(ret),
             return (ret, 0)
@@ -430,7 +471,7 @@ class EntPredictor():
         X=[]
         if point=='None':
             point=sp.zeros(self.dim)
-        n_hyp = len(self.FBInfer.processes)
+        #n_hyp = len(self.FBInfer.processes)
         
         x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
         
@@ -480,10 +521,10 @@ class EntPredictor():
         if point=='None':
             point=sp.zeros(self.dim)
         n_hyp = len(self.FBInfer.processes)
-        clean = sp.zeros(n_hyp)
+        #clean = sp.zeros(n_hyp)
         x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
-        y_s = [[] for i in xrange(n_hyp)]
-        v_s = [[] for i in xrange(n_hyp)]
+        #y_s = [[] for i in xrange(n_hyp)]
+        #v_s = [[] for i in xrange(n_hyp)]
         for i in x_r:
             pi = point.copy()
             pi[axis]=i
@@ -630,7 +671,7 @@ class Optimizer():
         logger.info('searching under EIFB')
         [x_n, EI] = self.EP.searchEIFB()
         yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
-        return [x_n, yIn, s, [sp.NaN], EI]
+        return [x_n, yIn, s[0], [sp.NaN], EI]
 
     def searchminpost(self):
         logger.debug('finding IR location')
@@ -669,8 +710,8 @@ class Optimizer():
                 [x, y, s, d, a] = self.searchnextFixS(self.fixs, obstype = self.obstype)
                 self.states[-1]['HYPsamples']=self.EP.HYPsampleVals
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
-                print 'FBstatus '+str(sorted([s[0] for s in self.EP.FBInfer.status()]))
-                print 'EPstatus '+str(sorted([s[0] for s in self.EP.EPInfer.status()]))
+                print 'FBstatus '+str(sorted([st[0] for st in self.EP.FBInfer.status()]))
+                print 'EPstatus '+str(sorted([st[0] for st in self.EP.EPInfer.status()]))
             elif self.searchmethod =='EIMLE':
                 [x, y, s, d, a] = self.searchnextEIMLE(self.fixs)
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
@@ -682,6 +723,8 @@ class Optimizer():
             
             self.Xo = sp.vstack([self.Xo, x])
             self.Yo = sp.vstack([self.Yo, y])
+            print self.So
+            print s
             self.So = sp.vstack([self.So, s])
             self.Do.append(d)
             

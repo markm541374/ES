@@ -14,12 +14,22 @@ import traceback
 import scipy as sp
 import scipy.linalg as spl
 from scipy.stats import norm as norm
+import logging
+logger=logging.getLogger()
+import os
 
 class multiGP:
     def __init__(self):
         self.processes = []
         self.conns = []
         self.exits = []
+        
+        self.logthis = logging.getLogger()
+        self.logthis.setLevel(logging.DEBUG)
+        self.uniq=sp.random.randint(1000000,9000000)
+        db=logging.FileHandler(os.path.join('proclogs','host'+'__'+str(self.uniq)+'.log'))
+        db.setLevel(logging.DEBUG)
+        self.logthis.addHandler(db)
         return
     
     def addGPd(self, X_s, Y_s, S_s, D_s, kf):
@@ -59,46 +69,31 @@ class multiGP:
         return self.infer_any(0, X_i, D_i)
     
     def infer_full_var(self, X_is, D_is):
-        for i,c in enumerate(self.conns):        
+        for i,c in enumerate(self.conns):
+            self.logthis.debug('send to '+str(c)+ ' '+str([0,X_is[i],D_is[i]]))
             c.send([0,X_is[i],D_is[i]])
+        time.sleep(0.000001)
         result = []
         for c in self.conns:
             while not c.poll():
                 time.sleep(0.000001)
-            result.append(c.recv())
+            rs = c.recv()
+            self.logthis.debug('recv from'+str(c)+ ' '+str(rs))
+            if rs[0]==-1:
+                logger.error(rs[1])
+            result.append(rs)
         return result
         
     def infer_any(self,code, X_i, D_i,timeout=10.):
-        #print '\rInfAny0      ',
         for c in self.conns:
             c.send([code,X_i,D_i])
         time.sleep(0.000001)
-        #print '\rInfAny1      ',
         result=[]
-        #t0=time.time()
-        #i=0
         for c in self.conns:
-            #print '\rInfAnycon'+str(i)+'    ',
-            #i+=1
             err=False
-            #j=0
             while not c.poll():
-                #j+=1
-                #print '\r'+str(j),
                 time.sleep(0.000001)
-                #print '\rb',
-                #if (time.time()-t0)>timeout:
-                #    err=True
-                #    print 'timeout ocured'
-                #    break
-                #print '\rc',
-            #print '\rd',
-            #if not err:
-            #    print '\re',
             result.append(c.recv())
-            #else:
-            #    print '\rf',
-            #    result.append([-3,'timeout'])
         return result
       
     def llk(self):
@@ -128,6 +123,13 @@ class mGPd(Process):
         self.exit_event=exit_event
         self.GP = GPd.GPcore(X_s, Y_s, S_s, D_s, kf,precom=False)
         self.status=[0,0,0]
+        self.logthis = logging.getLogger()
+        self.logthis.setLevel(logging.DEBUG)
+        self.uniq=sp.random.randint(1000000,9000000)
+        db=logging.FileHandler(os.path.join('proclogs',str(self.name)+'__'+str(self.uniq)+'.log'))
+        db.setLevel(logging.DEBUG)
+        self.logthis.addHandler(db)
+        
         return
         
     def run(self):
@@ -148,6 +150,7 @@ class mGPd(Process):
                 time.sleep(0.000001)
                 continue
             [code, X_i, D_i] = self.conn.recv()
+            self.logthis.debug(str(self.uniq)+'recv '+str([code, X_i, D_i]))
             try:
                 if code==-1:
                     res=self.status
@@ -165,6 +168,7 @@ class mGPd(Process):
                     res=self.drawmin(n_points,bound)
                 else:
                     raise ValueError('code not supported')
+                self.logthis.debug(str(self.uniq)+'send '+str(res))
                 self.conn.send([0, res])
                 self.status[1]+=1
             except:
@@ -172,6 +176,7 @@ class mGPd(Process):
                 self.status[0]=-1
                 self.status[1]+=1
                 self.status[2]+=1
+        
         return
         
     def drawmin(self,n_points,bound):
@@ -207,6 +212,18 @@ class mGPep(Process):
         self.exit_event=exit_event
         self.GP = GPep.GPcore(X_c, Y_c, S_c, D_c, X_z, D_z, I_z, G_z, N_z, kf)
         self.status=[0,0,0]
+        
+        self.logthis = logging.getLogger()
+        self.logthis.setLevel(logging.DEBUG)
+        self.uniq=sp.random.randint(1000000,9000000)
+        
+        db=logging.FileHandler(os.path.join('proclogs',str(self.name)+'__'+str(self.uniq)+'.log'))
+        db.setLevel(logging.DEBUG)
+        self.logthis.addHandler(db)
+        
+        
+        
+        
         return
         
     def run(self):
@@ -228,6 +245,7 @@ class mGPep(Process):
                 time.sleep(0.000001)
                 continue
             [code, X_i, D_i] = self.conn.recv()
+            self.logthis.debug(str(self.uniq)+'recv '+str([code, X_i, D_i]))
             try:
                 if code==-1:
                     res=self.status
@@ -241,6 +259,7 @@ class mGPep(Process):
                     res = self.GP.llk()
                 else:
                     raise ValueError('code not supported')
+                self.logthis.debug(str(self.uniq)+'send '+str(res))
                 self.conn.send([0, res])
                 self.status[1]+=1
             except:

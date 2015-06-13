@@ -45,6 +45,12 @@ class OptEval():
             t.append(s['time'])
         return sp.array(t)
     
+    def MLEhyp(self):
+        h=[]
+        for s in self.O.states[1:]:
+            h.append([10**x for x in s['logHYPMLE']])
+        return h
+        
 def plotset(Y,x,f,a,c,extras=[]):
     
     if f==None:
