@@ -58,7 +58,7 @@ for dp in dpaths:
         data.append([readlog.OptEval(os.path.join(dp,f)) for f in os.listdir(dp) if f[-4:]=='.obj'])
     except:
         print data
-        raise KeyboardInterrupt
+        raise MJMError('couldn\'t read data')
 for plot in para.plots:
     f = plt.figure()
     

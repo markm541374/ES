@@ -14,6 +14,9 @@ import numpy as np
 from functools import partial
 import sys
 
+class MJMError(Exception):
+    pass
+
 def EI(ER,mu,sigma):
         alpha=(-ER+mu)/sigma
         Z = norms.cdf(-alpha)

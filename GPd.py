@@ -286,7 +286,7 @@ def sqexp_k_d(theta, x1, x2, d1=[sp.NaN], d2=[sp.NaN]):
     
     else:
         print d2
-        raise ValueError("derivative combination not suported")
+        raise MJMError("derivative combination not suported")
         
 from functools import partial
 

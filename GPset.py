@@ -24,12 +24,7 @@ class multiGP:
         self.conns = []
         self.exits = []
         
-        self.logthis = logging.getLogger()
-        self.logthis.setLevel(logging.DEBUG)
-        self.uniq=sp.random.randint(1000000,9000000)
-        db=logging.FileHandler(os.path.join('proclogs','host'+'__'+str(self.uniq)+'.log'))
-        db.setLevel(logging.DEBUG)
-        self.logthis.addHandler(db)
+        
         return
     
     def addGPd(self, X_s, Y_s, S_s, D_s, kf):
@@ -70,7 +65,7 @@ class multiGP:
     
     def infer_full_var(self, X_is, D_is):
         for i,c in enumerate(self.conns):
-            self.logthis.debug('send to '+str(c)+ ' '+str([0,X_is[i],D_is[i]]))
+            #self.logthis.debug('send to '+str(c)+ ' '+str([0,X_is[i],D_is[i]]))
             c.send([0,X_is[i],D_is[i]])
         time.sleep(0.000001)
         result = []
@@ -78,7 +73,7 @@ class multiGP:
             while not c.poll():
                 time.sleep(0.000001)
             rs = c.recv()
-            self.logthis.debug('recv from'+str(c)+ ' '+str(rs))
+            #self.logthis.debug('recv from'+str(c)+ ' '+str(rs))
             if rs[0]==-1:
                 logger.error(rs[1])
             result.append(rs)
@@ -123,12 +118,6 @@ class mGPd(Process):
         self.exit_event=exit_event
         self.GP = GPd.GPcore(X_s, Y_s, S_s, D_s, kf,precom=False)
         self.status=[0,0,0]
-        self.logthis = logging.getLogger()
-        self.logthis.setLevel(logging.DEBUG)
-        self.uniq=sp.random.randint(1000000,9000000)
-        db=logging.FileHandler(os.path.join('proclogs',str(self.name)+'__'+str(self.uniq)+'.log'))
-        db.setLevel(logging.DEBUG)
-        self.logthis.addHandler(db)
         
         return
         
@@ -150,7 +139,7 @@ class mGPd(Process):
                 time.sleep(0.000001)
                 continue
             [code, X_i, D_i] = self.conn.recv()
-            self.logthis.debug(str(self.uniq)+'recv '+str([code, X_i, D_i]))
+            #self.logthis.debug(str(self.uniq)+'recv '+str([code, X_i, D_i]))
             try:
                 if code==-1:
                     res=self.status
@@ -167,8 +156,8 @@ class mGPd(Process):
                     bound=D_i
                     res=self.drawmin(n_points,bound)
                 else:
-                    raise ValueError('code not supported')
-                self.logthis.debug(str(self.uniq)+'send '+str(res))
+                    raise MJMError('code not supported')
+                #self.logthis.debug(str(self.uniq)+'send '+str(res))
                 self.conn.send([0, res])
                 self.status[1]+=1
             except:
@@ -212,18 +201,7 @@ class mGPep(Process):
         self.exit_event=exit_event
         self.GP = GPep.GPcore(X_c, Y_c, S_c, D_c, X_z, D_z, I_z, G_z, N_z, kf)
         self.status=[0,0,0]
-        
-        self.logthis = logging.getLogger()
-        self.logthis.setLevel(logging.DEBUG)
-        self.uniq=sp.random.randint(1000000,9000000)
-        
-        db=logging.FileHandler(os.path.join('proclogs',str(self.name)+'__'+str(self.uniq)+'.log'))
-        db.setLevel(logging.DEBUG)
-        self.logthis.addHandler(db)
-        
-        
-        
-        
+ 
         return
         
     def run(self):
@@ -245,7 +223,7 @@ class mGPep(Process):
                 time.sleep(0.000001)
                 continue
             [code, X_i, D_i] = self.conn.recv()
-            self.logthis.debug(str(self.uniq)+'recv '+str([code, X_i, D_i]))
+            #self.logthis.debug(str(self.uniq)+'recv '+str([code, X_i, D_i]))
             try:
                 if code==-1:
                     res=self.status
@@ -258,8 +236,8 @@ class mGPep(Process):
                 elif code==3:
                     res = self.GP.llk()
                 else:
-                    raise ValueError('code not supported')
-                self.logthis.debug(str(self.uniq)+'send '+str(res))
+                    raise MJMError('code not supported')
+                #self.logthis.debug(str(self.uniq)+'send '+str(res))
                 self.conn.send([0, res])
                 self.status[1]+=1
             except:
