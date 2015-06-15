@@ -26,7 +26,17 @@ class multiGP:
         
         
         return
-    
+        
+    def delGP(self,i):
+        self.exits[i].set()
+        self.conns[i].close()
+        self.processes[i].terminate()
+        
+        self.exits.pop(i)
+        self.conns.pop(i)
+        self.processes.pop(i)
+        return
+        
     def addGPd(self, X_s, Y_s, S_s, D_s, kf):
         
         pconn,cconn=Pipe()
@@ -106,7 +116,7 @@ class multiGP:
         for c in self.conns:
             c.close()
         for proc in self.processes:
-            proc.join()
+            proc.terminate()
 
         return
 

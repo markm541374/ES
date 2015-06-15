@@ -9,6 +9,7 @@ Created on Fri Jun  5 14:27:46 2015
 optpara=dict()
 optpara['D']=1
 optpara['nHYPsamples']=6
+optpara['nHYPmargin']=1.1
 optpara['HYPsearchLow'] = [-2, -2]
 optpara['HYPsearchHigh'] = [2, 2]
 optpara['HYPMLEsearchn'] = 800
@@ -46,5 +47,5 @@ objf['upper']=[1.]
 
 
 runs=dict()
-runs['nopts']=2
-runs['nsteps']=3
+runs['nopts']=3
+runs['nsteps']=6

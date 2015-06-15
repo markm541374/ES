@@ -67,11 +67,14 @@ class EntPredictor():
             self.searchMLEHYP()
             self.drawHYPsamples()
             s0 = self.initFBInfer()
+            if not s0==0:
+                logger.error('fixs failed to init FB')
+                raise MJMError('fixs failed to init FB')
             self.drawmins()
-            s1 = self.initEPInfer()
-            if not s0==0 and s1==1:
-                logger.error('fixs failed to init')
-                raise ValueError('fixs failed to init')
+            while self.initEPInfer() ==-1:
+                pass
+            #s1 = self.initEPInfer()
+            
         elif self.para['searchmethod'] == 'EIMLE':
             self.searchMLEHYP()
         elif self.para['searchmethod'] == 'EIFB':
@@ -79,7 +82,7 @@ class EntPredictor():
             self.drawHYPsamples()
             self.initFBInfer()
         else:
-            raise KeyError('no searchmethod defined')
+            raise MJMError('no searchmethod defined')
         return
     
     def searchMLEHYP(self):
@@ -98,7 +101,7 @@ class EntPredictor():
         return
         
     def drawHYPsamples(self):
-        n=self.nHYPsamples
+        n=int(self.nHYPsamples*self.para['nHYPmargin'])
         print 'Drawing '+str(n)+' hyperparameter samples'
         w_0 = self.logMLEHYPVal
         sigma = self.HYPsamSigma*sp.ones(self.dim+1)
@@ -113,9 +116,14 @@ class EntPredictor():
             kfSam.append(self.kfgen([10**samples[0][i], 10**samples[1][i]]))
             hySam.append([10**samples[0][i], 10**samples[1][i]])
         
-        self.HYPsampleVals=hySam
-        self.HYPsampleFns=kfSam
+        self.HYPsampleVals=hySam[:self.nHYPsamples]
+        self.HYPsampleFns=kfSam[:self.nHYPsamples]
         
+        self.HYPsampleVals_spare=hySam[self.nHYPsamples:]
+        self.HYPsampleFns_spare=kfSam[self.nHYPsamples:]
+        
+        self.HYPsampleVals_bad=[]
+        self.ENTmindraws_bad=[]
         return
     
     def plotHYPsamples(self, d0=0, d1=1):
@@ -146,7 +154,8 @@ class EntPredictor():
             if not  s[0]==0:
                 flag = True
         if flag:
-            logger.error('FBInfer failed to init \n'+str(status))
+            logger.error('FBInfer failed to init \n'+str([s[0] for s in status]))
+            logger.debug('FBInfer failed to init \n'+str(status))
             return -1
         return 0
     
@@ -184,12 +193,39 @@ class EntPredictor():
 
         status = self.EPInfer.status()
         flag = False
-        for s in status:
+        badset=[]
+        for i,s in enumerate(status):
             if not s[0] == 0:
+                badset.append(i)
                 flag = True
+        badset.reverse()
         if flag:
-            logger.error('EPInfer failed to init \n'+str(status))
+            #logger.warn('EPInfer failed to init \n'+str([s[0] for s in status]))
+            logger.debug('EPInfer failed to init \n'+str([s[0] for s in status]))
+            for i in badset:
+                self.FBInfer.delGP(i)
+                #self.EPInfer.delGP(i)
+                self.HYPsampleVals_bad.append(self.HYPsampleVals.pop(i))
+                self.ENTmindraws_bad.append(self.ENTmindraws.pop(i))
+                self.HYPsampleFns.pop(i)
+                try:
+                    hv=self.HYPsampleVals_spare.pop()
+                    hf=self.HYPsampleFns_spare.pop()
+                except IndexError:
+                    print 'exceeded spare hyps'
+                    logger.error('used all available spare hyperparameter draws')
+                    raise MJMError('exceeded spare hyps initing EP')
+                self.HYPsampleVals.append(hv)
+                self.HYPsampleFns.append(hf)
+                self.FBInfer.addGPd(self.D[0], self.D[1], self.D[2], self.D[3], hf)
+            self.EPInfer.close()
+                
             return -1
+        else:
+            nsr=len(self.HYPsampleVals_spare)
+            nso= int(self.nHYPsamples*self.para['nHYPmargin'])-self.nHYPsamples
+            if nsr<nso:
+                logger.warn('used '+str(nso-nsr)+' of ' +str(nso)+'spare hyperparameter samples')
         return 0
         
         
@@ -394,18 +430,26 @@ class EntPredictor():
         EPstatus = self.EPInfer.status()
         FBstatus = self.FBInfer.status()
         
-        
-        flag=False        
-        for s in EPstatus:
-            if not s[0]==0:
-                flag=True
+        flagFB=False
         for s in FBstatus:
             if not s[0]==0:
-                flag=True
+                flagFB=True
+        if flagFB:
+            logger.error('FBstatus before search: '+str([s[0] for s in FBstatus]))
+            logger.debug('FBstatus before search: '+str(FBstatus))
+            
+
+        flagEP=False        
+        for s in EPstatus:
+            if not s[0]==0:
+                flagEP=True
+        if flagEP:
+            logger.error('EPstatus before search: '+str([s[0] for s in EPstatus]))
+            logger.debug('EPstatus before search: '+str(EPstatus))
+            
+        
                 
-        if flag:
-            logger.error('FBstatus before search: '+str(FBstatus))
-            logger.error('EPstatus before search: '+str(EPstatus))
+        if flagEP or flagFB:
             print 'search not started'
             print 'EP: '+str(EPstatus)
             print 'FB: '+str(FBstatus)
@@ -413,7 +457,7 @@ class EntPredictor():
             del(self.FBInfer)
             for c in active_children():
                 c.terminate()
-            raise ValueError('epic fail')
+            raise MJMError('couldn\'t search because inferobjects were bad')
             return -1
             
             
@@ -425,7 +469,7 @@ class EntPredictor():
             ENTsearchi
             #print '\rb'+str(x),
             ret = -self.findENT(x, obstype,ss)
-            print '\ra'+str(x)+' '+'Iter: %d  ' % ENTsearchi +' '+str(ret),
+            print '\rIter: %d  ' % ENTsearchi +' x: '+str(x)+' y: '+str(ret),
             return (ret, 0)
         global ENTsearchi
         ENTsearchi=0
@@ -520,7 +564,7 @@ class EntPredictor():
         X=[]
         if point=='None':
             point=sp.zeros(self.dim)
-        n_hyp = len(self.FBInfer.processes)
+        #n_hyp = len(self.FBInfer.processes)
         #clean = sp.zeros(n_hyp)
         x_r = sp.linspace(self.lb[axis],self.ub[axis],np)
         #y_s = [[] for i in xrange(n_hyp)]
@@ -595,7 +639,7 @@ class Optimizer():
         elif self.searchmethod =='EIFB':
             self.fixs = para['fixs']
         else:
-            raise KeyError('no searchmethod defined')
+            raise MJMError('no searchmethod defined')
         
         self.states=[dict()]
         self.states[0]['para']=para
@@ -635,7 +679,12 @@ class Optimizer():
             pass
         logger.debug('setting new EP object')
         self.EP = EntPredictor([self.Xo,self.Yo,self.So,self.Do], self.lb, self.ub, self.kfGen, self.kfPrior, self.para )
-        self.EP.setupEP()
+        try:
+            self.EP.setupEP()
+        except MJMError as e:
+            self.states[-1]['HSbad']=self.EP.HYPsampleVals_bad
+            self.states[-1]['MDbad']=self.EP.ENTmindraws_bad
+            raise
         return
         
     def plotstate(self):
@@ -648,7 +697,7 @@ class Optimizer():
             [f2,a2] = self.EP.plotEIMLE()
             
         else:
-            raise KeyError('no searchmethod defined')
+            raise MJMError('no searchmethod defined')
         
         
         
@@ -657,6 +706,7 @@ class Optimizer():
     def searchnextFixS(self,s,obstype=[sp.NaN]):
         logger.info('searching under fixed s')
         [x_n, H_e] = self.EP.searchENTs(s,obstype=obstype)
+        
         yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
         
         return [x_n, yIn, s, obstype, H_e]
@@ -682,7 +732,7 @@ class Optimizer():
         elif self.searchmethod =='EIFB':
                 f = self.EP.inferFBpost
         else:
-            raise KeyError('no searchmethod defined')
+            raise MJMError('no searchmethod defined')
         global sn
         sn=0
         def ee(x,y):
@@ -719,12 +769,10 @@ class Optimizer():
                 [x, y, s, d, a] = self.searchnextEIFB(self.fixs)
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
             else:
-                raise KeyError('no searchmethod defined')
+                raise MJMError('no searchmethod defined')
             
             self.Xo = sp.vstack([self.Xo, x])
             self.Yo = sp.vstack([self.Yo, y])
-            print self.So
-            print s
             self.So = sp.vstack([self.So, s])
             self.Do.append(d)
             
@@ -751,6 +799,8 @@ class Optimizer():
     def gotostate(self, staten):
         logger.debug('moving to step '+str('staten'))
         [self.Xo, self.Yo, self.So, self.Do] = self.states[0]['init']
+        if staten==0:
+            return
         for i in xrange(staten):
             [x, y, s, d, a] = self.states[i+1]['searchres']
             self.Xo = sp.vstack([self.Xo, x])
@@ -760,7 +810,7 @@ class Optimizer():
         return
 
 
-def restartOpt(fname):
+def restartOpt(fname, lastinvalid=False):
     states = pickle.load(open(fname, 'rb'))
     para = states[0]['para']
     lb = states[0]['lb']
@@ -769,6 +819,12 @@ def restartOpt(fname):
     kfGen = states[0]['kfGen']
     kfPrior = states[0]['kfPrior']
     O = Optimizer(f, kfGen, kfPrior, lb, ub, para)
-    O.states = states
-    O.gotostate(len(states)-1)
+    if lastinvalid:
+        j=1
+        O.states = states[:-1]
+        O.failedstate=states[-1]
+    else:
+        j=0
+        O.states = states
+    O.gotostate(len(states)-1-j)
     return O

@@ -18,8 +18,8 @@ import dill as pickle
 import EntropyPredict
 
 class OptEval():
-    def __init__(self,fname):
-        self.O = EntropyPredict.restartOpt(fname)
+    def __init__(self,fname,lastinvalid=False):
+        self.O = EntropyPredict.restartOpt(fname,lastinvalid=lastinvalid)
         return
         
     def xerr(self):
