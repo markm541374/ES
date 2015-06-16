@@ -208,6 +208,8 @@ class EntPredictor():
                 self.HYPsampleVals_bad.append(self.HYPsampleVals.pop(i))
                 self.ENTmindraws_bad.append(self.ENTmindraws.pop(i))
                 self.HYPsampleFns.pop(i)
+                logger.debug('bad HYPS: '+str(self.HYPsampleVals_bad))
+                logger.debug('bad mins: '+str(self.ENTmindraws_bad)) 
                 try:
                     hv=self.HYPsampleVals_spare.pop()
                     hf=self.HYPsampleFns_spare.pop()
@@ -218,6 +220,8 @@ class EntPredictor():
                 self.HYPsampleVals.append(hv)
                 self.HYPsampleFns.append(hf)
                 self.FBInfer.addGPd(self.D[0], self.D[1], self.D[2], self.D[3], hf)
+                               
+                
             self.EPInfer.close()
                 
             return -1

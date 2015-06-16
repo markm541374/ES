@@ -70,6 +70,7 @@ def slice_sample(dist, init, iters, sigma, step_out=True,burn=10):
 
         perm = range(D)
         sp.random.shuffle(perm)
+        
         last_llh = dist.loglike(xx)
 
         for d in perm:
@@ -131,6 +132,7 @@ class dist_obj():
         return
 
     def loglike(self, xx):
+        
         P = self.prior(xx)
         L = self.llk(xx, self.D, self.kfgen)
         
@@ -141,11 +143,15 @@ class dist_obj():
 
 
 def sqExpPrior(paras, xx):
+    
     dim=len(paras)
     p = 1
     for i in xrange(dim):
-        
-        mul = sps.norm.pdf(((xx[i])-paras[i][0])/float(2*paras[i][1]))
+        #do not allow lengthscales that will cause zero correlation numerical error between points separated by 0.1
+        #this is 0.004 on dunvegan
+        if i>0 and sp.exp(-10**(-2*xx[i])*0.01)==0:
+            return -sp.Inf
+        mul = sps.norm.pdf(xx[i], loc=paras[i][0], scale = sp.sqrt(paras[i][1]))
         p*=mul
         
     return sp.log(p)
