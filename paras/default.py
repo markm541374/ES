@@ -9,7 +9,7 @@ Created on Fri Jun  5 14:27:46 2015
 optpara=dict()
 optpara['D']=1
 optpara['nHYPsamples']=6
-optpara['nHYPmargin']=1.1
+optpara['nHYPmargin']=1.5
 optpara['HYPsearchLow'] = [-2, -2]
 optpara['HYPsearchHigh'] = [2, 2]
 optpara['HYPMLEsearchn'] = 800

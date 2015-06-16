@@ -72,7 +72,7 @@ class EntPredictor():
                 raise MJMError('fixs failed to init FB')
             self.drawmins()
             while self.initEPInfer() ==-1:
-                pass
+                self.drawmins()
             #s1 = self.initEPInfer()
             
         elif self.para['searchmethod'] == 'EIMLE':
