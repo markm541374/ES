@@ -74,7 +74,16 @@ class EntPredictor():
             while self.initEPInfer() ==-1:
                 self.drawmins()
             #s1 = self.initEPInfer()
-            
+        elif self.para['searchmethod'] == 'discretes':
+            self.searchMLEHYP()
+            self.drawHYPsamples()
+            s0 = self.initFBInfer()
+            if not s0==0:
+                logger.error('fixs failed to init FB')
+                raise MJMError('fixs failed to init FB')
+            self.drawmins()
+            while self.initEPInfer() ==-1:
+                self.drawmins()
         elif self.para['searchmethod'] == 'EIMLE':
             self.searchMLEHYP()
         elif self.para['searchmethod'] == 'EIFB':
@@ -384,14 +393,26 @@ class EntPredictor():
         #print '\rFindEnt1',
         H0 = sp.zeros(n_hyp)
         H1 = sp.zeros(n_hyp)
-        for i in xrange(n_hyp):
-            if not mask[i]==0:
-                continue
-            H0[i] = 0.5*sp.log(2*sp.pi*sp.e*(v0[i]+ss))
-            H1[i] = 0.5*sp.log(2*sp.pi*sp.e*(v1[i]+ss))
+        flag=False
+        if type(ss)==type(0.01):
+            ss=[ss]
+            flag=True
+        allH=[]
+        for s in ss:
+            for i in xrange(n_hyp):
+                if not mask[i]==0:
+                    continue
+                H0[i] = 0.5*sp.log(2*sp.pi*sp.e*(v0[i]+s))
+                H1[i] = 0.5*sp.log(2*sp.pi*sp.e*(v1[i]+s))
         #print '\rFindEnt2',
-        H=(sum(H0)-sum(H1))/float(sum([1 for i in mask if i==0]))
-        return H
+            H=(sum(H0)-sum(H1))/float(sum([1 for i in mask if i==0]))
+            allH.append(H)
+        if flag:
+            return allH[0]
+        else:
+            return allH
+                
+        
         
     def plotEPchanges(self, axis=0,point='None',np=100,obstype=[[sp.NaN]]):
         print 'plotting EPchanges'
@@ -481,6 +502,70 @@ class EntPredictor():
         del(ENTsearchi)
         print 'maxENT '+str(xmin)
         return [xmin, miny]
+    
+    def searchENTsu(self,ss,u, obstype=[sp.NaN]):
+        EPstatus = self.EPInfer.status()
+        FBstatus = self.FBInfer.status()
+        
+        flagFB=False
+        for s in FBstatus:
+            if not s[0]==0:
+                flagFB=True
+        if flagFB:
+            logger.error('FBstatus before search: '+str([s[0] for s in FBstatus]))
+            logger.debug('FBstatus before search: '+str(FBstatus))
+            
+
+        flagEP=False        
+        for s in EPstatus:
+            if not s[0]==0:
+                flagEP=True
+        if flagEP:
+            logger.error('EPstatus before search: '+str([s[0] for s in EPstatus]))
+            logger.debug('EPstatus before search: '+str(EPstatus))
+            
+        
+                
+        if flagEP or flagFB:
+            print 'search not started'
+            print 'EP: '+str(EPstatus)
+            print 'FB: '+str(FBstatus)
+            del(self.EPInfer)
+            del(self.FBInfer)
+            for c in active_children():
+                c.terminate()
+            raise MJMError('couldn\'t search because inferobjects were bad')
+            return -1
+            
+            
+        
+        print 'Searhing for MaxENT'
+        def ee(x,y):
+            global ENTsearchi
+            ENTsearchi+=1
+            ENTsearchi
+            #print '\rb'+str(x),
+            ret = [-i for i in self.findENT(x, obstype,ss)]
+            print '\rIter: %d  ' % ENTsearchi +' x: '+str(x)+' y: '+str(ret),
+            rv=10**100
+            for i in range(len(ss)):
+                cc = ret[i]/float(u[i])
+                if cc<rv:
+                    rv=cc
+            return (rv, 0)
+        global ENTsearchi
+        ENTsearchi=0
+        [xmin, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=self.ENTsearchn, logfilename='/dev/null')
+        del(ENTsearchi)
+        opts = [-i for i in self.findENT(xmin, obstype,ss)]
+        print 'ents '+str(opts)
+        print 'ss '+str(ss)
+        for i in range(len(ss)):
+            opts[i]=opts[i]/float(u[i])
+        print 'opts '+str(opts)
+        j = sp.argmin(opts)
+        print 'maxENT '+str(xmin)
+        return [xmin, miny,j]
         
     def searchEIMLE(self):
         print 'Searhing for MaxMLEEI'
@@ -638,6 +723,10 @@ class Optimizer():
         if self.searchmethod == 'fixs':
             self.fixs = para['fixs']
             self.obstype = para['obstype']
+        elif self.searchmethod == 'discretes':
+            self.slist = para['slist']
+            self.ulist = para['ulist']
+            self.obstype = para['obstype']
         elif self.searchmethod =='EIMLE':
             self.fixs = para['fixs']
         elif self.searchmethod =='EIFB':
@@ -714,6 +803,14 @@ class Optimizer():
         yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
         
         return [x_n, yIn, s, obstype, H_e]
+        
+    def searchnextDiscS(self,s,u,obstype=[sp.NaN]):
+        logger.info('searching under disrete su')
+        [x_n, H_e, j] = self.EP.searchENTsu(s,u,obstype=obstype)
+        print str([x_n, H_e, j] )
+        yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s[j]))
+        
+        return [x_n, yIn, s[j], obstype, H_e]
     
     def searchnextEIMLE(self,s):
         logger.info('searching under EIMLE')
@@ -730,6 +827,8 @@ class Optimizer():
     def searchminpost(self):
         logger.debug('finding IR location')
         if self.searchmethod == 'fixs':
+                f = self.EP.inferFBpost
+        elif self.searchmethod == 'discretes':
                 f = self.EP.inferFBpost
         elif self.searchmethod =='EIMLE':
                 f = self.EP.inferMLEpost
@@ -772,6 +871,12 @@ class Optimizer():
             elif self.searchmethod =='EIFB':
                 [x, y, s, d, a] = self.searchnextEIFB(self.fixs)
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
+            elif self.searchmethod == 'discretes':
+                [x, y, s, d, a] = self.searchnextDiscS(self.slist,self.ulist)
+                self.states[-1]['HYPsamples']=self.EP.HYPsampleVals
+                self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
+                print 'FBstatus '+str(sorted([st[0] for st in self.EP.FBInfer.status()]))
+                print 'EPstatus '+str(sorted([st[0] for st in self.EP.EPInfer.status()]))
             else:
                 raise MJMError('no searchmethod defined')
             

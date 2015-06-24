@@ -9,7 +9,7 @@ Created on Fri Jun  5 14:27:46 2015
 optpara=dict()
 optpara['D']=1
 optpara['nHYPsamples']=6
-optpara['nHYPmargin']=1.5
+optpara['nHYPmargin']=1.8
 optpara['HYPsearchLow'] = [-2, -2]
 optpara['HYPsearchHigh'] = [2, 2]
 optpara['HYPMLEsearchn'] = 800
@@ -19,8 +19,10 @@ optpara['ENTnsam'] = 100
 optpara['ENTzeroprecision'] = 10**-6
 optpara['ENTsearchn'] = 500
 optpara['IRsearchn'] = 500
-optpara['searchmethod']='fixs'
-optpara['fixs'] = 0.0001
+optpara['searchmethod']='discretes'
+optpara['slist'] = [0.01,0.0001,0.000001]
+optpara['ulist'] = [0.1,0.5,20]
+optpara['fixs'] = 0.01
 from scipy import NaN as nan
 optpara['obstype'] = [nan]
 optpara['covtype'] = 'sqexp'
@@ -47,5 +49,5 @@ objf['upper']=[1.]
 
 
 runs=dict()
-runs['nopts']=3
-runs['nsteps']=6
+runs['nopts']=2
+runs['nsteps']=4

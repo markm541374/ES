@@ -107,3 +107,4 @@ for i in xrange(paras.runs['nopts']):
     
     
 logger.info(parser.prog+ ' exited at '+time.strftime('%H:%M:%S on %a %-d %B %Y'))
+#exit()
