@@ -7,7 +7,8 @@ Created on Sat Jun  6 14:51:25 2015
 
 #ploting parameters
 
-datasets=['EIMLE_20_401','EIFB_20_401','ENFS_20_40']
+#datasets=['EIMLE_20_401','EIFB_20_401','ENFS_20_40']
+datasets=['default']
 plots=[]
 
 #xmintrueplot

@@ -20,9 +20,9 @@ optpara['ENTzeroprecision'] = 10**-6
 optpara['ENTsearchn'] = 500
 optpara['IRsearchn'] = 500
 optpara['searchmethod']='discretes'
-optpara['slist'] = [0.01,0.0001,0.000001]
-optpara['ulist'] = [0.1,0.5,20]
-optpara['fixs'] = 0.01
+optpara['slist'] = [0.001]
+optpara['ulist'] = [0.1]
+optpara['fixs'] = 0.001
 from scipy import NaN as nan
 optpara['obstype'] = [nan]
 optpara['covtype'] = 'sqexp'
@@ -49,5 +49,5 @@ objf['upper']=[1.]
 
 
 runs=dict()
-runs['nopts']=2
-runs['nsteps']=4
+runs['nopts']=3
+runs['nsteps']=100

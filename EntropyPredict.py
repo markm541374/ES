@@ -727,6 +727,7 @@ class Optimizer():
             self.slist = para['slist']
             self.ulist = para['ulist']
             self.obstype = para['obstype']
+            self.Uo=[]
         elif self.searchmethod =='EIMLE':
             self.fixs = para['fixs']
         elif self.searchmethod =='EIFB':
@@ -810,7 +811,7 @@ class Optimizer():
         print str([x_n, H_e, j] )
         yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s[j]))
         
-        return [x_n, yIn, s[j], obstype, H_e]
+        return [x_n, yIn, s[j], obstype, H_e,u[j]]
     
     def searchnextEIMLE(self,s):
         logger.info('searching under EIMLE')
@@ -872,9 +873,10 @@ class Optimizer():
                 [x, y, s, d, a] = self.searchnextEIFB(self.fixs)
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
             elif self.searchmethod == 'discretes':
-                [x, y, s, d, a] = self.searchnextDiscS(self.slist,self.ulist)
+                [x, y, s, d, a, u] = self.searchnextDiscS(self.slist,self.ulist)
                 self.states[-1]['HYPsamples']=self.EP.HYPsampleVals
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
+                self.Uo.append(u)
                 print 'FBstatus '+str(sorted([st[0] for st in self.EP.FBInfer.status()]))
                 print 'EPstatus '+str(sorted([st[0] for st in self.EP.EPInfer.status()]))
             else:

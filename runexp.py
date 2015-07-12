@@ -89,10 +89,13 @@ if paras.optpara['covtype']=='sqexp':
 for i in xrange(paras.runs['nopts']):
     logger.info('starting run '+str(i)+'\n')
     #draw an objective function
-    f=functiongenerator.genfun()
-    ee = lambda x, y: (f(x), 0)
-    [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=4000, logfilename='/dev/null')
-    xmintrue = xmintrue[0]
+    xmintrue=lower[0]
+    while min(xmintrue-lower[0], upper[0]-xmintrue) < 0.05*(upper[0]-lower[0]):
+        f=functiongenerator.genfun()
+        ee = lambda x, y: (f(x), 0)
+        [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=4000, logfilename='/dev/null')
+        xmintrue = xmintrue[0]
+        print 'truemin: '+str(xmintrue)
     paras.optpara['xmintrue']=xmintrue
     paras.optpara['ymintrue']=miny
     O = EntropyPredict.Optimizer(f,optkfGen, optkfprior, lower, upper, paras.optpara)
