@@ -34,7 +34,7 @@ optpara['I1LM']=0.
 optpara['I1LV']=2.**2
 optpara['inittype']='rand'
 optpara['nrand']=5
-
+optpara['splotbounds']=[-10,0,100]
 
 
 
@@ -50,4 +50,4 @@ objf['upper']=[1.]
 
 runs=dict()
 runs['nopts']=3
-runs['nsteps']=100
+runs['nsteps']=28

@@ -85,7 +85,7 @@ for plot in para.plots:
             alldata = [r.MLEhyp() for r in d]
             ydata=[]
             D=len(alldata[0][0])
-           
+            
             for j in xrange(D):
                 ydata.append(sp.vstack([[h[j] for h in x] for x in alldata]))
             xdata=range(len(alldata[0]))
@@ -95,8 +95,21 @@ for plot in para.plots:
                 a.set_yscale(plot['yscale'])
                 a.set_xscale(plot['xscale'])
                 a.set_title(plot['title'])
-                
-                
+            
+        
+        if plot['name']=='sProfAtMax':
+            alldata = [r.sprofile() for r in d]
+            x=alldata[0][0]
+            D = len(alldata[0][1])
+            n = len(alldata)
+            f.set_figwidth(8)
+            f.set_figheight(3*D)
+            for i in xrange(D):
+                a = f.add_subplot(D,1,i)
+                for j in xrange(n):
+                    a.plot(x,alldata[j][1][i])
+                a.set_yscale(plot['yscale'])
+                a.set_xscale(plot['xscale'])
     a.set_yscale(plot['yscale'])
     a.set_xscale(plot['xscale'])
     a.set_title(plot['title'])

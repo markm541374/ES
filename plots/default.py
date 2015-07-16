@@ -86,3 +86,14 @@ p['yscale']='log'
 p['title']='MLYHYP vs. steps'
 p['extras']=[[],[],[]]
 plots.append(p)
+
+#sprofile
+p=dict()
+p['name']='sProfAtMax'
+p['dsets']=[True,True,True]
+p['colorcodes']=['lightblue','lightgreen','lightcoral']
+p['xscale']='log'
+p['yscale']='linear'
+p['title']='H vs s'
+p['extras']=[[],[],[]]
+plots.append(p)

@@ -90,7 +90,7 @@ for i in xrange(paras.runs['nopts']):
     logger.info('starting run '+str(i)+'\n')
     #draw an objective function
     xmintrue=lower[0]
-    while min(xmintrue-lower[0], upper[0]-xmintrue) < 0.05*(upper[0]-lower[0]):
+    while min(xmintrue-lower[0], upper[0]-xmintrue) < 0.025*(upper[0]-lower[0]):
         f=functiongenerator.genfun()
         ee = lambda x, y: (f(x), 0)
         [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=4000, logfilename='/dev/null')

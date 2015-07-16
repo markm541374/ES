@@ -866,6 +866,7 @@ class Optimizer():
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
                 print 'FBstatus '+str(sorted([st[0] for st in self.EP.FBInfer.status()]))
                 print 'EPstatus '+str(sorted([st[0] for st in self.EP.EPInfer.status()]))
+                self.states[-1]['sprofatmax'] = self.EP.findENT(x,d,sp.logspace(self.para['splotbounds'][0],self.para['splotbounds'][1],self.para['splotbounds'][2]))
             elif self.searchmethod =='EIMLE':
                 [x, y, s, d, a] = self.searchnextEIMLE(self.fixs)
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
@@ -879,6 +880,7 @@ class Optimizer():
                 self.Uo.append(u)
                 print 'FBstatus '+str(sorted([st[0] for st in self.EP.FBInfer.status()]))
                 print 'EPstatus '+str(sorted([st[0] for st in self.EP.EPInfer.status()]))
+                self.states[-1]['sprofatmax'] = self.EP.findENT(x,d,sp.logspace(self.para['splotbounds'][0],self.para['splotbounds'][1],100))
             else:
                 raise MJMError('no searchmethod defined')
             
