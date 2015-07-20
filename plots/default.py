@@ -16,7 +16,7 @@ p=dict()
 p['name']='xerr'
 p['dsets']=[True,True,True]
 p['colorcodes']=['lightblue','lightgreen','lightcoral']
-p['xscale']='log'
+p['xscale']='linear'
 p['yscale']='log'
 p['title']='xmin_error vs. steps'
 ex1=[dict()]
@@ -95,5 +95,38 @@ p['colorcodes']=['lightblue','lightgreen','lightcoral']
 p['xscale']='log'
 p['yscale']='linear'
 p['title']='H vs s'
+p['extras']=[[],[],[]]
+plots.append(p)
+
+#region
+p=dict()
+p['name']='region'
+p['dsets']=[True,True,True]
+p['colorcodes']=['lightblue','lightgreen','lightcoral']
+p['xscale']='linear'
+p['yscale']='log'
+p['title']='region vs. steps'
+p['extras']=[[],[],[]]
+plots.append(p)
+
+#d3f
+p=dict()
+p['name']='d3f'
+p['dsets']=[True,True,True]
+p['colorcodes']=['lightblue','lightgreen','lightcoral']
+p['xscale']='linear'
+p['yscale']='log'
+p['title']='d3f vs. steps'
+p['extras']=[[],[],[]]
+plots.append(p)
+
+#dvdf
+p=dict()
+p['name']='dvdf'
+p['dsets']=[True,True,True]
+p['colorcodes']=['lightblue','lightgreen','lightcoral']
+p['xscale']='linear'
+p['yscale']='log'
+p['title']='dvdf vs. steps'
 p['extras']=[[],[],[]]
 plots.append(p)

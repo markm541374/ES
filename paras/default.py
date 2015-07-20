@@ -18,7 +18,7 @@ optpara['HYPsamBurn'] = 12
 optpara['ENTnsam'] = 100
 optpara['ENTzeroprecision'] = 10**-6
 optpara['ENTsearchn'] = 500
-optpara['IRsearchn'] = 500
+optpara['IRsearchn'] = 1000
 optpara['searchmethod']='discretes'
 optpara['slist'] = [0.001]
 optpara['ulist'] = [0.1]
@@ -35,6 +35,7 @@ optpara['I1LV']=2.**2
 optpara['inittype']='rand'
 optpara['nrand']=5
 optpara['splotbounds']=[-10,0,100]
+optpara['boundregion']=0.995
 
 
 
@@ -49,5 +50,5 @@ objf['upper']=[1.]
 
 
 runs=dict()
-runs['nopts']=3
-runs['nsteps']=28
+runs['nopts']=1
+runs['nsteps']=12

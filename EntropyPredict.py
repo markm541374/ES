@@ -894,6 +894,31 @@ class Optimizer():
             [xminIR,yminIR] = self.searchminpost()
             self.states[-1]['xminIR'] = xminIR
             self.states[-1]['yminIR'] = yminIR
+            print '\n'
+            f_IR = self.EP.inferFBpost(sp.matrix([xminIR]*3).T,[[sp.NaN],[0],[0,0]])
+            k=sp.sqrt(f_IR[1][1])/f_IR[0][2]
+            bound = self.para['boundregion']
+            nr = sps.norm.ppf(0.5*(1+bound))
+            err_d3f=[-1,-1]
+            err_dvdf = [-1,-1]
+            for j,ii in enumerate([-nr,nr]):
+                f_est = self.EP.inferFBpost(sp.matrix([xminIR+ii*k]*3).T,[[sp.NaN],[0],[0,0]])
+                f_pred = f_IR[0][0]+ii*k*f_IR[0][1]+0.5*((ii*k)**2)*f_IR[0][2]
+                v_pred = f_IR[1][1]
+                err_d3f[j] = abs(1-f_est[0][0]/f_pred)
+                err_dvdf[j] = abs(1-f_est[1][1]/v_pred)
+            
+            self.states[-1]['err_d3f']=err_d3f
+            self.states[-1]['err_dvdf']=err_dvdf
+            self.states[-1]['region_radius']=nr*k
+            
+            print 'Local min:'
+            print 'var(df) '+str(f_IR[1][1]) +' d2f '+str(f_IR[0][2])
+            print str(100*bound)+ '% region radius: '+str(nr*k) 
+            print 'error d3f '+str(err_d3f[0])+' ' +str(err_d3f[1])
+            print 'error dv(df) '+str(err_dvdf[0])+' ' +str(err_dvdf[1])+'\n'
+            
+            sys.stdout.flush()
             steptime=time.time()-t0
             self.states[-1]['time']=steptime
             logger.info('step '+str(i)+' completed in '+str(steptime))

@@ -39,6 +39,24 @@ class OptEval():
         
         return sp.array(yIR)
     
+    def region(self):
+        reg=[]
+        for s in self.O.states[1:]:
+            reg.append(s['region_radius'])
+        return reg
+        
+    def d3f(self):
+        reg=[]
+        for s in self.O.states[1:]:
+            reg.append(max(s['err_d3f']))
+        return reg
+        
+    def dvdf(self):
+        reg=[]
+        for s in self.O.states[1:]:
+            reg.append(max(s['err_dvdf']))
+        return reg
+        
     def steptimes(self):
         t=[]
         for s in self.O.states[1:]:
