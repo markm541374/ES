@@ -130,3 +130,14 @@ p['yscale']='log'
 p['title']='dvdf vs. steps'
 p['extras']=[[],[],[]]
 plots.append(p)
+
+#global hyp
+p=dict()
+p['name']='global_hyp'
+p['dsets']=[True,True,True]
+p['colorcodes']=['lightblue','lightgreen','lightcoral']
+p['xscale']='linear'
+p['yscale']='linear'
+p['title']='global_hyp vs. steps'
+p['extras']=[[],[],[]]
+plots.append(p)

@@ -81,6 +81,12 @@ for plot in para.plots:
             xdata=range(len(ydata[0]))
             readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
             
+        if plot['name']=='global_hyp':        
+            a = f.add_subplot(111)
+            ydata=sp.vstack([r.global_hyp() for r in d])
+            xdata=range(len(ydata[0]))
+            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
+            
         if plot['name']=='d3f':        
             a = f.add_subplot(111)
             ydata=sp.vstack([r.d3f() for r in d])

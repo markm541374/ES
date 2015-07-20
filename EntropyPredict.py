@@ -916,8 +916,19 @@ class Optimizer():
             print 'var(df) '+str(f_IR[1][1]) +' d2f '+str(f_IR[0][2])
             print str(100*bound)+ '% region radius: '+str(nr*k) 
             print 'error d3f '+str(err_d3f[0])+' ' +str(err_d3f[1])
-            print 'error dv(df) '+str(err_dvdf[0])+' ' +str(err_dvdf[1])+'\n'
+            print 'error dv(df) '+str(err_dvdf[0])+' ' +str(err_dvdf[1])
             
+            
+            print 'Global min:'
+            count=0
+            for dr in self.EP.ENTmindraws:
+                if abs(dr[1]-xminIR)>nr*k:
+                    count+=1
+            if count==0:
+                print 'all draws in local region'+'\n'
+            else:
+                print str(count)+' of '+str(len(self.EP.ENTmindraws)) +' not in local region'+'\n'
+            self.states[-1]['global_hyp']=count
             sys.stdout.flush()
             steptime=time.time()-t0
             self.states[-1]['time']=steptime

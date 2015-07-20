@@ -51,6 +51,12 @@ class OptEval():
             reg.append(max(s['err_d3f']))
         return reg
         
+    def global_hyp(self):
+        reg=[]
+        for s in self.O.states[1:]:
+            reg.append(s['global_hyp'])
+        return reg
+        
     def dvdf(self):
         reg=[]
         for s in self.O.states[1:]:
