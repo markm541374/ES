@@ -43,6 +43,7 @@ class EntPredictor():
         self.HYPsamSigma = para['HYPsamSigma']
         self.HYPsamBurn = para['HYPsamBurn']
         self.ENTnsam = para['ENTnsam']
+        self.ENTsamQ = para['ENTsamQ']
         self.ENTzeroprecision = para['ENTzeroprecision']
         self.ENTsearchn = para['ENTsearchn']
         
@@ -542,17 +543,23 @@ class EntPredictor():
         print 'Searhing for MaxENT'
         def ee(x,y):
             global ENTsearchi
+            global smaxes
             ENTsearchi+=1
             ENTsearchi
             #print '\rb'+str(x),
             ret = [-i for i in self.findENT(x, obstype,ss)]
             print '\rIter: %d  ' % ENTsearchi +' x: '+str(x)+' y: '+str(ret),
             rv=10**100
+            
             for i in range(len(ss)):
                 cc = ret[i]/float(u[i])
                 if cc<rv:
                     rv=cc
+                if ret[i]<smaxes[i][0]:
+                    smaxes[i]=[ret[i],x]
             return (rv, 0)
+        global smaxes
+        smaxes = [[0,0]]*len(ss)
         global ENTsearchi
         ENTsearchi=0
         [xmin, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=self.ENTsearchn, logfilename='/dev/null')
@@ -565,7 +572,17 @@ class EntPredictor():
         print 'opts '+str(opts)
         j = sp.argmin(opts)
         print 'maxENT '+str(xmin)
+        print 'smaxes '+str(smaxes)
+        f=plt.figure()
+        a = f.add_subplot(111)
+        a.plot([-i[0] for i in smaxes],'b')
+        a.set_yscale('log')
+        for i in range(len(ss)):
+            smaxes[i][0]=-smaxes[i][0]/float(u[i])
+        plt.plot([i[0] for i in smaxes],'r')
+        plt.show()
         return [xmin, miny,j]
+        
         
     def searchEIMLE(self):
         print 'Searhing for MaxMLEEI'
@@ -706,7 +723,7 @@ class EntPredictor():
         return E
 
     def drawmins(self):
-        res = self.FBInfer.drawmins(self.ENTnsam,[self.lb,self.ub])
+        res = self.FBInfer.drawmins(self.ENTnsam,[[self.lb,self.ub],self.ENTsamQ])
         self.ENTmindraws = res
         return res
         
@@ -823,7 +840,7 @@ class Optimizer():
         logger.info('searching under EIFB')
         [x_n, EI] = self.EP.searchEIFB()
         yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s))
-        return [x_n, yIn, s[0], [sp.NaN], EI]
+        return [x_n, yIn, s, [sp.NaN], EI]
 
     def searchminpost(self):
         logger.debug('finding IR location')
@@ -860,6 +877,51 @@ class Optimizer():
             logger.debug('starting step '+str(i))
             self.setupEP()
             sys.stdout.flush()
+            #################################
+            
+            [xminIR,yminIR] = self.searchminpost()
+            self.states[-1]['xminIR'] = xminIR
+            self.states[-1]['yminIR'] = yminIR
+            print '\n'
+            f_IR = self.EP.inferFBpost(sp.matrix([xminIR]*3).T,[[sp.NaN],[0],[0,0]])
+            k=sp.sqrt(f_IR[1][1])/f_IR[0][2]
+            bound = self.para['boundregion']
+            nr = sps.norm.ppf(0.5*(1+bound))
+            err_d3f=[-1,-1]
+            err_dvdf = [-1,-1]
+            for j,ii in enumerate([-nr,nr]):
+                f_est = self.EP.inferFBpost(sp.matrix([xminIR+ii*k]*3).T,[[sp.NaN],[0],[0,0]])
+                f_pred = f_IR[0][0]+ii*k*f_IR[0][1]+0.5*((ii*k)**2)*f_IR[0][2]
+                v_pred = f_IR[1][1]
+                err_d3f[j] = abs(1-f_est[0][0]/f_pred)
+                err_dvdf[j] = abs(1-f_est[1][1]/v_pred)
+            
+            self.states[-1]['err_d3f']=err_d3f
+            self.states[-1]['err_dvdf']=err_dvdf
+            self.states[-1]['region_radius']=nr*k
+            
+            print 'Local min around '+str(xminIR)+ ' :'
+            print 'var(df) '+str(f_IR[1][1]) +' d2f '+str(f_IR[0][2])
+            print str(100*bound)+ '% region radius: '+str(nr*k) 
+            print 'error d3f '+str(err_d3f[0])+' ' +str(err_d3f[1])
+            print 'error dv(df) '+str(err_dvdf[0])+' ' +str(err_dvdf[1])
+            
+            try:
+                print 'Global min:'
+                count=0
+                for dr in self.EP.ENTmindraws:
+                    if abs(dr[1]-xminIR)>nr*k:
+                        count+=1
+                if count==0:
+                    print 'all draws in local region'+'\n'
+                else:
+                    print str(count)+' of '+str(len(self.EP.ENTmindraws)) +' not in local region'+'\n'
+                    print [s[1] for s in self.EP.ENTmindraws]
+                self.states[-1]['global_hyp']=count
+            except:
+                pass
+            sys.stdout.flush()
+            #####################
             if self.searchmethod == 'fixs':
                 [x, y, s, d, a] = self.searchnextFixS(self.fixs, obstype = self.obstype)
                 self.states[-1]['HYPsamples']=self.EP.HYPsampleVals
@@ -891,45 +953,7 @@ class Optimizer():
             
             self.states[-1]['searchres']=[x,y,s,d,a]
             
-            [xminIR,yminIR] = self.searchminpost()
-            self.states[-1]['xminIR'] = xminIR
-            self.states[-1]['yminIR'] = yminIR
-            print '\n'
-            f_IR = self.EP.inferFBpost(sp.matrix([xminIR]*3).T,[[sp.NaN],[0],[0,0]])
-            k=sp.sqrt(f_IR[1][1])/f_IR[0][2]
-            bound = self.para['boundregion']
-            nr = sps.norm.ppf(0.5*(1+bound))
-            err_d3f=[-1,-1]
-            err_dvdf = [-1,-1]
-            for j,ii in enumerate([-nr,nr]):
-                f_est = self.EP.inferFBpost(sp.matrix([xminIR+ii*k]*3).T,[[sp.NaN],[0],[0,0]])
-                f_pred = f_IR[0][0]+ii*k*f_IR[0][1]+0.5*((ii*k)**2)*f_IR[0][2]
-                v_pred = f_IR[1][1]
-                err_d3f[j] = abs(1-f_est[0][0]/f_pred)
-                err_dvdf[j] = abs(1-f_est[1][1]/v_pred)
-            
-            self.states[-1]['err_d3f']=err_d3f
-            self.states[-1]['err_dvdf']=err_dvdf
-            self.states[-1]['region_radius']=nr*k
-            
-            print 'Local min:'
-            print 'var(df) '+str(f_IR[1][1]) +' d2f '+str(f_IR[0][2])
-            print str(100*bound)+ '% region radius: '+str(nr*k) 
-            print 'error d3f '+str(err_d3f[0])+' ' +str(err_d3f[1])
-            print 'error dv(df) '+str(err_dvdf[0])+' ' +str(err_dvdf[1])
-            
-            
-            print 'Global min:'
-            count=0
-            for dr in self.EP.ENTmindraws:
-                if abs(dr[1]-xminIR)>nr*k:
-                    count+=1
-            if count==0:
-                print 'all draws in local region'+'\n'
-            else:
-                print str(count)+' of '+str(len(self.EP.ENTmindraws)) +' not in local region'+'\n'
-            self.states[-1]['global_hyp']=count
-            sys.stdout.flush()
+            ###################
             steptime=time.time()-t0
             self.states[-1]['time']=steptime
             logger.info('step '+str(i)+' completed in '+str(steptime))

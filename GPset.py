@@ -163,8 +163,9 @@ class mGPd(Process):
                     res = self.GP.llk()
                 elif code==4:
                     n_points=X_i
-                    bound=D_i
-                    res=self.drawmin(n_points,bound)
+                    bound=D_i[0]
+                    Q=D_i[1]
+                    res=self.drawmin(n_points,bound,Q)
                 else:
                     raise MJMError('code not supported')
                 #self.logthis.debug(str(self.uniq)+'send '+str(res))
@@ -178,7 +179,7 @@ class mGPd(Process):
         
         return
         
-    def drawmin(self,n_points,bound):
+    def drawmin(self,n_points,bound,Q):
         ub=bound[1]
         lb=bound[0]
         mx = self.GP.Y_s.max()
@@ -186,15 +187,30 @@ class mGPd(Process):
         nacc=0
         X_tmp=[]
         sp.random.seed()
-        while nacc<n_points:
-            X_prop = sp.matrix(sp.random.uniform(lb, ub)).T
-            Y_prop = self.GP.infer_m(X_prop, [[sp.NaN]])
-            theta = -(Y_prop[0,0]-mx)/(mx-mn)
-            p = norm.cdf(2*theta-1.)
-            
-            if sp.random.uniform(0,1)<=p:
-                nacc+=1
-                X_tmp.append(X_prop)
+        if Q=='method1':
+            while nacc<n_points:
+                X_prop = sp.matrix(sp.random.uniform(lb, ub)).T
+                Y_prop = self.GP.infer_m(X_prop, [[sp.NaN]])
+                theta = -(Y_prop[0,0]-mx)/(mx-mn)
+                p = norm.cdf(2*theta-1.)
+                
+                if sp.random.uniform(0,1)<=p:
+                    nacc+=1
+                    X_tmp.append(X_prop)
+        elif Q=='method2':
+            while nacc<n_points:
+                X_prop = sp.matrix(sp.random.uniform(lb, ub)).T
+                Y_prop = self.GP.infer_m(X_prop, [[sp.NaN]])
+                [dY, vdY] = self.GP.infer_diag(X_prop, [[0]])
+                theta = -(Y_prop[0,0]-mx)/(mx-mn)
+                q1 = norm.cdf(2*theta-1.)
+                q2 = norm.pdf(dY, scale=sp.sqrt(vdY))
+                if sp.random.uniform(0,)<=q1+q2:
+                    nacc+=1
+                    X_tmp.append(X_prop)
+        else:
+            print Q
+            raise MJMError('inavlid ENTsamQ')
         X_x  = sp.vstack(X_tmp)
         D_x = [[sp.NaN]] * n_points
         
