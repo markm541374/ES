@@ -121,17 +121,20 @@ for plot in para.plots:
                 a.set_title(plot['title'])
             
         
-        if plot['name']=='sProfAtMax':
+        if plot['name']=='sprofdata':
             alldata = [r.sprofile() for r in d]
-            x=alldata[0][0]
-            D = len(alldata[0][1])
+            x=alldata[0][0][0]
+            D = len(alldata[0])
             n = len(alldata)
+            
             f.set_figwidth(8)
             f.set_figheight(3*D)
             for i in xrange(D):
                 a = f.add_subplot(D,1,i)
                 for j in xrange(n):
-                    a.plot(x,alldata[j][1][i])
+                    a.plot(x,alldata[j][i][1],'g')
+                    a.plot(x,alldata[j][i][2],'b')
+                    a.plot(x,alldata[j][i][3],'r')
                 a.set_yscale(plot['yscale'])
                 a.set_xscale(plot['xscale'])
     a.set_yscale(plot['yscale'])

@@ -76,12 +76,12 @@ class OptEval():
         return h
         
     def sprofile(self):
-        x=sp.logspace(self.O.para['splotbounds'][0],self.O.para['splotbounds'][1],self.O.para['splotbounds'][2])
+        
         S=[]
         for s in self.O.states[1:]:
-            S.append(s['sprofatmax'])
+            S.append(s['sprofdata'])
         
-        return x,S
+        return S
         
 def plotset(Y,x,f,a,c,extras=[]):
     

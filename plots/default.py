@@ -87,13 +87,13 @@ p['title']='MLYHYP vs. steps'
 p['extras']=[[],[],[]]
 plots.append(p)
 
-#sprofile
+#sprofdata
 p=dict()
-p['name']='sProfAtMax'
+p['name']='sprofdata'
 p['dsets']=[True,True,True]
 p['colorcodes']=['lightblue','lightgreen','lightcoral']
 p['xscale']='log'
-p['yscale']='linear'
+p['yscale']='log'
 p['title']='H vs s'
 p['extras']=[[],[],[]]
 plots.append(p)

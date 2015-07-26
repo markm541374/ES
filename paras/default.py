@@ -36,7 +36,6 @@ optpara['I1LM']=0.
 optpara['I1LV']=2.**2
 optpara['inittype']='rand'
 optpara['nrand']=5
-optpara['splotbounds']=[-10,0,100]
 optpara['boundregion']=0.995
 
 
@@ -53,4 +52,4 @@ objf['upper']=[1.]
 
 runs=dict()
 runs['nopts']=1
-runs['nsteps']=8
+runs['nsteps']=4

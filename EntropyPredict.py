@@ -564,24 +564,21 @@ class EntPredictor():
         ENTsearchi=0
         [xmin, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=self.ENTsearchn, logfilename='/dev/null')
         del(ENTsearchi)
-        opts = [-i for i in self.findENT(xmin, obstype,ss)]
-        print 'ents '+str(opts)
-        print 'ss '+str(ss)
-        for i in range(len(ss)):
-            opts[i]=opts[i]/float(u[i])
-        print 'opts '+str(opts)
-        j = sp.argmin(opts)
+        opts = [i for i in self.findENT(xmin, obstype,ss)]
+        j=sp.argmin(opts)
+        meta=[]
+        meta.append(ss)
+        meta.append(opts)
         print 'maxENT '+str(xmin)
-        print 'smaxes '+str(smaxes)
-        f=plt.figure()
-        a = f.add_subplot(111)
-        a.plot([-i[0] for i in smaxes],'b')
-        a.set_yscale('log')
+        
+        
+        meta.append([-i[0] for i in smaxes])
+        
         for i in range(len(ss)):
             smaxes[i][0]=-smaxes[i][0]/float(u[i])
-        plt.plot([i[0] for i in smaxes],'r')
-        plt.show()
-        return [xmin, miny,j]
+        meta.append([i[0] for i in smaxes])
+        
+        return [xmin, miny,j,meta]
         
         
     def searchEIMLE(self):
@@ -824,11 +821,11 @@ class Optimizer():
         
     def searchnextDiscS(self,s,u,obstype=[sp.NaN]):
         logger.info('searching under disrete su')
-        [x_n, H_e, j] = self.EP.searchENTsu(s,u,obstype=obstype)
+        [x_n, H_e, j, meta] = self.EP.searchENTsu(s,u,obstype=obstype)
         print str([x_n, H_e, j] )
         yIn = self.f(x_n)+sp.random.normal(scale=sp.sqrt(s[j]))
         
-        return [x_n, yIn, s[j], obstype, H_e,u[j]]
+        return [x_n, yIn, s[j], obstype, H_e, u[j], meta]
     
     def searchnextEIMLE(self,s):
         logger.info('searching under EIMLE')
@@ -936,13 +933,13 @@ class Optimizer():
                 [x, y, s, d, a] = self.searchnextEIFB(self.fixs)
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
             elif self.searchmethod == 'discretes':
-                [x, y, s, d, a, u] = self.searchnextDiscS(self.slist,self.ulist)
+                [x, y, s, d, a, u, m] = self.searchnextDiscS(self.slist,self.ulist)
                 self.states[-1]['HYPsamples']=self.EP.HYPsampleVals
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
                 self.Uo.append(u)
                 print 'FBstatus '+str(sorted([st[0] for st in self.EP.FBInfer.status()]))
                 print 'EPstatus '+str(sorted([st[0] for st in self.EP.EPInfer.status()]))
-                self.states[-1]['sprofatmax'] = self.EP.findENT(x,d,sp.logspace(self.para['splotbounds'][0],self.para['splotbounds'][1],100))
+                self.states[-1]['sprofdata'] = m
             else:
                 raise MJMError('no searchmethod defined')
             
