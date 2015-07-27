@@ -52,4 +52,4 @@ objf['upper']=[1.]
 
 runs=dict()
 runs['nopts']=1
-runs['nsteps']=4
+runs['nsteps']=2

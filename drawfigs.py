@@ -98,7 +98,14 @@ for plot in para.plots:
             ydata=sp.vstack([r.dvdf() for r in d])
             xdata=range(len(ydata[0]))
             readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
+        
+        if plot['name']=='aqu':        
+            a = f.add_subplot(111)
+            ydata=sp.vstack([r.aqu() for r in d])
+            xdata=range(len(ydata[0]))
+            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
             
+        
         if plot['name']=='times':        
             a = f.add_subplot(111)
             ydata=sp.vstack([r.steptimes() for r in d])

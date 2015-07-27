@@ -548,7 +548,7 @@ class EntPredictor():
             ENTsearchi
             #print '\rb'+str(x),
             ret = [-i for i in self.findENT(x, obstype,ss)]
-            print '\rIter: %d  ' % ENTsearchi +' x: '+str(x)+' y: '+str(ret),
+            
             rv=10**100
             
             for i in range(len(ss)):
@@ -557,6 +557,7 @@ class EntPredictor():
                     rv=cc
                 if ret[i]<smaxes[i][0]:
                     smaxes[i]=[ret[i],x]
+            print '\rIter: %d  ' % ENTsearchi +' x: '+str(x)+' y: '+str(rv),
             return (rv, 0)
         global smaxes
         smaxes = [[0,0]]*len(ss)
@@ -565,10 +566,15 @@ class EntPredictor():
         [xmin, miny, ierror] = DIRECT.solve(ee, self.lb, self.ub, user_data=[], algmethod=1, maxf=self.ENTsearchn, logfilename='/dev/null')
         del(ENTsearchi)
         opts = [i for i in self.findENT(xmin, obstype,ss)]
-        j=sp.argmin(opts)
+        
         meta=[]
         meta.append(ss)
         meta.append(opts)
+        optsu = sp.zeros(len(opts))
+        for i in range(len(ss)):
+            optsu[i]=opts[i]/float(u[i])
+        j=sp.argmax(optsu)
+        H=opts[j]
         print 'maxENT '+str(xmin)
         
         
@@ -578,7 +584,7 @@ class EntPredictor():
             smaxes[i][0]=-smaxes[i][0]/float(u[i])
         meta.append([i[0] for i in smaxes])
         
-        return [xmin, miny,j,meta]
+        return [xmin, H ,j,meta]
         
         
     def searchEIMLE(self):

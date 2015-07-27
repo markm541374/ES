@@ -56,6 +56,12 @@ class OptEval():
         for s in self.O.states[1:]:
             reg.append(s['global_hyp'])
         return reg
+    
+    def aqu(self):
+        reg=[]
+        for s in self.O.states[1:]:
+            reg.append(s['searchres'][4])
+        return reg
         
     def dvdf(self):
         reg=[]

@@ -120,6 +120,17 @@ p['title']='d3f vs. steps'
 p['extras']=[[],[],[]]
 plots.append(p)
 
+#aqu
+p=dict()
+p['name']='aqu'
+p['dsets']=[True,True,True]
+p['colorcodes']=['lightblue','lightgreen','lightcoral']
+p['xscale']='linear'
+p['yscale']='linear'
+p['title']='aqu'
+p['extras']=[[],[],[]]
+plots.append(p)
+
 #dvdf
 p=dict()
 p['name']='dvdf'

@@ -77,11 +77,11 @@ class multiGP:
         for i,c in enumerate(self.conns):
             #self.logthis.debug('send to '+str(c)+ ' '+str([0,X_is[i],D_is[i]]))
             c.send([0,X_is[i],D_is[i]])
-        time.sleep(0.000001)
+        time.sleep(0.00001)
         result = []
         for c in self.conns:
             while not c.poll():
-                time.sleep(0.000001)
+                time.sleep(0.00001)
             rs = c.recv()
             #self.logthis.debug('recv from'+str(c)+ ' '+str(rs))
             if rs[0]==-1:
@@ -92,12 +92,12 @@ class multiGP:
     def infer_any(self,code, X_i, D_i,timeout=10.):
         for c in self.conns:
             c.send([code,X_i,D_i])
-        time.sleep(0.000001)
+        time.sleep(0.00001)
         result=[]
         for c in self.conns:
             err=False
             while not c.poll():
-                time.sleep(0.000001)
+                time.sleep(0.00001)
             result.append(c.recv())
         return result
       
@@ -139,14 +139,14 @@ class mGPd(Process):
             self.status=[-2,err]
             while not self.exit_event.is_set():
                 if not self.conn.poll():
-                    time.sleep(0.000001)
+                    time.sleep(0.000005)
                     continue
                 msg = self.conn.poll
                 self.conn.send(self.status)
                 
         while not self.exit_event.is_set():
             if not self.conn.poll():
-                time.sleep(0.000001)
+                time.sleep(0.000005)
                 continue
             [code, X_i, D_i] = self.conn.recv()
             #self.logthis.debug(str(self.uniq)+'recv '+str([code, X_i, D_i]))
@@ -238,7 +238,7 @@ class mGPep(Process):
             self.status=[-2,err]
             while not self.exit_event.is_set():
                 if not self.conn.poll():
-                    time.sleep(0.000001)
+                    time.sleep(0.000005)
                     continue
                 msg = self.conn.poll
                 
@@ -246,7 +246,7 @@ class mGPep(Process):
                 
         while not self.exit_event.is_set():
             if not self.conn.poll():
-                time.sleep(0.000001)
+                time.sleep(0.000005)
                 continue
             [code, X_i, D_i] = self.conn.recv()
             #self.logthis.debug(str(self.uniq)+'recv '+str([code, X_i, D_i]))

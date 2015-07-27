@@ -19,6 +19,7 @@ import DIRECT
 import EntropyPredict
 import logging
 import traceback
+#import cProfile, pstats, StringIO
 #commandline input parser
 parser=argparse.ArgumentParser(prog='runGPGO')
 parser.add_argument('-p','--paras', nargs='?', default='default')
@@ -71,6 +72,9 @@ detail+=pprint.pformat(paras.objf)
 detail += '\n'
 logger.debug(detail)
 #make the generator function ofor the objective function
+#pr = cProfile.Profile()
+#pr.enable()
+
 
 if paras.objf['type']=='drawfromcov':
     if paras.objf['covgen']=='sqexp':
@@ -107,7 +111,13 @@ for i in xrange(paras.runs['nopts']):
         logger.error('optimisation did not complete cleanly\n'+traceback.format_exc())
     O.savestate(os.path.join(rpath,'trace'+str(i)+'.obj'))
         
-    
+#pr.disable()
+#s = StringIO.StringIO()
+#sortby = 'cumulative'
+#ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+#ps.print_stats()
+#print s.getvalue()
+
     
 logger.info(parser.prog+ ' exited at '+time.strftime('%H:%M:%S on %a %-d %B %Y'))
 #exit()
