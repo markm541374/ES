@@ -21,9 +21,9 @@ optpara['ENTsamQ'] = 'method2'
 optpara['ENTzeroprecision'] = 10**-6
 optpara['ENTsearchn'] = 500
 optpara['IRsearchn'] = 1000
-optpara['searchmethod']=['EIMLE','EIFB','fixs','discretes'][2]
-optpara['slist'] = sp.logspace(-8,2,30)
-optpara['ulist'] = sp.logspace(-4,-8,30)
+optpara['searchmethod']=['EIMLE','EIFB','fixs','discretes'][3]
+optpara['slist'] = sp.logspace(2,-4,20)
+optpara['ulist'] = [1./(x**0.6) for x in optpara['slist']]
 optpara['fixs'] = 0.001
 from scipy import NaN as nan
 optpara['obstype'] = [nan]
@@ -35,7 +35,7 @@ optpara['OSLV']=2.**2
 optpara['I1LM']=0.
 optpara['I1LV']=2.**2
 optpara['inittype']='rand'
-optpara['nrand']=4
+optpara['nrand']=5
 optpara['boundregion']=0.99
 
 
@@ -52,4 +52,4 @@ objf['upper']=[1.]
 
 runs=dict()
 runs['nopts']=1
-runs['nsteps']=4
+runs['nsteps']=5

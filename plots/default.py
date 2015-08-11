@@ -8,8 +8,7 @@ Created on Sat Jun  6 14:51:25 2015
 #ploting parameters
 
 #datasets=['EIMLE_20_401','EIFB_20_401','ENFS_20_40']
-#datasets=['default']
-datasets=['C7']
+datasets=['default']
 plots=[]
 
 #xmintrueplot
@@ -132,17 +131,6 @@ p['title']='aqu'
 p['extras']=[[],[],[]]
 plots.append(p)
 
-#s_chosen
-p=dict()
-p['name']='schosen'
-p['dsets']=[True,True,True]
-p['colorcodes']=['lightblue','lightgreen','lightcoral']
-p['xscale']='linear'
-p['yscale']='linear'
-p['title']='aqu'
-p['extras']=[[],[],[]]
-plots.append(p)
-
 #dvdf
 p=dict()
 p['name']='dvdf'
@@ -163,4 +151,4 @@ p['xscale']='linear'
 p['yscale']='linear'
 p['title']='global_hyp vs. steps'
 p['extras']=[[],[],[]]
-#plots.append(p)
+plots.append(p)
