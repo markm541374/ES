@@ -74,7 +74,13 @@ class OptEval():
         for s in self.O.states[1:]:
             t.append(s['time'])
         return sp.array(t)
-    
+        
+    def s_chosen(self):
+        reg=[]
+        for s in self.O.states[1:]:
+            reg.append(s['searchres'][2])
+        return reg
+        
     def MLEhyp(self):
         h=[]
         for s in self.O.states[1:]:

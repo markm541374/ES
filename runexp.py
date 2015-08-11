@@ -34,7 +34,7 @@ if args.name=='default':
     rpath = 'results/default'
     from shutil import rmtree
     if os.path.exists(rpath):
-        rmtree(rpath)
+        rmtree(rpath, ignore_errors=True)
     os.mkdir(rpath)
 else:
     rpath = os.path.join('results',args.name)
@@ -120,4 +120,4 @@ for i in xrange(paras.runs['nopts']):
 
     
 logger.info(parser.prog+ ' exited at '+time.strftime('%H:%M:%S on %a %-d %B %Y'))
-#exit()
+exit()

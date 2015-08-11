@@ -22,6 +22,7 @@ import EntropyPredict
 import logging
 import readlog
 from matplotlib import pyplot as plt
+import traceback
 #commandline input parser
 
 parser=argparse.ArgumentParser(prog='drawfigs')
@@ -57,7 +58,11 @@ for dp in dpaths:
     try:
         data.append([readlog.OptEval(os.path.join(dp,f)) for f in os.listdir(dp) if f[-4:]=='.obj'])
     except:
+        print traceback.format_exc()
+        
         print data
+        print dp
+        print f
         raise MJMError('couldn\'t read data')
 for plot in para.plots:
     f = plt.figure()
@@ -102,6 +107,12 @@ for plot in para.plots:
         if plot['name']=='aqu':        
             a = f.add_subplot(111)
             ydata=sp.vstack([r.aqu() for r in d])
+            xdata=range(len(ydata[0]))
+            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
+            
+        if plot['name']=='schosen':        
+            a = f.add_subplot(111)
+            ydata=sp.vstack([r.s_chosen() for r in d])
             xdata=range(len(ydata[0]))
             readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
             

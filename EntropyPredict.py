@@ -71,6 +71,7 @@ class EntPredictor():
             if not s0==0:
                 logger.error('fixs failed to init FB')
                 raise MJMError('fixs failed to init FB')
+            
             self.drawmins()
             while self.initEPInfer() ==-1:
                 self.drawmins()
@@ -726,6 +727,7 @@ class EntPredictor():
         return E
 
     def drawmins(self):
+       
         res = self.FBInfer.drawmins(self.ENTnsam,[[self.lb,self.ub],self.ENTsamQ])
         self.ENTmindraws = res
         return res
@@ -871,6 +873,13 @@ class Optimizer():
         return [xmin,miny]
 
         
+    def inferpost(self,x,d):
+        if self.searchmethod=='EIMLE':
+            r = self.EP.inferMLEpost(x.T,d)
+            return [[i for i in sp.array(a).flatten()] for a in r]
+        else:
+            return self.EP.inferFBpost(x,d)
+            
         
     def runopt(self,nsteps):
         ti=time.time()
@@ -878,6 +887,7 @@ class Optimizer():
             t0=time.time()
             self.states.append(dict())
             logger.debug('starting step '+str(i))
+            
             self.setupEP()
             sys.stdout.flush()
             #################################
@@ -886,14 +896,16 @@ class Optimizer():
             self.states[-1]['xminIR'] = xminIR
             self.states[-1]['yminIR'] = yminIR
             print '\n'
-            f_IR = self.EP.inferFBpost(sp.matrix([xminIR]*3).T,[[sp.NaN],[0],[0,0]])
+            f_IR = self.inferpost(sp.matrix([xminIR]*3).T,[[sp.NaN],[0],[0,0]])
             k=sp.sqrt(f_IR[1][1])/f_IR[0][2]
             bound = self.para['boundregion']
             nr = sps.norm.ppf(0.5*(1+bound))
             err_d3f=[-1,-1]
             err_dvdf = [-1,-1]
             for j,ii in enumerate([-nr,nr]):
-                f_est = self.EP.inferFBpost(sp.matrix([xminIR+ii*k]*3).T,[[sp.NaN],[0],[0,0]])
+                print [xminIR+ii*k]
+                print sp.matrix([xminIR+ii*k]*3).T
+                f_est = self.inferpost(sp.matrix([xminIR+ii*k]*3).T,[[sp.NaN],[0],[0,0]])
                 f_pred = f_IR[0][0]+ii*k*f_IR[0][1]+0.5*((ii*k)**2)*f_IR[0][2]
                 v_pred = f_IR[1][1]
                 err_d3f[j] = abs(1-f_est[0][0]/f_pred)
@@ -909,7 +921,8 @@ class Optimizer():
             print 'error d3f '+str(err_d3f[0])+' ' +str(err_d3f[1])
             print 'error dv(df) '+str(err_dvdf[0])+' ' +str(err_dvdf[1])
             
-            try:
+            #try:
+            if self.searchmethod=='fixs' or self.searchmethod=='discretes': 
                 print 'Global min:'
                 count=0
                 for dr in self.EP.ENTmindraws:
@@ -921,8 +934,8 @@ class Optimizer():
                     print str(count)+' of '+str(len(self.EP.ENTmindraws)) +' not in local region'+'\n'
                     print [s[1] for s in self.EP.ENTmindraws]
                 self.states[-1]['global_hyp']=count
-            except:
-                pass
+            #except:
+                #pass
             sys.stdout.flush()
             #####################
             if self.searchmethod == 'fixs':
@@ -931,7 +944,7 @@ class Optimizer():
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
                 print 'FBstatus '+str(sorted([st[0] for st in self.EP.FBInfer.status()]))
                 print 'EPstatus '+str(sorted([st[0] for st in self.EP.EPInfer.status()]))
-                self.states[-1]['sprofatmax'] = self.EP.findENT(x,d,sp.logspace(self.para['splotbounds'][0],self.para['splotbounds'][1],self.para['splotbounds'][2]))
+                
             elif self.searchmethod =='EIMLE':
                 [x, y, s, d, a] = self.searchnextEIMLE(self.fixs)
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
@@ -978,7 +991,11 @@ class Optimizer():
         if staten==0:
             return
         for i in xrange(staten):
-            [x, y, s, d, a] = self.states[i+1]['searchres']
+            try:
+                [x, y, s, d, a] = self.states[i+1]['searchres']
+            except:
+                print self.states[i+1].keys()
+                raise
             self.Xo = sp.vstack([self.Xo, x])
             self.Yo = sp.vstack([self.Yo, y])
             self.So = sp.vstack([self.So, s])

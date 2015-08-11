@@ -21,7 +21,7 @@ optpara['ENTsamQ'] = 'method2'
 optpara['ENTzeroprecision'] = 10**-6
 optpara['ENTsearchn'] = 500
 optpara['IRsearchn'] = 1000
-optpara['searchmethod']='discretes'
+optpara['searchmethod']=['EIMLE','EIFB','fixs','discretes'][2]
 optpara['slist'] = sp.logspace(-8,2,30)
 optpara['ulist'] = sp.logspace(-4,-8,30)
 optpara['fixs'] = 0.001
@@ -35,8 +35,8 @@ optpara['OSLV']=2.**2
 optpara['I1LM']=0.
 optpara['I1LV']=2.**2
 optpara['inittype']='rand'
-optpara['nrand']=5
-optpara['boundregion']=0.995
+optpara['nrand']=4
+optpara['boundregion']=0.99
 
 
 
@@ -52,4 +52,4 @@ objf['upper']=[1.]
 
 runs=dict()
 runs['nopts']=1
-runs['nsteps']=2
+runs['nsteps']=4
