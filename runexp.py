@@ -83,12 +83,12 @@ if paras.objf['type']=='drawfromcov':
     kftrue = objkfGen(hyptrue)
 upper = paras.objf['upper']
 lower = paras.objf['lower']
-functiongenerator = fgen1d(lower[0], upper[0], 300, kftrue)
+functiongenerator = fgennd(1, 150, kftrue)
 
 #init kfgen and prior for covariance
 if paras.optpara['covtype']=='sqexp':
     optkfGen = GPep.gen_sqexp_k_d
-    optkfprior = genSqExpPrior([[paras.optpara['OSLM'],paras.optpara['OSLV']],[paras.optpara['I1LM'],paras.optpara['I1LV']]])
+    optkfprior = genSqExpPrior(paras.optpara['prior'])
 
 for i in xrange(paras.runs['nopts']):
     logger.info('starting run '+str(i)+'\n')
@@ -120,4 +120,8 @@ for i in xrange(paras.runs['nopts']):
 
     
 logger.info(parser.prog+ ' exited at '+time.strftime('%H:%M:%S on %a %-d %B %Y'))
-exit()
+try:
+    if not __IPYTHON__:
+        exit()
+except:
+    pass

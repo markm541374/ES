@@ -23,6 +23,8 @@ import logging
 import readlog
 from matplotlib import pyplot as plt
 import traceback
+import imp
+import seaborn as sns
 #commandline input parser
 
 parser=argparse.ArgumentParser(prog='drawfigs')
@@ -31,7 +33,7 @@ parser.add_argument('-n','--name', nargs='?', default='default')
 args = parser.parse_args()
 
 sys.path.append('plots')
-para = __import__(args.para)
+para = imp.load_source(args.para,'plots/'+args.para+'.py')
 
 #create directory for results
 if args.name=='default':

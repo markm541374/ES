@@ -13,6 +13,7 @@ import scipy.stats as sps
 import numpy as np
 from functools import partial
 import sys
+from pyDOE import lhs as lhs
 
 class MJMError(Exception):
     pass
@@ -45,6 +46,24 @@ class fgen1d():
         f = interpolate.interp1d(sp.array(self.Xi).flatten(), sp.array(fn).flatten(),kind='cubic')
         return f
 
+
+class fgennd():
+    #assumes the hypercube [-1,1]^D
+    def __init__(self, D, npoints, kf):
+        self.npoints = npoints
+
+        support = lhs(D,samples=npoints,criterion='centermaximin')
+        self.Xi = sp.matrix([[y*2-1 for y in x] for x in support])
+        V_p = GPd.buildKsym_d(kf, self.Xi, [[sp.NaN]]*npoints)
+        self.vpCho = spl.cholesky(V_p, lower=True)
+        self.kf = kf
+        return
+
+    def genfun(self):
+        fn = self.vpCho*sp.matrix(sp.random.normal(size=self.npoints)).T
+        g = GPd.GPcore(self.Xi,fn,sp.matrix([10e-6]*self.npoints).T,[[sp.NaN]]*self.npoints,self.kf)
+        f = lambda x: sp.array(g.infer_m(sp.matrix(x),[[sp.NaN]])[0,0])
+        return f
 
 def slice_sample(dist, init, iters, sigma, step_out=True,burn=10):
     """

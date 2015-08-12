@@ -29,11 +29,13 @@ from scipy import NaN as nan
 optpara['obstype'] = [nan]
 optpara['covtype'] = 'sqexp'
 #outpuscallogmean
-optpara['OSLM']=0.
+#optpara['OSLM']=0.
 #outputscalelogvar
-optpara['OSLV']=2.**2
-optpara['I1LM']=0.
-optpara['I1LV']=2.**2
+#optpara['OSLV']=2.**2
+#optpara['I1LM']=0.
+#optpara['I1LV']=2.**2
+#prior over hyp, mean and var on logscale, output then axes
+optpara['prior'] = [[0.,2.*2],[0., 2.**2]]
 optpara['inittype']='rand'
 optpara['nrand']=5
 optpara['boundregion']=0.99
@@ -52,4 +54,4 @@ objf['upper']=[1.]
 
 runs=dict()
 runs['nopts']=1
-runs['nsteps']=5
+runs['nsteps']=3
