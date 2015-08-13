@@ -14,7 +14,7 @@ import numpy as np
 from functools import partial
 import sys
 from pyDOE import lhs as lhs
-
+import traceback
 class MJMError(Exception):
     pass
 
@@ -137,6 +137,7 @@ def squaresllk(xx, D, kfgen):
                 g = GPd.GPcore(D[0], D[1], D[2], D[3], kf)
                 lk = g.llk()
             except:
+                traceback.print_exc()
                 print 'warn: can''t get llk with: '+str(hyp)
                 lk=-sp.Inf
             return lk

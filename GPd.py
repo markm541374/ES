@@ -2,6 +2,7 @@ import scipy as sp
 from scipy import linalg as spl
 from matplotlib import pyplot as plt
 from numpy.linalg import slogdet as slogdet
+import tools
 # conbine sets of observations
 
 

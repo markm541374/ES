@@ -1,119 +1,62 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May  5 15:22:15 2015
-
-@author: markm
-"""
-
-from multiprocessing import Process, Pipe, Event, active_children
-
+import os
 import sys
-import GPd
-import GPep
-import GPset
+import argparse
 import time
-import scipy as sp
+import pprint
 from tools import *
+import GPep
+import GPd
 import DIRECT
 import EntropyPredict
-import scipy.stats as sps
-import readlog
-from matplotlib import pyplot as plt
-import cProfile, pstats, StringIO
-#%pylab inline
+import logging
+import traceback
 
-# %%
-hyptrue = [1., 0.20]
-kfGen = GPep.gen_sqexp_k_d
-kftrue = GPep.gen_sqexp_k_d(hyptrue)
-upper = [1]
-lower = [-1]
-ff = fgen1d(lower[0], upper[0], 300, kftrue)
+sys.path.append('paras')
+paras = __import__('default3')
 
+#print header to logfile
+rpath = os.path.join('results','default')
+logger=logging.getLogger()
+logger.setLevel(logging.DEBUG)
+db=logging.FileHandler(os.path.join(rpath,'debug.log'))
+db.setLevel(logging.DEBUG)
+inf=logging.FileHandler(os.path.join(rpath,'info.log'))
+inf.setLevel(logging.INFO)
+formatter=logging.Formatter('%(asctime)s:%(levelname)s:%(module)s:%(message)s')
+db.setFormatter(formatter)
+inf.setFormatter(formatter)
+logger.addHandler(db)
+logger.addHandler(inf)
 
+if paras.objf['type']=='drawfromcov':
+    if paras.objf['covgen']=='sqexp':
+        objkfGen = GPep.gen_sqexp_k_d
+    hyptrue = paras.objf['hyp']
+    kftrue = objkfGen(hyptrue)
+D = paras.objf['D']
+upper = [1.]*D
+lower = [-1]*D
+functiongenerator = fgennd(D, 50, kftrue)
 
+#init kfgen and prior for covariance
+if paras.optpara['covtype']=='sqexp':
+    optkfGen = GPep.gen_sqexp_k_d
+    optkfprior = genSqExpPrior(paras.optpara['prior'])
 
-f = ff.genfun()
+for i in xrange(paras.runs['nopts']):
+    #logger.info('starting run '+str(i)+'\n')
+    #draw an objective function
+    xmintrue=lower
+    while any([i>0.99 or i<-0.99 for i in xmintrue]):
+        f=functiongenerator.genfun()
+        ee = lambda x, y: (f(x), 0)
+        [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=1000, logfilename='/dev/null')
+        print 'truemin: '+str(xmintrue)
+    paras.optpara['xmintrue']=xmintrue[0]
+    paras.optpara['ymintrue']=miny
 
-plt.plot(sp.linspace(-1, 1, 100), map(f, sp.linspace(-1, 1, 100)))
-ee = lambda x, y: (f(x), 0)
-[xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=4000, logfilename='/dev/null')
-xmintrue = xmintrue[0]
-print miny
-
-plt.plot(xmintrue, miny, 'rx')
-
-
-# %%
-
-PO=[]
-for c in active_children():
-    c.terminate()
-#outputscaleLogmean
-OSLM=0.
-#outputscaleLogvar
-OSLV=2.**2
-#inputscalaLogmean
-I1LM=0.
-#inputscaleLogvar
-I1LV=2.**2
-
-kfprior = genSqExpPrior([[OSLM,OSLV],[I1LM,I1LV]])
-para=dict()
-
-para['xmintrue'] = xmintrue
-para['ymintrue'] = miny
-
-para['nHYPsamples']=1
-para['HYPsearchLow'] = [-2, -2]
-para['HYPsearchHigh'] = [2, 2]
-para['HYPMLEsearchn'] = 1000
-para['HYPsamSigma'] = 0.05
-para['HYPsamBurn'] = 12
-para['ENTnsam'] = 100
-para['ENTzeroprecision'] = 10**-6
-para['ENTsearchn'] = 1000
-para['IRsearchn'] = 1000
-para['searchmethod']='fixs'
-para['fixs'] = 0.0001
-#para['searchmethod']='EIMLE'
-#para['fixs'] = 0.0001
-
-para['obstype'] = [sp.NaN]
-#para = [nHYPsam, HYPsearchLow, HYPsearchHigh, HYPMLEsearchn, HYPsamSigma, HYPsamBurn, ENTnsam, ENTzeroprecision, ENTsearchn]
-# %%
-reload(EntropyPredict)
-reload(GPset)
-
-O = EntropyPredict.Optimizer(f,kfGen, kfprior, lower, upper, para)
-O.initrandobs(5,para['fixs'])
-O.setupEP()
-#O.plotstate()
-# %%
-pr = cProfile.Profile()
-pr.enable()
-
-for i in xrange(1):
-    print 'optstep'+str(i)
-    O.runopt(2)
-    #O.plotstate()
-    #plt.show()
-pr.disable()
-s = StringIO.StringIO()
-sortby = 'cumulative'
-ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-ps.print_stats()
-print s.getvalue()
-
-# %%
-O.savestate()
-
-# %%
-E = readlog.OptEval('states.obj')
-plt.semilogy(E.xerr(),'b')
-
-
-# %%
-for j in xrange(1000):
-    print j
-    O.EP.EPInfer.infer_full_var([sp.matrix([sp.random.uniform()]).T]*12,[[[sp.NaN]]]*12)
+e = EntropyPredict.Optimizer(f,optkfGen,optkfprior,D,paras.optpara)
+e.initrandobs(paras.optpara['nrand'],paras.optpara['fixs'])
+e.setupEP()
+e.runopt(1)
+del e

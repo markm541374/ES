@@ -118,14 +118,14 @@ class EntPredictor():
         sigma = self.HYPsamSigma*sp.ones(self.dim+1)
         dist = dist_obj(squaresllk, self.D, self.kfprior, self.kfgen)
         
-        samples = slice_sample(dist, w_0, iters=n, sigma=sigma, burn=self.HYPsamBurn)
-        
+        samples = slice_sample(dist, w_0, iters=n, sigma=sigma, burn=self.HYPsamBurn).T
+        truesamples = [[10**x for x in s] for s in samples]
         # print samples
         kfSam = []
         hySam = []
         for i in xrange(n):
-            kfSam.append(self.kfgen([10**samples[0][i], 10**samples[1][i]]))
-            hySam.append([10**samples[0][i], 10**samples[1][i]])
+            kfSam.append(self.kfgen(truesamples[i]))
+            hySam.append(truesamples[i])
         
         self.HYPsampleVals=hySam[:self.nHYPsamples]
         self.HYPsampleFns=kfSam[:self.nHYPsamples]
@@ -163,6 +163,7 @@ class EntPredictor():
         flag = False
         for s in status:
             if not  s[0]==0:
+                print s
                 flag = True
         if flag:
             logger.error('FBInfer failed to init \n'+str([s[0] for s in status]))
@@ -184,15 +185,15 @@ class EntPredictor():
                 #create a bad GP in the correct position so that others are alligned
                 self.EPInfer.addGPd(-1,-1,-1,-1,-1)
                 continue
-            xs = md[1][0,0]
-            Xg = sp.matrix([[xs]])
+            xs = md[1]
+            Xg = sp.matrix(xs)
             Yg = sp.matrix([[0.]])
             Sg = sp.matrix([[self.ENTzeroprecision]])
             Dg = [[0]]
-            
+
             [Xc, Yc, Sc, Dc] = GPep.catObs([[Xo, Yo, So, Do], [Xg, Yg, Sg, Dg]])
             
-            Xz = sp.matrix([[xs], [xs]])
+            Xz = sp.vstack([xs, xs])
             Dz = [[sp.NaN], [0, 0]]
             # the inequality
             Iz = sp.matrix([[Yo[Yo.argmin(), :][0, 0]], [0.]])
@@ -728,18 +729,19 @@ class EntPredictor():
 
     def drawmins(self):
        
-        res = self.FBInfer.drawmins(self.ENTnsam,[[self.lb,self.ub],self.ENTsamQ])
+        res = self.FBInfer.drawmins(self.ENTnsam,[self.dim,self.ENTsamQ])
         self.ENTmindraws = res
         return res
         
 class Optimizer():
-    def __init__(self, f, kfGen, kfPrior, lb, ub, para):
+    def __init__(self, f, kfGen, kfPrior, D, para):
         
         self.f = f
         self.kfGen = kfGen
         self.kfPrior = kfPrior
-        self.lb = lb
-        self.ub = ub
+        self.D = D
+        self.lb = [-1.]*D
+        self.ub = [1.]*D
         self.para=para
         self.searchmethod = para['searchmethod']
         if self.searchmethod == 'fixs':
@@ -758,20 +760,20 @@ class Optimizer():
             raise MJMError('no searchmethod defined')
         
         self.states=[dict()]
-        self.states[0]['para']=para
-        self.states[0]['lb']=lb
-        self.states[0]['ub']=ub
-        self.states[0]['f']=f
-        self.states[0]['kfGen']=kfGen
-        self.states[0]['kfPrior']=kfPrior
+        self.states[0]['para'] = para
+        self.states[0]['lb'] = self.lb
+        self.states[0]['ub'] = self.ub
+        self.states[0]['f'] = f
+        self.states[0]['kfGen'] = kfGen
+        self.states[0]['kfPrior'] = kfPrior
         
         logger.debug('initialised optimiser')
         return
         
     def initrandobs(self, n_init, s_init):
-        x = sp.random.uniform(self.lb, self.ub, n_init)
+        x = sp.random.uniform(-1., 1., [n_init,self.D])
         y = map(self.f, x)+sp.random.normal(scale=sp.sqrt(s_init), size=n_init)
-        self.Xo = sp.matrix(x).T
+        self.Xo = sp.matrix(x)
         self.Yo = sp.matrix(y).T
         self.So = sp.matrix([[s_init]]*n_init)
         self.Do = [[sp.NaN]]*n_init
@@ -798,8 +800,8 @@ class Optimizer():
         try:
             self.EP.setupEP()
         except MJMError as e:
-            self.states[-1]['HSbad']=self.EP.HYPsampleVals_bad
-            self.states[-1]['MDbad']=self.EP.ENTmindraws_bad
+            self.states[-1]['HSbad'] = self.EP.HYPsampleVals_bad
+            self.states[-1]['MDbad'] = self.EP.ENTmindraws_bad
             raise
         return
         
@@ -921,21 +923,7 @@ class Optimizer():
             print 'error d3f '+str(err_d3f[0])+' ' +str(err_d3f[1])
             print 'error dv(df) '+str(err_dvdf[0])+' ' +str(err_dvdf[1])
             
-            #try:
-            if self.searchmethod=='fixs' or self.searchmethod=='discretes': 
-                print 'Global min:'
-                count=0
-                for dr in self.EP.ENTmindraws:
-                    if abs(dr[1]-xminIR)>nr*k:
-                        count+=1
-                if count==0:
-                    print 'all draws in local region'+'\n'
-                else:
-                    print str(count)+' of '+str(len(self.EP.ENTmindraws)) +' not in local region'+'\n'
-                    print [s[1] for s in self.EP.ENTmindraws]
-                self.states[-1]['global_hyp']=count
-            #except:
-                #pass
+
             sys.stdout.flush()
             #####################
             if self.searchmethod == 'fixs':

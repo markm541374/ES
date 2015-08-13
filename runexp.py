@@ -22,7 +22,7 @@ import traceback
 #import cProfile, pstats, StringIO
 #commandline input parser
 parser=argparse.ArgumentParser(prog='runGPGO')
-parser.add_argument('-p','--paras', nargs='?', default='default')
+parser.add_argument('-p','--paras', nargs='?', default='default3')
 parser.add_argument('-n','--name', nargs='?', default='default')
 args = parser.parse_args()
 
@@ -81,9 +81,10 @@ if paras.objf['type']=='drawfromcov':
         objkfGen = GPep.gen_sqexp_k_d
     hyptrue = paras.objf['hyp']
     kftrue = objkfGen(hyptrue)
-upper = paras.objf['upper']
-lower = paras.objf['lower']
-functiongenerator = fgennd(1, 150, kftrue)
+D = paras.objf['D']
+upper = [1.]*D
+lower = [-1]*D
+functiongenerator = fgennd(D, 50, kftrue)
 
 #init kfgen and prior for covariance
 if paras.optpara['covtype']=='sqexp':
@@ -93,16 +94,15 @@ if paras.optpara['covtype']=='sqexp':
 for i in xrange(paras.runs['nopts']):
     logger.info('starting run '+str(i)+'\n')
     #draw an objective function
-    xmintrue=lower[0]
-    while min(xmintrue-lower[0], upper[0]-xmintrue) < 0.025*(upper[0]-lower[0]):
+    xmintrue=lower
+    while any([i>0.99 or i<-0.99 for i in xmintrue]):
         f=functiongenerator.genfun()
         ee = lambda x, y: (f(x), 0)
         [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=4000, logfilename='/dev/null')
-        xmintrue = xmintrue[0]
         print 'truemin: '+str(xmintrue)
-    paras.optpara['xmintrue']=xmintrue
+    paras.optpara['xmintrue']=xmintrue[0]
     paras.optpara['ymintrue']=miny
-    O = EntropyPredict.Optimizer(f,optkfGen, optkfprior, lower, upper, paras.optpara)
+    O = EntropyPredict.Optimizer(f,optkfGen, optkfprior, D, paras.optpara)
     if paras.optpara['inittype']=='rand':
         O.initrandobs(paras.optpara['nrand'],paras.optpara['fixs'])
     try:
