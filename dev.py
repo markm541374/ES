@@ -57,6 +57,7 @@ for i in xrange(paras.runs['nopts']):
 
 e = EntropyPredict.Optimizer(f,optkfGen,optkfprior,D,paras.optpara)
 e.initrandobs(paras.optpara['nrand'],paras.optpara['fixs'])
-e.setupEP()
-e.runopt(1)
+
+e.runopt(2)
 del e
+print traceback.print_exc()

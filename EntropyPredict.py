@@ -314,6 +314,7 @@ class EntPredictor():
         Mydxxs = sp.zeros(self.nHYPsamples)
         Xmcs=[]
         Dmcs=[]
+
         for i in xrange(self.nHYPsamples):
             X = sp.vstack([X_s,self.ENTmindraws[i][1]])
             Xmcs.append(X)
@@ -392,7 +393,7 @@ class EntPredictor():
     def findENT(self, xs, ds, ss):
         #print '\rFindEnt0',
         n_hyp = self.nHYPsamples
-        [m0,v0,m1,v1,mask] = self.findMV(sp.matrix(xs).T,[ds])
+        [m0,v0,m1,v1,mask] = self.findMV(sp.matrix(xs),[ds])
         #print '\rFindEnt1',
         H0 = sp.zeros(n_hyp)
         H1 = sp.zeros(n_hyp)
