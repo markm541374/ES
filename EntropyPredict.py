@@ -201,10 +201,7 @@ class EntPredictor():
             # sign of the inequality
             Gz = [0.]*(self.dim+1)
             Nz = [So[Yo.argmin(), :][0,0]]+[0.]*self.dim  #!!!!!this value is important, should it e the sigma for hte min obs or the posterior at that piont??
-            #tempcode TODO
-            p = GPep.GPcore(Xc, Yc, Sc, Dc, Xz, Dz, Iz, Gz, Nz, self.HYPsampleFns[i])
-            p.runEP()
-            #tempcode TODO
+
             self.EPInfer.addGPep(Xc, Yc, Sc, Dc, Xz, Dz, Iz, Gz, Nz, self.HYPsampleFns[i])
 
         status = self.EPInfer.status()
