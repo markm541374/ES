@@ -9,8 +9,8 @@ import scipy as sp
 
 optpara=dict()
 optpara['D']=3
-optpara['nHYPsamples']=6
-optpara['nHYPmargin']=1.8
+optpara['nHYPsamples']=3
+optpara['nHYPmargin']=1.5
 optpara['HYPsearchLow'] = [-2, -2, -2, -2]
 optpara['HYPsearchHigh'] = [2, 2, 2, 2]
 optpara['HYPMLEsearchn'] = 800

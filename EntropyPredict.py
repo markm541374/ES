@@ -186,21 +186,25 @@ class EntPredictor():
                 self.EPInfer.addGPd(-1,-1,-1,-1,-1)
                 continue
             xs = md[1]
-            Xg = sp.matrix(xs)
-            Yg = sp.matrix([[0.]])
-            Sg = sp.matrix([[self.ENTzeroprecision]])
-            Dg = [[0]]
+
+            Xg = sp.matrix(sp.vstack([xs]*self.dim))
+            Yg = sp.matrix(sp.vstack([0.]*self.dim))
+            Sg = sp.matrix(sp.vstack([self.ENTzeroprecision]*self.dim))
+            Dg = [[i] for i in xrange(self.dim)]
 
             [Xc, Yc, Sc, Dc] = GPep.catObs([[Xo, Yo, So, Do], [Xg, Yg, Sg, Dg]])
             
-            Xz = sp.vstack([xs, xs])
-            Dz = [[sp.NaN], [0, 0]]
+            Xz = sp.vstack([xs]*(self.dim+1))
+            Dz = [[sp.NaN]]+[[i,i] for i in xrange(self.dim)]
             # the inequality
-            Iz = sp.matrix([[Yo[Yo.argmin(), :][0, 0]], [0.]])
+            Iz = sp.matrix([Yo[Yo.argmin(), :][0, 0]]+[0.]*self.dim)
             # sign of the inequality
-            Gz = [0, 0]
-            Nz = [So[Yo.argmin(), :], 0.]  #!!!!!this value is important, should it e the sigma for hte min obs or the posterior at that piont??
-
+            Gz = [0.]*(self.dim+1)
+            Nz = [So[Yo.argmin(), :][0,0]]+[0.]*self.dim  #!!!!!this value is important, should it e the sigma for hte min obs or the posterior at that piont??
+            #tempcode TODO
+            p = GPep.GPcore(Xc, Yc, Sc, Dc, Xz, Dz, Iz, Gz, Nz, self.HYPsampleFns[i])
+            p.runEP()
+            #tempcode TODO
             self.EPInfer.addGPep(Xc, Yc, Sc, Dc, Xz, Dz, Iz, Gz, Nz, self.HYPsampleFns[i])
 
         status = self.EPInfer.status()

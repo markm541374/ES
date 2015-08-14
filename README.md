@@ -7,3 +7,5 @@ on the boundary then the search will only get as close as DIRECT can get to the 
 Consider alternative search method (which), setting DIRECT to search to within eps (will be slow)</p>
 
 <p>I need to switch to slice sample for draws from teh min as rejection is too slow</p>
+
+<p>Currenly only constraining the diagonal elements of the hessian to be +ve, rather than a +ve definite constraint on H</p>
