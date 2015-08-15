@@ -43,17 +43,16 @@ if paras.optpara['covtype']=='sqexp':
     optkfGen = GPep.gen_sqexp_k_d
     optkfprior = genSqExpPrior(paras.optpara['prior'])
 
-for i in xrange(paras.runs['nopts']):
-    #logger.info('starting run '+str(i)+'\n')
-    #draw an objective function
-    xmintrue=lower
-    while any([i>0.99 or i<-0.99 for i in xmintrue]):
-        f=functiongenerator.genfun()
-        ee = lambda x, y: (f(x), 0)
-        [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=1000, logfilename='/dev/null')
-        print 'truemin: '+str(xmintrue)
-    paras.optpara['xmintrue']=xmintrue[0]
-    paras.optpara['ymintrue']=miny
+#logger.info('starting run '+str(i)+'\n')
+#draw an objective function
+xmintrue=lower
+while any([i>0.99 or i<-0.99 for i in xmintrue]):
+    f=functiongenerator.genfun()
+    ee = lambda x, y: (f(x), 0)
+    [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=1000, logfilename='/dev/null')
+    print 'truemin: '+str(xmintrue)
+paras.optpara['xmintrue']=xmintrue[0]
+paras.optpara['ymintrue']=miny
 
 e = EntropyPredict.Optimizer(f,optkfGen,optkfprior,D,paras.optpara)
 e.initrandobs(paras.optpara['nrand'],paras.optpara['fixs'])
