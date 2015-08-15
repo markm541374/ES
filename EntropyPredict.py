@@ -884,7 +884,7 @@ class Optimizer():
         else:
             return self.EP.inferFBpost(x,d)
             
-        
+
     def runopt(self,nsteps):
         ti=time.time()
         for i in xrange(nsteps):
@@ -900,30 +900,35 @@ class Optimizer():
             self.states[-1]['xminIR'] = xminIR
             self.states[-1]['yminIR'] = yminIR
             print '\n'
-            f_IR = self.inferpost(sp.matrix([xminIR]*3).T,[[sp.NaN],[0],[0,0]])
-            k=sp.sqrt(f_IR[1][1])/f_IR[0][2]
-            bound = self.para['boundregion']
-            nr = sps.norm.ppf(0.5*(1+bound))
-            err_d3f=[-1,-1]
-            err_dvdf = [-1,-1]
-            for j,ii in enumerate([-nr,nr]):
-                print [xminIR+ii*k]
-                print sp.matrix([xminIR+ii*k]*3).T
-                f_est = self.inferpost(sp.matrix([xminIR+ii*k]*3).T,[[sp.NaN],[0],[0,0]])
-                f_pred = f_IR[0][0]+ii*k*f_IR[0][1]+0.5*((ii*k)**2)*f_IR[0][2]
-                v_pred = f_IR[1][1]
-                err_d3f[j] = abs(1-f_est[0][0]/f_pred)
-                err_dvdf[j] = abs(1-f_est[1][1]/v_pred)
+
+            # f_IR = self.inferpost(sp.matrix([xminIR]).T,[[sp.NaN]])
+            # g_IR = self.inferpost(sp.matrix(sp.vstack([xminIR]*self.D)),[[i] for i in xrange(self.D)])
+            # d_hu = []
+            # [[d_hu.append([i,j]) for i in xrange(j,self.D)] for j in xrange(self.D)]
+            # hu = self.inferpost(sp.matrix(sp.vstack([xminIR]*(self.D*(self.D+1)/2))),d_hu)
+            # k=sp.sqrt(f_IR[1][1])/f_IR[0][2]
+            # bound = self.para['boundregion']
+            # nr = sps.norm.ppf(0.5*(1+bound))
+            # err_d3f=[-1,-1]
+            # err_dvdf = [-1,-1]
+            # for j,ii in enumerate([-nr,nr]):
+            #     print [xminIR+ii*k]
+            #     print sp.matrix([xminIR+ii*k]*3).T
+            #     f_est = self.inferpost(sp.matrix([xminIR+ii*k]*3).T,[[sp.NaN],[0],[0,0]])
+            #     f_pred = f_IR[0][0]+ii*k*f_IR[0][1]+0.5*((ii*k)**2)*f_IR[0][2]
+            #     v_pred = f_IR[1][1]
+            #     err_d3f[j] = abs(1-f_est[0][0]/f_pred)
+            #     err_dvdf[j] = abs(1-f_est[1][1]/v_pred)
+            #
+            # self.states[-1]['err_d3f']=err_d3f
+            # self.states[-1]['err_dvdf']=err_dvdf
+            # self.states[-1]['region_radius']=nr*k
             
-            self.states[-1]['err_d3f']=err_d3f
-            self.states[-1]['err_dvdf']=err_dvdf
-            self.states[-1]['region_radius']=nr*k
-            
-            print 'Local min around '+str(xminIR)+ ' :'
-            print 'var(df) '+str(f_IR[1][1]) +' d2f '+str(f_IR[0][2])
-            print str(100*bound)+ '% region radius: '+str(nr*k) 
-            print 'error d3f '+str(err_d3f[0])+' ' +str(err_d3f[1])
-            print 'error dv(df) '+str(err_dvdf[0])+' ' +str(err_dvdf[1])
+            # print 'Local min around '+str(xminIR)+ ' :'
+            # print 'var(df) '+str(f_IR[1][1]) +' d2f '+str(f_IR[0][2])
+            # print str(100*bound)+ '% region radius: '+str(nr*k)
+            # print 'error d3f '+str(err_d3f[0])+' ' +str(err_d3f[1])
+            # print 'error dv(df) '+str(err_dvdf[0])+' ' +str(err_dvdf[1])
             
 
             sys.stdout.flush()
