@@ -247,7 +247,7 @@ class EntPredictor():
         
         
     def inferMLEpost(self,X_s,D_s):
-        m,v = self.MLEInfer.infer_diag(X_s,D_s)
+        m,v = self.MLEInfer.infer_diag(X_s.T,D_s)
         return [m,v]
         
     def plotMinDraws(self):
@@ -709,7 +709,7 @@ class EntPredictor():
         X_s=sp.matrix(X_s)
         np = X_s.shape[0]
         D_s = [[sp.NaN]]*np
-        m,v = self.inferMLEpost(X_s, D_s)
+        m,v = self.inferMLEpost(X_s.T, D_s)
         E=sp.zeros(np)
         best = self.D[1].min()
         
@@ -897,6 +897,7 @@ class Optimizer():
             #################################
             
             [xminIR,yminIR] = self.searchminpost()
+            logger.debug('IRmin: '+ str([xminIR,yminIR]))
             self.states[-1]['xminIR'] = xminIR
             self.states[-1]['yminIR'] = yminIR
             print '\n'
@@ -929,7 +930,6 @@ class Optimizer():
             # print str(100*bound)+ '% region radius: '+str(nr*k)
             # print 'error d3f '+str(err_d3f[0])+' ' +str(err_d3f[1])
             # print 'error dv(df) '+str(err_dvdf[0])+' ' +str(err_dvdf[1])
-            
 
             sys.stdout.flush()
             #####################
@@ -939,10 +939,12 @@ class Optimizer():
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
                 print 'FBstatus '+str(sorted([st[0] for st in self.EP.FBInfer.status()]))
                 print 'EPstatus '+str(sorted([st[0] for st in self.EP.EPInfer.status()]))
+                logger.debug('search result: '+str([x, y, s, d, a]))
                 
             elif self.searchmethod =='EIMLE':
                 [x, y, s, d, a] = self.searchnextEIMLE(self.fixs)
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
+                logger.debug('search result: '+str([x, y, s, d, a]))
             elif self.searchmethod =='EIFB':
                 [x, y, s, d, a] = self.searchnextEIFB(self.fixs)
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
@@ -954,6 +956,7 @@ class Optimizer():
                 print 'FBstatus '+str(sorted([st[0] for st in self.EP.FBInfer.status()]))
                 print 'EPstatus '+str(sorted([st[0] for st in self.EP.EPInfer.status()]))
                 self.states[-1]['sprofdata'] = m
+                logger.debug('search result: '+str([x, y, s, d, a]))
             else:
                 raise MJMError('no searchmethod defined')
             
@@ -1006,7 +1009,7 @@ def restartOpt(fname, lastinvalid=False):
     f = states[0]['f']
     kfGen = states[0]['kfGen']
     kfPrior = states[0]['kfPrior']
-    O = Optimizer(f, kfGen, kfPrior, lb, ub, para)
+    O = Optimizer(f, kfGen, kfPrior, len(lb), para)
     if lastinvalid:
         j=1
         O.states = states[:-1]

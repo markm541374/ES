@@ -9,3 +9,5 @@ Consider alternative search method (which), setting DIRECT to search to within e
 <p>I need to switch to slice sample for draws from teh min as rejection is too slow</p>
 
 <p>Currenly only constraining the diagonal elements of the hessian to be +ve, rather than a +ve definite constraint on H</p>
+
+<p>Have removed est on conf region until I can work out the multidimensional case</p>

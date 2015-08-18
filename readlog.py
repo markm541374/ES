@@ -19,7 +19,11 @@ import EntropyPredict
 
 class OptEval():
     def __init__(self,fname,lastinvalid=False):
-        self.O = EntropyPredict.restartOpt(fname,lastinvalid=lastinvalid)
+        try:
+            self.O = EntropyPredict.restartOpt(fname)
+        except:
+            print 'opt did not complete cleanly, loadding to penultimate step.'
+            self.O = EntropyPredict.restartOpt(fname,lastinvalid=lastinvalid)
         return
         
     def xerr(self):
@@ -35,7 +39,7 @@ class OptEval():
         ymintrue = self.O.para['ymintrue']
         for s in self.O.states[1:]:
             xminest = sp.matrix(s['xminIR'])
-            yIR.append(abs(self.O.f(xminest)[0,0]-ymintrue))
+            yIR.append(abs(self.O.f(xminest)-ymintrue))
         
         return sp.array(yIR)
     

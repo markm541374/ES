@@ -134,7 +134,7 @@ for plot in para.plots:
                 ydata.append(sp.vstack([[h[j] for h in x] for x in alldata]))
             xdata=range(len(alldata[0]))
             for j in xrange(D):
-                a = f.add_subplot(D,1,j)
+                a = f.add_subplot(D,1,j+1)
                 readlog.plotset(ydata[j],xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
                 a.set_yscale(plot['yscale'])
                 a.set_xscale(plot['xscale'])
@@ -150,14 +150,20 @@ for plot in para.plots:
             f.set_figwidth(8)
             f.set_figheight(3*D)
             for i in xrange(D):
-                a = f.add_subplot(D,1,i)
+                a = f.add_subplot(D,1,i+1)
                 for j in xrange(n):
                     a.plot(x,alldata[j][i][1],'g')
                     a.plot(x,alldata[j][i][2],'b')
                     a.plot(x,alldata[j][i][3],'r')
-                a.set_yscale(plot['yscale'])
+                try:
+                    a.set_yscale(plot['yscale'])
+                except:
+                    a.set_yscale('linear')
                 a.set_xscale(plot['xscale'])
-    a.set_yscale(plot['yscale'])
+    try:
+        a.set_yscale(plot['yscale'])
+    except:
+        a.set_yscale('linear')
     a.set_xscale(plot['xscale'])
     a.set_title(plot['title'])
     f.savefig(os.path.join(rpath,plot['name']+'.png'))

@@ -95,12 +95,13 @@ for i in xrange(paras.runs['nopts']):
     logger.info('starting run '+str(i)+'\n')
     #draw an objective function
     xmintrue=lower
-    while any([i>0.99 or i<-0.99 for i in xmintrue]):
+    while any([j>0.99 or j<-0.99 for j in xmintrue]):
         f=functiongenerator.genfun()
         ee = lambda x, y: (f(x), 0)
         [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=4000, logfilename='/dev/null')
         print 'truemin: '+str(xmintrue)
-    paras.optpara['xmintrue']=xmintrue[0]
+        logger.debug('truemin: '+str([xmintrue,miny]))
+    paras.optpara['xmintrue']=xmintrue
     paras.optpara['ymintrue']=miny
     O = EntropyPredict.Optimizer(f,optkfGen, optkfprior, D, paras.optpara)
     if paras.optpara['inittype']=='rand':

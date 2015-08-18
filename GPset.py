@@ -214,7 +214,15 @@ class mGPd(Process):
         D_x = [[sp.NaN]] * n_points
         
         mh, Vh = self.GP.infer_full(X_x, D_x)
-        Vh_cho = spl.cholesky(Vh, lower=True)
+        try:
+            Vh_cho = spl.cholesky(Vh, lower=True)
+        except:
+            try:
+                Vh_cho = spl.cholesky(Vh+sp.eye(n_points)*1e-9, lower=True)
+                logger.warn('added 1e-9 diagonal to K in drawmin')
+            except:
+                raise
+
         dr = mh+Vh_cho*sp.matrix(sp.random.normal(size=n_points)).T
         xs = dr.argmin()
         return X_x[xs,:]
