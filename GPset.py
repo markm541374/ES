@@ -107,8 +107,8 @@ class multiGP:
     def status(self):
         return self.infer_any(-1,[],[])
     
-    def drawmins(self,n_points,bound):
-        return self.infer_any(4,n_points,bound)
+    def drawmins(self,n_points,para):
+        return self.infer_any(4,n_points,para)
         
     def close(self):
         for ex in self.exits:
@@ -163,9 +163,9 @@ class mGPd(Process):
                     res = self.GP.llk()
                 elif code==4:
                     n_points=X_i
-                    bound=D_i[0]
+                    dim=D_i[0]
                     Q=D_i[1]
-                    res=self.drawmin(n_points,bound,Q)
+                    res=self.drawmin(n_points,dim,Q)
                 else:
                     raise MJMError('code not supported')
                 #self.logthis.debug(str(self.uniq)+'send '+str(res))
@@ -179,9 +179,8 @@ class mGPd(Process):
         
         return
         
-    def drawmin(self,n_points,bound,Q):
-        ub=bound[1]
-        lb=bound[0]
+    def drawmin(self,n_points,dim,Q):
+
         mx = self.GP.Y_s.max()
         mn = self.GP.Y_s.min()
         nacc=0
@@ -189,7 +188,7 @@ class mGPd(Process):
         sp.random.seed()
         if Q=='method1':
             while nacc<n_points:
-                X_prop = sp.matrix(sp.random.uniform(lb, ub)).T
+                X_prop = sp.matrix(sp.random.uniform(-1, 1,size=dim))
                 Y_prop = self.GP.infer_m(X_prop, [[sp.NaN]])
                 theta = -(Y_prop[0,0]-mx)/(mx-mn)
                 p = norm.cdf(2*theta-1.)
@@ -199,7 +198,7 @@ class mGPd(Process):
                     X_tmp.append(X_prop)
         elif Q=='method2':
             while nacc<n_points:
-                X_prop = sp.matrix(sp.random.uniform(lb, ub)).T
+                X_prop = sp.matrix(sp.random.uniform(-1,1,size=dim))
                 Y_prop = self.GP.infer_m(X_prop, [[sp.NaN]])
                 [dY, vdY] = self.GP.infer_diag(X_prop, [[0]])
                 theta = -(Y_prop[0,0]-mx)/(mx-mn)
@@ -215,7 +214,15 @@ class mGPd(Process):
         D_x = [[sp.NaN]] * n_points
         
         mh, Vh = self.GP.infer_full(X_x, D_x)
-        Vh_cho = spl.cholesky(Vh, lower=True)
+        try:
+            Vh_cho = spl.cholesky(Vh, lower=True)
+        except:
+            try:
+                Vh_cho = spl.cholesky(Vh+sp.eye(n_points)*1e-9, lower=True)
+                logger.warn('added 1e-9 diagonal to K in drawmin')
+            except:
+                raise
+
         dr = mh+Vh_cho*sp.matrix(sp.random.normal(size=n_points)).T
         xs = dr.argmin()
         return X_x[xs,:]

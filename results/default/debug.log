@@ -1,0 +1,241 @@
+2015-08-20 15:43:45,559:INFO:runexp:runGPGO started at 15:43:45 on Thu 20 August 2015 on caithness
+
+INPUT from default3:
+
+Optimisation parameters:
+
+2015-08-20 15:43:45,561:DEBUG:runexp:{'D': 3,
+ 'ENTnsam': 400,
+ 'ENTsamQ': 'method2',
+ 'ENTsearchn': 2000,
+ 'ENTzeroprecision': 1e-06,
+ 'HYPMLEsearchn': 1200,
+ 'HYPsamBurn': 12,
+ 'HYPsamSigma': 0.05,
+ 'HYPsearchHigh': [2, 2, 2, 2],
+ 'HYPsearchLow': [-2, -2, -2, -2],
+ 'IRsearchn': 2000,
+ 'boundregion': 0.99,
+ 'covtype': 'sqexp',
+ 'fixs': 0.001,
+ 'inittype': 'rand',
+ 'nHYPmargin': 1.8,
+ 'nHYPsamples': 6,
+ 'nrand': 20,
+ 'obstype': [nan],
+ 'prior': [[0.0, 4.0], [0.0, 4.0], [0.0, 4.0], [0.0, 4.0]],
+ 'searchmethod': 'discretes',
+ 'slist': array([  1.00000000e+01,   4.28133240e+00,   1.83298071e+00,
+         7.84759970e-01,   3.35981829e-01,   1.43844989e-01,
+         6.15848211e-02,   2.63665090e-02,   1.12883789e-02,
+         4.83293024e-03,   2.06913808e-03,   8.85866790e-04,
+         3.79269019e-04,   1.62377674e-04,   6.95192796e-05,
+         2.97635144e-05,   1.27427499e-05,   5.45559478e-06,
+         2.33572147e-06,   1.00000000e-06]),
+ 'ulist': [0.79432823472428149,
+           0.8646535029500364,
+           0.94120496726806679,
+           1.0245338593872233,
+           1.1152402139117905,
+           1.2139771890700746,
+           1.3214557699755294,
+           1.4384498882876628,
+           1.5658019951383659,
+           1.7044291274531953,
+           1.8553295113499624,
+           2.0195897501643794,
+           2.1983926488622889,
+           2.3930257311804977,
+           2.6048905108264298,
+           2.8355125834966515,
+           3.0865526123848626,
+           3.3598182862837818,
+           3.657277336388828,
+           3.9810717055349727]}
+
+Objective function parameters:
+{'D': 3, 'covgen': 'sqexp', 'hyp': [1.0, 0.5, 0.4, 0.6], 'type': 'drawfromcov'}
+
+2015-08-20 15:43:45,634:INFO:runexp:starting run 0
+
+2015-08-20 15:43:54,223:DEBUG:runexp:truemin: [array([-0.00640146,  0.84133516, -0.32921811]), -2.083457199493779]
+2015-08-20 15:43:54,223:DEBUG:EntropyPredict:initialised optimiser
+2015-08-20 15:43:54,273:INFO:EntropyPredict:added 20 random initial observations
+2015-08-20 15:43:54,273:DEBUG:EntropyPredict:starting step 0
+2015-08-20 15:43:54,273:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 15:44:47,557:DEBUG:EntropyPredict:finding IR location
+2015-08-20 15:44:56,315:DEBUG:EntropyPredict:IRmin: [array([ 0.19295839,  0.63587868,  0.00518214]), -1.3233631289620928]
+2015-08-20 15:44:56,315:INFO:EntropyPredict:searching under disrete su
+2015-08-20 15:45:30,633:DEBUG:EntropyPredict:search result: [array([ 0.49961896,  0.07437891, -0.45694254]), 0.77342826524220432, 0.011288378916846895, [nan], 0.88234096309246135]
+2015-08-20 15:45:30,633:INFO:EntropyPredict:step 0 completed in 96.3604149818
+2015-08-20 15:45:30,633:DEBUG:EntropyPredict:starting step 1
+2015-08-20 15:45:30,634:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 15:46:07,096:DEBUG:EntropyPredict:finding IR location
+2015-08-20 15:46:16,447:DEBUG:EntropyPredict:IRmin: [array([-0.42981253,  0.66300869, -0.25880201]), -1.7086416790547434]
+2015-08-20 15:46:16,447:INFO:EntropyPredict:searching under disrete su
+2015-08-20 15:46:50,028:DEBUG:EntropyPredict:search result: [array([ 0.46029569, -0.93674745,  0.75903064]), -0.91359559070135654, 0.011288378916846895, [nan], 0.50363573615117707]
+2015-08-20 15:46:50,028:INFO:EntropyPredict:step 1 completed in 79.3949260712
+2015-08-20 15:46:50,029:DEBUG:EntropyPredict:starting step 2
+2015-08-20 15:46:50,029:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 15:47:24,022:DEBUG:EntropyPredict:finding IR location
+2015-08-20 15:47:32,848:DEBUG:EntropyPredict:IRmin: [array([-0.24142661,  0.74439872, -0.1572931 ]), -1.9888608299296404]
+2015-08-20 15:47:32,849:INFO:EntropyPredict:searching under disrete su
+2015-08-20 15:48:06,853:DEBUG:EntropyPredict:search result: [array([-0.0347508 ,  0.84042067, -0.61636946]), -1.8422162472152646, 0.004832930238571757, [nan], 0.98575532335337668]
+2015-08-20 15:48:06,853:INFO:EntropyPredict:step 2 completed in 76.824368
+2015-08-20 15:48:06,853:DEBUG:EntropyPredict:starting step 3
+2015-08-20 15:48:06,854:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 15:48:43,648:DEBUG:EntropyPredict:finding IR location
+2015-08-20 15:48:52,912:DEBUG:EntropyPredict:IRmin: [array([-0.14906264,  0.78006401, -0.32281664]), -2.065238230352627]
+2015-08-20 15:48:52,913:INFO:EntropyPredict:searching under disrete su
+2015-08-20 15:49:27,547:DEBUG:EntropyPredict:search result: [array([ -6.09663161e-04,   6.77640604e-01,  -4.18533760e-01]), -1.829239454146997, 0.00016237767391887243, [nan], 1.3974553874221425]
+2015-08-20 15:49:27,548:INFO:EntropyPredict:step 3 completed in 80.6944179535
+2015-08-20 15:49:27,548:DEBUG:EntropyPredict:starting step 4
+2015-08-20 15:49:27,548:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 15:50:04,705:DEBUG:EntropyPredict:finding IR location
+2015-08-20 15:50:14,082:DEBUG:EntropyPredict:IRmin: [array([-0.15820759,  0.77457705, -0.35116598]), -2.0504076430410927]
+2015-08-20 15:50:14,082:INFO:EntropyPredict:searching under disrete su
+2015-08-20 15:50:49,034:DEBUG:EntropyPredict:search result: [array([-0.31428136,  0.9440634 , -0.33348575]), -1.7318766148627354, 0.00037926901907322537, [nan], 0.98221534529187415]
+2015-08-20 15:50:49,034:INFO:EntropyPredict:step 4 completed in 81.4859280586
+2015-08-20 15:50:49,034:DEBUG:EntropyPredict:starting step 5
+2015-08-20 15:50:49,035:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 15:51:27,855:DEBUG:EntropyPredict:finding IR location
+2015-08-20 15:51:37,485:DEBUG:EntropyPredict:IRmin: [array([-0.17192501,  0.77823503, -0.34385002]), -2.048716766391394]
+2015-08-20 15:51:37,485:INFO:EntropyPredict:searching under disrete su
+2015-08-20 15:52:13,823:DEBUG:EntropyPredict:search result: [array([-0.30727023,  0.608139  ,  0.18930041]), -1.7265014290476628, 0.00088586679041008322, [nan], 0.80981540709231237]
+2015-08-20 15:52:13,823:INFO:EntropyPredict:step 5 completed in 84.7888560295
+2015-08-20 15:52:13,823:DEBUG:EntropyPredict:starting step 6
+2015-08-20 15:52:13,824:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 15:52:57,685:DEBUG:EntropyPredict:finding IR location
+2015-08-20 15:53:07,566:DEBUG:EntropyPredict:IRmin: [array([-0.17009602,  0.76909008, -0.23319616]), -2.082091164214618]
+2015-08-20 15:53:07,566:INFO:EntropyPredict:searching under disrete su
+2015-08-20 15:53:44,132:DEBUG:EntropyPredict:search result: [array([-0.45084591,  0.75445816, -0.96113397]), -0.71019744951913488, 0.0020691380811147901, [nan], 0.70907740566270061]
+2015-08-20 15:53:44,133:INFO:EntropyPredict:step 6 completed in 90.3094899654
+2015-08-20 15:53:44,133:DEBUG:EntropyPredict:starting step 7
+2015-08-20 15:53:44,134:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 15:54:29,219:DEBUG:EntropyPredict:finding IR location
+2015-08-20 15:54:39,245:DEBUG:EntropyPredict:IRmin: [array([-0.16552355,  0.77183356, -0.2094193 ]), -2.094867885984183]
+2015-08-20 15:54:39,245:INFO:EntropyPredict:searching under disrete su
+2015-08-20 15:55:16,148:DEBUG:EntropyPredict:search result: [array([-0.58344765,  0.84224966,  0.0521262 ]), -1.0658871765852054, 0.0020691380811147901, [nan], 1.0189717871499988]
+2015-08-20 15:55:16,149:INFO:EntropyPredict:step 7 completed in 92.0155420303
+2015-08-20 15:55:16,149:DEBUG:EntropyPredict:starting step 8
+2015-08-20 15:55:16,150:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 15:56:01,872:DEBUG:EntropyPredict:finding IR location
+2015-08-20 15:56:12,046:DEBUG:EntropyPredict:IRmin: [array([-0.13625972,  0.77457705, -0.28715135]), -2.0917351742005765]
+2015-08-20 15:56:12,046:INFO:EntropyPredict:searching under disrete su
+2015-08-20 15:56:49,494:DEBUG:EntropyPredict:search result: [array([ 0.91175126, -0.80201189,  0.9739369 ]), -0.4530019989542366, 0.0020691380811147901, [nan], 0.83637382833093454]
+2015-08-20 15:56:49,495:INFO:EntropyPredict:step 8 completed in 93.3456308842
+2015-08-20 15:56:49,495:DEBUG:EntropyPredict:starting step 9
+2015-08-20 15:56:49,495:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 15:57:40,555:DEBUG:EntropyPredict:finding IR location
+2015-08-20 15:57:51,051:DEBUG:EntropyPredict:IRmin: [array([-0.15546411,  0.76360311, -0.24965706]), -2.1408425370558675]
+2015-08-20 15:57:51,051:INFO:EntropyPredict:searching under disrete su
+2015-08-20 15:58:29,743:DEBUG:EntropyPredict:search result: [array([-0.14723365,  0.80749886, -0.16857186]), -1.9891565316576507, 0.00088586679041008322, [nan], 0.9596721956995099]
+2015-08-20 15:58:29,744:INFO:EntropyPredict:step 9 completed in 100.248759985
+2015-08-20 15:58:29,744:DEBUG:EntropyPredict:starting step 10
+2015-08-20 15:58:29,744:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 15:59:22,045:DEBUG:EntropyPredict:finding IR location
+2015-08-20 15:59:33,005:DEBUG:EntropyPredict:IRmin: [array([-0.13625972,  0.78006401, -0.31458619]), -2.0606005457433163]
+2015-08-20 15:59:33,006:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:00:12,062:DEBUG:EntropyPredict:search result: [array([-0.14449017,  0.35116598, -0.24874257]), -1.4329664864405802, 0.0020691380811147901, [nan], 0.65095134400367305]
+2015-08-20 16:00:12,063:INFO:EntropyPredict:step 10 completed in 102.318736076
+2015-08-20 16:00:12,063:DEBUG:EntropyPredict:starting step 11
+2015-08-20 16:00:12,064:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:01:06,061:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:01:17,284:DEBUG:EntropyPredict:IRmin: [array([-0.16735254,  0.72519433, -0.25422954]), -2.0483263743413858]
+2015-08-20 16:01:17,284:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:01:58,039:DEBUG:EntropyPredict:search result: [array([-0.99984758,  0.14997714,  0.99984758]), -1.2656583501121335, 0.026366508987303583, [nan], 0.68828143737949743]
+2015-08-20 16:01:58,040:INFO:EntropyPredict:step 11 completed in 105.97677207
+2015-08-20 16:01:58,040:DEBUG:EntropyPredict:starting step 12
+2015-08-20 16:01:58,040:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:02:54,206:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:03:05,732:DEBUG:EntropyPredict:IRmin: [array([-0.16552355,  0.72610882, -0.260631  ]), -2.053075134568246]
+2015-08-20 16:03:05,733:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:03:46,932:DEBUG:EntropyPredict:search result: [array([-0.62368541,  0.25880201,  0.96204847]), -0.20304010093375807, 0.004832930238571757, [nan], 0.63659095073239358]
+2015-08-20 16:03:46,933:INFO:EntropyPredict:step 12 completed in 108.892501116
+2015-08-20 16:03:46,933:DEBUG:EntropyPredict:starting step 13
+2015-08-20 16:03:46,933:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:04:48,967:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:05:01,434:DEBUG:EntropyPredict:IRmin: [array([-0.1746685 ,  0.69958848, -0.21399177]), -2.0642301521739355]
+2015-08-20 16:05:01,435:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:05:48,459:DEBUG:EntropyPredict:search result: [array([ 0.07468374,  0.99994919, -0.164101  ]), -1.7702293912937634, 0.0020691380811147901, [nan], 0.75472355718432438]
+2015-08-20 16:05:48,460:INFO:EntropyPredict:step 13 completed in 121.526736975
+2015-08-20 16:05:48,460:DEBUG:EntropyPredict:starting step 14
+2015-08-20 16:05:48,460:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:06:52,573:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:07:04,542:DEBUG:EntropyPredict:IRmin: [array([-0.16186557,  0.72793781, -0.23776863]), -2.042344208672247]
+2015-08-20 16:07:04,543:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:07:51,282:DEBUG:EntropyPredict:search result: [array([-0.99984758,  0.25179089,  0.50327694]), -1.5702961736806751, 0.0020691380811147901, [nan], 0.6915677247262968]
+2015-08-20 16:07:51,282:INFO:EntropyPredict:step 14 completed in 122.822451115
+2015-08-20 16:07:51,283:DEBUG:EntropyPredict:starting step 15
+2015-08-20 16:07:51,283:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:08:59,124:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:09:10,959:DEBUG:EntropyPredict:IRmin: [array([-0.15454961,  0.73433928, -0.25331504]), -2.0444768311411905]
+2015-08-20 16:09:10,959:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:09:52,682:DEBUG:EntropyPredict:search result: [array([-0.29172382,  0.7712239 , -0.70233196]), -1.4227674330696349, 0.00037926901907322537, [nan], 0.5650233654848652]
+2015-08-20 16:09:52,682:INFO:EntropyPredict:step 15 completed in 121.39946413
+2015-08-20 16:09:52,682:DEBUG:EntropyPredict:starting step 16
+2015-08-20 16:09:52,683:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:11:00,383:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:11:12,645:DEBUG:EntropyPredict:IRmin: [array([-0.16643804,  0.70964792, -0.19753086]), -2.0401375895940563]
+2015-08-20 16:11:12,645:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:11:55,896:DEBUG:EntropyPredict:search result: [array([ 0.37860082,  0.87517147, -0.53040695]), -1.7994810411501556, 0.004832930238571757, [nan], 0.67272824132414277]
+2015-08-20 16:11:55,896:INFO:EntropyPredict:step 16 completed in 123.214005947
+2015-08-20 16:11:55,897:DEBUG:EntropyPredict:starting step 17
+2015-08-20 16:11:55,897:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:13:04,381:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:13:16,499:DEBUG:EntropyPredict:IRmin: [array([-0.18655693,  0.70141747, -0.18106996]), -2.0382649229882572]
+2015-08-20 16:13:16,500:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:13:59,642:DEBUG:EntropyPredict:search result: [array([ 0.25328117,  0.99998306, -0.64885095]), -2.0249350234755026, 0.0020691380811147901, [nan], 0.58120314144542318]
+2015-08-20 16:13:59,643:INFO:EntropyPredict:step 17 completed in 123.745873928
+2015-08-20 16:13:59,643:DEBUG:EntropyPredict:starting step 18
+2015-08-20 16:13:59,643:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:15:11,059:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:15:23,476:DEBUG:EntropyPredict:IRmin: [array([-0.17741198,  0.70141747, -0.19021491]), -2.042896148505462]
+2015-08-20 16:15:23,476:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:16:07,422:DEBUG:EntropyPredict:search result: [array([ 0.46700198, -0.42432556,  0.99984758]), -0.37846886972139143, 0.0020691380811147901, [nan], 0.63170563440692507]
+2015-08-20 16:16:07,423:INFO:EntropyPredict:step 18 completed in 127.779822111
+2015-08-20 16:16:07,423:DEBUG:EntropyPredict:starting step 19
+2015-08-20 16:16:07,423:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:17:20,594:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:17:33,035:DEBUG:EntropyPredict:IRmin: [array([-0.17283951,  0.70964792, -0.19753086]), -2.038975917184405]
+2015-08-20 16:17:33,035:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:18:17,477:DEBUG:EntropyPredict:search result: [array([ 0.31966672,  0.99994919, -0.89305492]), -1.8139456894098107, 0.00088586679041008322, [nan], 0.33509478827060213]
+2015-08-20 16:18:17,478:INFO:EntropyPredict:step 19 completed in 130.054545879
+2015-08-20 16:18:17,478:DEBUG:EntropyPredict:starting step 20
+2015-08-20 16:18:17,478:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:19:39,827:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:19:52,612:DEBUG:EntropyPredict:IRmin: [array([ 0.20972413,  0.99984758, -0.53071178]), -2.0492220884858052]
+2015-08-20 16:19:52,612:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:20:37,625:DEBUG:EntropyPredict:search result: [array([-0.99998306, -0.13053566,  0.62666599]), -0.87959730874889819, 0.011288378916846895, [nan], 0.36867598676043273]
+2015-08-20 16:20:37,625:INFO:EntropyPredict:step 20 completed in 140.147510052
+2015-08-20 16:20:37,626:DEBUG:EntropyPredict:starting step 21
+2015-08-20 16:20:37,626:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:21:57,155:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:22:10,370:DEBUG:EntropyPredict:IRmin: [array([ 0.22618503,  0.99984758, -0.53040695]), -2.0456587313313936]
+2015-08-20 16:22:10,371:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:22:56,682:DEBUG:EntropyPredict:search result: [array([ 0.66985046,  0.99998306, -0.59669088]), -1.0680375519307823, 0.0020691380811147901, [nan], 0.86469329533193096]
+2015-08-20 16:22:56,682:INFO:EntropyPredict:step 21 completed in 139.056833029
+2015-08-20 16:22:56,683:DEBUG:EntropyPredict:starting step 22
+2015-08-20 16:22:56,683:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:24:19,349:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:24:32,807:DEBUG:EntropyPredict:IRmin: [array([ 0.16918153,  0.97485139, -0.54046639]), -2.049421795142271]
+2015-08-20 16:24:32,808:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:25:19,009:DEBUG:EntropyPredict:search result: [array([ 0.01768023,  0.91998171, -0.41091297]), -2.056639627501101, 0.00016237767391887243, [nan], 0.55187561661377782]
+2015-08-20 16:25:19,009:INFO:EntropyPredict:step 22 completed in 142.326745033
+2015-08-20 16:25:19,010:DEBUG:EntropyPredict:starting step 23
+2015-08-20 16:25:19,010:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:26:46,492:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:26:59,966:DEBUG:EntropyPredict:IRmin: [array([ 0.12711477,  0.98125286, -0.52857796]), -2.077057449236455]
+2015-08-20 16:26:59,966:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:27:47,410:DEBUG:EntropyPredict:search result: [array([ 0.04707954,  0.99998306, -0.56928991]), -1.9813105582567416, 0.00016237767391887243, [nan], 0.59643641017689841]
+2015-08-20 16:27:47,410:INFO:EntropyPredict:step 23 completed in 148.400593042
+2015-08-20 16:27:47,411:DEBUG:EntropyPredict:starting step 24
+2015-08-20 16:27:47,411:DEBUG:EntropyPredict:setting new EP object
+2015-08-20 16:29:16,153:DEBUG:EntropyPredict:finding IR location
+2015-08-20 16:29:29,878:DEBUG:EntropyPredict:IRmin: [array([ 0.12071331,  0.93552812, -0.46639232]), -2.063617078365439]
+2015-08-20 16:29:29,878:INFO:EntropyPredict:searching under disrete su
+2015-08-20 16:30:17,525:DEBUG:EntropyPredict:search result: [array([ 0.18520212,  0.99998306, -0.50473336]), -1.991778891217475, 6.9519279617756056e-05, [nan], 0.41900905660962628]
+2015-08-20 16:30:17,525:INFO:EntropyPredict:step 24 completed in 150.114564896
+2015-08-20 16:30:17,526:INFO:EntropyPredict:Completed 25 steps in 2783.252738
+2015-08-20 16:30:17,528:INFO:EntropyPredict:saving opt as results/default/trace0.obj
+2015-08-20 16:30:17,559:INFO:runexp:runGPGO exited at 16:30:17 on Thu 20 August 2015

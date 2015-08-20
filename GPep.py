@@ -66,8 +66,8 @@ class GPcore:
 
         ytR = yt.copy()
         StR = St.copy()
-        m_R = [[], []]
-        v_R = [[], []]
+        m_R = [[]]*self.n_z
+        v_R = [[]]*self.n_z
         for it in xrange(self.nloops):
             for i in xrange(self.n_z):
                 # update the inference at z with the ep observations
@@ -89,7 +89,7 @@ class GPcore:
                 v_R[i].append(v_)
                 # find the new ep obs
 
-                alpha = (m_+((-1)**self.G_z[i])*self.I_z[i, 0]) / (sp.sqrt(v_+self.N_z[i]))
+                alpha = (m_+((-1)**self.G_z[i])*self.I_z[0,i]) / (sp.sqrt(v_+self.N_z[i]))
 
                 pr = PhiR(alpha)
                 if sp.isnan(pr):
