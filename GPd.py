@@ -387,8 +387,11 @@ class GPcore:
             V[j,0]=self.kf(X_i[j,:],X_i[j,:],d1=D_i[j],d2=D_i[j])-r*spl.cho_solve(self.K_ss_cf,r.T)
         return [m,V]
 
-    def llk(self):
+    def llk(self,extras=False):
         if self.invalidflag:
             self.precompute()
-        return (-0.5*self.Y_s.T*self.a -0.5*self.logdet-0.5*len(self.D_s)*sp.log(2*sp.pi))[0,0]
+        if extras:
+            return [(-0.5*self.Y_s.T*self.a)[0,0], -0.5*self.logdet, -0.5*len(self.D_s)*sp.log(2*sp.pi)]
+        else:
+            return (-0.5*self.Y_s.T*self.a -0.5*self.logdet-0.5*len(self.D_s)*sp.log(2*sp.pi))[0,0]
 #kf = gen_sqexp_k_d([1.,0.3])
