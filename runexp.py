@@ -22,7 +22,7 @@ import traceback
 #import cProfile, pstats, StringIO
 #commandline input parser
 parser=argparse.ArgumentParser(prog='runGPGO')
-parser.add_argument('-p','--paras', nargs='?', default='default')
+parser.add_argument('-p','--paras', nargs='?', default='default3')
 parser.add_argument('-n','--name', nargs='?', default='default')
 args = parser.parse_args()
 
@@ -81,28 +81,29 @@ if paras.objf['type']=='drawfromcov':
         objkfGen = GPep.gen_sqexp_k_d
     hyptrue = paras.objf['hyp']
     kftrue = objkfGen(hyptrue)
-upper = paras.objf['upper']
-lower = paras.objf['lower']
-functiongenerator = fgen1d(lower[0], upper[0], 300, kftrue)
+D = paras.objf['D']
+upper = [1.]*D
+lower = [-1]*D
+functiongenerator = fgennd(D, 50, kftrue)
 
 #init kfgen and prior for covariance
 if paras.optpara['covtype']=='sqexp':
     optkfGen = GPep.gen_sqexp_k_d
-    optkfprior = genSqExpPrior([[paras.optpara['OSLM'],paras.optpara['OSLV']],[paras.optpara['I1LM'],paras.optpara['I1LV']]])
+    optkfprior = genSqExpPrior(paras.optpara['prior'])
 
 for i in xrange(paras.runs['nopts']):
     logger.info('starting run '+str(i)+'\n')
     #draw an objective function
-    xmintrue=lower[0]
-    while min(xmintrue-lower[0], upper[0]-xmintrue) < 0.025*(upper[0]-lower[0]):
+    xmintrue=lower
+    while any([j>0.99 or j<-0.99 for j in xmintrue]):
         f=functiongenerator.genfun()
         ee = lambda x, y: (f(x), 0)
         [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=4000, logfilename='/dev/null')
-        xmintrue = xmintrue[0]
         print 'truemin: '+str(xmintrue)
+        logger.debug('truemin: '+str([xmintrue,miny]))
     paras.optpara['xmintrue']=xmintrue
     paras.optpara['ymintrue']=miny
-    O = EntropyPredict.Optimizer(f,optkfGen, optkfprior, lower, upper, paras.optpara)
+    O = EntropyPredict.Optimizer(f,optkfGen, optkfprior, D, paras.optpara)
     if paras.optpara['inittype']=='rand':
         O.initrandobs(paras.optpara['nrand'],paras.optpara['fixs'])
     try:
@@ -120,4 +121,8 @@ for i in xrange(paras.runs['nopts']):
 
     
 logger.info(parser.prog+ ' exited at '+time.strftime('%H:%M:%S on %a %-d %B %Y'))
-exit()
+try:
+    if not __IPYTHON__:
+        exit()
+except:
+    pass

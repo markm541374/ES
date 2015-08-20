@@ -2,6 +2,7 @@ import scipy as sp
 from scipy import linalg as spl
 from matplotlib import pyplot as plt
 from numpy.linalg import slogdet as slogdet
+import tools
 # conbine sets of observations
 
 
@@ -207,7 +208,7 @@ def sqexp_k_d(theta, x1, x2, d1=[sp.NaN], d2=[sp.NaN]):
         lj=D[aj,aj]
         
         coef = -xi*li*lj*(lj*xj**2-1)
-        print sign*coef*core
+        return sign*coef*core
         
     elif d2==[3]:
         #print "3nd derivative i==j==k"
@@ -369,9 +370,10 @@ class GPcore:
             self.precompute()
         K_ii = buildKsym_d(self.kf,X_i,D_i)
         K_si = buildKasym_d(self.kf,X_i,self.X_s,D_i,self.D_s)
-        
+
+
         m = K_si*self.a
-	V = K_ii - K_si*spl.cho_solve(self.K_ss_cf,K_si.T)
+        V = K_ii - K_si*spl.cho_solve(self.K_ss_cf,K_si.T)
         
         return [m,V]
     
@@ -379,7 +381,7 @@ class GPcore:
         if self.invalidflag:
             self.precompute()
         K_si = buildKasym_d(self.kf,X_i,self.X_s,D_i,self.D_s)
-        
+
         m = K_si*self.a
         V=sp.matrix(sp.zeros(X_i.shape[0])).T
         for j,r in enumerate(K_si):

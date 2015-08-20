@@ -47,12 +47,11 @@ objf['type']='drawfromcov'
 objf['covgen']='sqexp'
 objf['D']=1
 objf['hyp']=[1.,0.2]
-#always scale to [-1.1]^D
-#objf['lower']=[-1.]
-#objf['upper']=[1.]
+objf['lower']=[-1.]
+objf['upper']=[1.]
 
 
 
 runs=dict()
 runs['nopts']=1
-runs['nsteps']=3
+runs['nsteps']=2
