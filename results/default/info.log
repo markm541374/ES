@@ -1,62 +1,53 @@
-2015-08-20 15:43:45,559:INFO:runexp:runGPGO started at 15:43:45 on Thu 20 August 2015 on caithness
+2015-08-21 18:16:17,391:INFO:runexp:runGPGO started at 18:16:17 on Fri 21 August 2015 on caithness
 
 INPUT from default3:
 
 Optimisation parameters:
 
-2015-08-20 15:43:45,634:INFO:runexp:starting run 0
+2015-08-21 18:16:17,479:INFO:runexp:starting run 0
 
-2015-08-20 15:43:54,273:INFO:EntropyPredict:added 20 random initial observations
-2015-08-20 15:44:56,315:INFO:EntropyPredict:searching under disrete su
-2015-08-20 15:45:30,633:INFO:EntropyPredict:step 0 completed in 96.3604149818
-2015-08-20 15:46:16,447:INFO:EntropyPredict:searching under disrete su
-2015-08-20 15:46:50,028:INFO:EntropyPredict:step 1 completed in 79.3949260712
-2015-08-20 15:47:32,849:INFO:EntropyPredict:searching under disrete su
-2015-08-20 15:48:06,853:INFO:EntropyPredict:step 2 completed in 76.824368
-2015-08-20 15:48:52,913:INFO:EntropyPredict:searching under disrete su
-2015-08-20 15:49:27,548:INFO:EntropyPredict:step 3 completed in 80.6944179535
-2015-08-20 15:50:14,082:INFO:EntropyPredict:searching under disrete su
-2015-08-20 15:50:49,034:INFO:EntropyPredict:step 4 completed in 81.4859280586
-2015-08-20 15:51:37,485:INFO:EntropyPredict:searching under disrete su
-2015-08-20 15:52:13,823:INFO:EntropyPredict:step 5 completed in 84.7888560295
-2015-08-20 15:53:07,566:INFO:EntropyPredict:searching under disrete su
-2015-08-20 15:53:44,133:INFO:EntropyPredict:step 6 completed in 90.3094899654
-2015-08-20 15:54:39,245:INFO:EntropyPredict:searching under disrete su
-2015-08-20 15:55:16,149:INFO:EntropyPredict:step 7 completed in 92.0155420303
-2015-08-20 15:56:12,046:INFO:EntropyPredict:searching under disrete su
-2015-08-20 15:56:49,495:INFO:EntropyPredict:step 8 completed in 93.3456308842
-2015-08-20 15:57:51,051:INFO:EntropyPredict:searching under disrete su
-2015-08-20 15:58:29,744:INFO:EntropyPredict:step 9 completed in 100.248759985
-2015-08-20 15:59:33,006:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:00:12,063:INFO:EntropyPredict:step 10 completed in 102.318736076
-2015-08-20 16:01:17,284:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:01:58,040:INFO:EntropyPredict:step 11 completed in 105.97677207
-2015-08-20 16:03:05,733:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:03:46,933:INFO:EntropyPredict:step 12 completed in 108.892501116
-2015-08-20 16:05:01,435:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:05:48,460:INFO:EntropyPredict:step 13 completed in 121.526736975
-2015-08-20 16:07:04,543:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:07:51,282:INFO:EntropyPredict:step 14 completed in 122.822451115
-2015-08-20 16:09:10,959:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:09:52,682:INFO:EntropyPredict:step 15 completed in 121.39946413
-2015-08-20 16:11:12,645:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:11:55,896:INFO:EntropyPredict:step 16 completed in 123.214005947
-2015-08-20 16:13:16,500:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:13:59,643:INFO:EntropyPredict:step 17 completed in 123.745873928
-2015-08-20 16:15:23,476:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:16:07,423:INFO:EntropyPredict:step 18 completed in 127.779822111
-2015-08-20 16:17:33,035:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:18:17,478:INFO:EntropyPredict:step 19 completed in 130.054545879
-2015-08-20 16:19:52,612:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:20:37,625:INFO:EntropyPredict:step 20 completed in 140.147510052
-2015-08-20 16:22:10,371:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:22:56,682:INFO:EntropyPredict:step 21 completed in 139.056833029
-2015-08-20 16:24:32,808:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:25:19,009:INFO:EntropyPredict:step 22 completed in 142.326745033
-2015-08-20 16:26:59,966:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:27:47,410:INFO:EntropyPredict:step 23 completed in 148.400593042
-2015-08-20 16:29:29,878:INFO:EntropyPredict:searching under disrete su
-2015-08-20 16:30:17,525:INFO:EntropyPredict:step 24 completed in 150.114564896
-2015-08-20 16:30:17,526:INFO:EntropyPredict:Completed 25 steps in 2783.252738
-2015-08-20 16:30:17,528:INFO:EntropyPredict:saving opt as results/default/trace0.obj
-2015-08-20 16:30:17,559:INFO:runexp:runGPGO exited at 16:30:17 on Thu 20 August 2015
+2015-08-21 18:16:25,819:INFO:EntropyPredict:added 20 random initial observations
+2015-08-21 18:17:24,417:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:18:13,092:INFO:EntropyPredict:step 0 completed in 107.272474051
+2015-08-21 18:19:05,889:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:19:55,589:INFO:EntropyPredict:step 1 completed in 102.496371984
+2015-08-21 18:20:50,760:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:21:41,502:INFO:EntropyPredict:step 2 completed in 105.913174152
+2015-08-21 18:22:40,259:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:23:31,729:INFO:EntropyPredict:step 3 completed in 110.226881981
+2015-08-21 18:24:31,882:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:25:24,650:INFO:EntropyPredict:step 4 completed in 112.920098066
+2015-08-21 18:26:28,087:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:27:22,006:INFO:EntropyPredict:step 5 completed in 117.355780125
+2015-08-21 18:28:26,459:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:29:21,720:INFO:EntropyPredict:step 6 completed in 119.713852882
+2015-08-21 18:30:30,006:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:31:26,182:INFO:EntropyPredict:step 7 completed in 124.461446047
+2015-08-21 18:32:37,425:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:33:34,064:INFO:EntropyPredict:step 8 completed in 127.882237911
+2015-08-21 18:34:48,422:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:35:46,232:INFO:EntropyPredict:step 9 completed in 132.167087078
+2015-08-21 18:37:05,200:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:38:04,049:INFO:EntropyPredict:step 10 completed in 137.816627979
+2015-08-21 18:39:28,090:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:40:28,157:INFO:EntropyPredict:step 11 completed in 144.107855082
+2015-08-21 18:41:52,613:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:42:53,271:INFO:EntropyPredict:step 12 completed in 145.114020109
+2015-08-21 18:44:21,637:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:45:23,335:INFO:EntropyPredict:step 13 completed in 150.063315868
+2015-08-21 18:46:54,252:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:47:57,077:INFO:EntropyPredict:step 14 completed in 153.742330074
+2015-08-21 18:49:31,287:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:50:35,147:INFO:EntropyPredict:step 15 completed in 158.069951057
+2015-08-21 18:52:11,489:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:53:16,200:INFO:EntropyPredict:step 16 completed in 161.052593946
+2015-08-21 18:54:55,853:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:56:02,119:INFO:EntropyPredict:step 17 completed in 165.918100119
+2015-08-21 18:57:45,256:INFO:EntropyPredict:searching under disrete su
+2015-08-21 18:58:51,949:INFO:EntropyPredict:step 18 completed in 169.829809904
+2015-08-21 19:00:39,939:INFO:EntropyPredict:searching under disrete su
+2015-08-21 19:01:48,096:INFO:EntropyPredict:step 19 completed in 176.146851063
+2015-08-21 19:03:38,084:INFO:EntropyPredict:searching under disrete su
+2015-08-21 19:04:46,941:INFO:EntropyPredict:step 20 completed in 178.844326019
+2015-08-21 19:06:43,321:INFO:EntropyPredict:searching under disrete su
+2015-08-21 19:07:52,673:INFO:EntropyPredict:step 21 completed in 185.732231855

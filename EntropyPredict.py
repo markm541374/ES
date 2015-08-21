@@ -953,6 +953,7 @@ class Optimizer():
                 self.states[-1]['HYPsamples']=self.EP.HYPsampleVals
                 self.states[-1]['logHYPMLE']=self.EP.logMLEHYPVal
                 self.Uo.append(u)
+                self.states[-1]['u']=u
                 print 'FBstatus '+str(sorted([st[0] for st in self.EP.FBInfer.status()]))
                 print 'EPstatus '+str(sorted([st[0] for st in self.EP.EPInfer.status()]))
                 self.states[-1]['sprofdata'] = m
@@ -964,7 +965,7 @@ class Optimizer():
             self.Yo = sp.vstack([self.Yo, y])
             self.So = sp.vstack([self.So, s])
             self.Do.append(d)
-            
+
             self.states[-1]['searchres']=[x,y,s,d,a]
             
             ###################
@@ -998,6 +999,10 @@ class Optimizer():
             self.Yo = sp.vstack([self.Yo, y])
             self.So = sp.vstack([self.So, s])
             self.Do.append(d)
+            try:
+                self.Uo.append(self.states[i+1]['u'])
+            except:
+                pass
         return
 
 

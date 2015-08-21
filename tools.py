@@ -180,3 +180,13 @@ def genSqExpPrior(para):
     # print 'genk: '+str(theta)
     k = partial(sqExpPrior,para)
     return k
+
+def statstring(list):
+    s=''
+    s += 'mean: {:e}\n'.format(sp.mean(list))
+    s += 'median: {:e}\n'.format(sp.median(list))
+    s += 'std: {:e}\n'.format(sp.std(list))
+    s += 'min: {:e}\n'.format(min(list))
+    s += 'max: {:e}\n'.format(max(list))
+    return s
+

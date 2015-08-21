@@ -38,8 +38,7 @@ para = imp.load_source(args.para,'plots/'+args.para+'.py')
 #create directory for results
 if args.name=='default':
     rpath = 'plots/default'
-    from shutil import rmtree
-    if os.path.exists(rpath):
+  if os.path.exists(rpath):
         rmtree(rpath)
     os.mkdir(rpath)
 else:
@@ -50,9 +49,10 @@ else:
         while os.path.exists(rpath):
             i+=1
             rpath=rpath[:-1]+str(i)
-        
+
     os.mkdir(rpath)
-    pass
+    pass   from shutil import rmtree
+
 
 dpaths=[os.path.join('results',p) for p in para.datasets]
 data=[]

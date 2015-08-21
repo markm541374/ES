@@ -9,7 +9,7 @@ import scipy as sp
 
 optpara=dict()
 optpara['D']=3
-optpara['nHYPsamples']=6
+optpara['nHYPsamples']=10
 optpara['nHYPmargin']=1.8
 optpara['HYPsearchLow'] = [-2, -2, -2, -2]
 optpara['HYPsearchHigh'] = [2, 2, 2, 2]
@@ -54,5 +54,5 @@ objf['hyp']=[1.,0.5, 0.4,0.6]
 
 
 runs=dict()
-runs['nopts']=1
-runs['nsteps']= 25
+runs['nopts']=10
+runs['nsteps']= 35
