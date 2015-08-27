@@ -8,9 +8,10 @@ Created on Sat Jun  6 14:51:25 2015
 #ploting parameters
 
 
-datasets=['default']
+datasets=['default','D']
 plots=[]
 
+s2u = lambda x:1./(x**0.1)
 #xmintrueplot
 p=dict()
 p['name']='xerr'
@@ -36,7 +37,7 @@ p=dict()
 p['name']='IR'
 p['dsets']=[True,True,True]
 p['colorcodes']=['lightblue','lightgreen','lightcoral']
-p['xscale']='log'
+p['xscale']='linear'
 p['yscale']='log'
 p['title']='IR vs. steps'
 
@@ -52,6 +53,60 @@ ex3[0]['colorcode']='r'
 p['extras']=[ex1,ex2,ex3]
 
 plots.append(p)
+
+#IRu plot
+p=dict()
+p['name']='IRu'
+p['dsets']=[True,True,True]
+p['colorcodes']=['lightblue','lightgreen','lightcoral']
+p['xscale']='linear'
+p['yscale']='log'
+p['title']='IR vs. uacc'
+
+ex1=[dict()]
+ex1[0]['name']='median'
+ex1[0]['colorcode']='b'
+ex2=[dict()]
+ex2[0]['name']='median'
+ex2[0]['colorcode']='g'
+ex3=[dict()]
+ex3[0]['name']='median'
+ex3[0]['colorcode']='r'
+p['extras']=[ex1,ex2,ex3]
+
+plots.append(p)
+
+#xerru plot
+p=dict()
+p['name']='xerru'
+p['dsets']=[True,True,True]
+p['colorcodes']=['lightblue','lightgreen','lightcoral']
+p['xscale']='linear'
+p['yscale']='log'
+p['title']='xerr vs. uacc'
+x1=[dict()]
+ex1[0]['name']='median'
+ex1[0]['colorcode']='b'
+ex2=[dict()]
+ex2[0]['name']='median'
+ex2[0]['colorcode']='g'
+ex3=[dict()]
+ex3[0]['name']='median'
+ex3[0]['colorcode']='r'
+p['extras']=[ex1,ex2,ex3]
+plots.append(p)
+
+#dxerru plot
+p=dict()
+p['name']='dxerru'
+p['dsets']=[True,True,True]
+p['colorcodes']=['lightblue','lightgreen','lightcoral']
+p['xscale']='linear'
+p['yscale']='linear'
+p['title']='dxerr vs. u'
+p['extras']=[[],[],[]]
+#plots.append(p)
+
 
 #s plot
 p=dict()
@@ -116,7 +171,7 @@ p['xscale']='log'
 p['yscale']='log'
 p['title']='H vs s'
 p['extras']=[[],[],[]]
-plots.append(p)
+#plots.append(p)
 
 #region
 p=dict()

@@ -42,6 +42,8 @@ class OptEval():
             yIR.append(abs(self.O.f(xminest)-ymintrue))
         
         return sp.array(yIR)
+
+
     
     def region(self):
         reg=[]
@@ -83,6 +85,15 @@ class OptEval():
         reg=[]
         for s in self.O.states[1:]:
             reg.append(s['searchres'][2])
+        return reg
+
+    def u_chosen(self,s2u=None):
+        reg=[]
+        for s in self.O.states[1:]:
+            try:
+                reg.append(s['u'])
+            except KeyError:
+                reg.append(s2u(s['searchres'][2]))
         return reg
         
     def MLEhyp(self):

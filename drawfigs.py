@@ -38,7 +38,8 @@ para = imp.load_source(args.para,'plots/'+args.para+'.py')
 #create directory for results
 if args.name=='default':
     rpath = 'plots/default'
-  if os.path.exists(rpath):
+    if os.path.exists(rpath):
+        from shutil import rmtree
         rmtree(rpath)
     os.mkdir(rpath)
 else:
@@ -51,7 +52,9 @@ else:
             rpath=rpath[:-1]+str(i)
 
     os.mkdir(rpath)
-    pass   from shutil import rmtree
+    pass
+
+
 
 
 dpaths=[os.path.join('results',p) for p in para.datasets]
@@ -140,7 +143,55 @@ for plot in para.plots:
                 a.set_xscale(plot['xscale'])
                 a.set_title(plot['title'])
             
-        
+        if plot['name']=='IRu':
+            a = f.add_subplot(111)
+            ydata=[r.yIR() for r in d]
+            xdata=[r.u_chosen(s2u = para.s2u) for r in d]
+            adata=[]
+            for v in xdata:
+                line=[]
+                acc=0
+                for w in v:
+                    acc+=w
+                    line.append(acc)
+                adata.append(line)
+            for j in xrange(len(xdata)):
+                plt.plot(adata[j],ydata[j],plot['colorcodes'][i])
+            ints = []
+            q= min(p[-1] for p in adata)
+            np=50
+            for j in xrange(len(xdata)):
+                plt.plot(adata[j],ydata[j],plot['colorcodes'][i])
+                ints.append(sp.interp(sp.linspace(0,q,np),adata[j],ydata[j]))
+            med = []
+            for j in xrange(np):
+                med.append(sp.median([p[j] for p in ints]))
+            plt.plot(sp.linspace(0,q,np),med,plot['extras'][i][0]['colorcode'])
+
+        if plot['name']=='xerru':
+            a = f.add_subplot(111)
+            ydata=[r.xerr() for r in d]
+            xdata=[r.u_chosen(s2u = para.s2u) for r in d]
+            adata=[]
+            for v in xdata:
+                line=[]
+                acc=0
+                for w in v:
+                    acc+=w
+                    line.append(acc)
+                adata.append(line)
+            ints = []
+            q= min(p[-1] for p in adata)
+            np=50
+            for j in xrange(len(xdata)):
+                plt.plot(adata[j],ydata[j],plot['colorcodes'][i])
+                ints.append(sp.interp(sp.linspace(0,q,np),adata[j],ydata[j]))
+            med = []
+            for j in xrange(np):
+                med.append(sp.median([p[j] for p in ints]))
+            plt.plot(sp.linspace(0,q,np),med,plot['extras'][i][0]['colorcode'])
+
+
         if plot['name']=='sprofdata':
             alldata = [r.sprofile() for r in d]
             x=alldata[0][0][0]

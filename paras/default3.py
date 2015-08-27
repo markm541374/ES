@@ -21,7 +21,7 @@ optpara['ENTsamQ'] = 'method2'
 optpara['ENTzeroprecision'] = 10**-6
 optpara['ENTsearchn'] = 2000
 optpara['IRsearchn'] = 2000
-optpara['searchmethod']=['EIMLE','EIFB','fixs','discretes'][3]
+optpara['searchmethod']=['EIMLE','EIFB','fixs','discretes'][2]
 optpara['slist'] = sp.logspace(1,-6,20)
 optpara['ulist'] = [1./(x**0.1) for x in optpara['slist']]
 optpara['fixs'] = 0.001
@@ -37,7 +37,7 @@ optpara['covtype'] = 'sqexp'
 #prior over hyp, mean and var on logscale, output then axes
 optpara['prior'] = [[0.,2.*2],[0., 2.**2], [0., 2.**2], [0., 2.**2]]
 optpara['inittype']='rand'
-optpara['nrand']=20
+optpara['nrand']=1
 optpara['boundregion']=0.99
 
 
@@ -54,5 +54,5 @@ objf['hyp']=[1.,0.5, 0.4,0.6]
 
 
 runs=dict()
-runs['nopts']=10
+runs['nopts']=3
 runs['nsteps']= 35

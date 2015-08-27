@@ -20,7 +20,7 @@ import seaborn as sns
 
 parser=argparse.ArgumentParser(prog='drawfigs')
 #parser.add_argument('-p','--para', nargs='?', default='default')
-parser.add_argument('-n','--name', nargs='?', default='A')
+parser.add_argument('-n','--name', nargs='?', default='default')
 args = parser.parse_args()
 
 
