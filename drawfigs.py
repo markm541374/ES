@@ -142,7 +142,14 @@ for plot in para.plots:
                 a.set_yscale(plot['yscale'])
                 a.set_xscale(plot['xscale'])
                 a.set_title(plot['title'])
-            
+
+        if plot['name']=='uchosen':        
+            a = f.add_subplot(111)
+            ydata=sp.vstack([r.u_chosen(s2u = para.s2u) for r in d])
+            xdata=range(len(ydata[0]))
+            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
+
+    
         if plot['name']=='IRu':
             a = f.add_subplot(111)
             ydata=[r.yIR() for r in d]
@@ -159,7 +166,7 @@ for plot in para.plots:
                 plt.plot(adata[j],ydata[j],plot['colorcodes'][i])
             ints = []
             q= min(p[-1] for p in adata)
-            np=50
+            np=150
             for j in xrange(len(xdata)):
                 plt.plot(adata[j],ydata[j],plot['colorcodes'][i])
                 ints.append(sp.interp(sp.linspace(0,q,np),adata[j],ydata[j]))
@@ -182,7 +189,7 @@ for plot in para.plots:
                 adata.append(line)
             ints = []
             q= min(p[-1] for p in adata)
-            np=50
+            np=150
             for j in xrange(len(xdata)):
                 plt.plot(adata[j],ydata[j],plot['colorcodes'][i])
                 ints.append(sp.interp(sp.linspace(0,q,np),adata[j],ydata[j]))
