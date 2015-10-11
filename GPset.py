@@ -190,7 +190,7 @@ class mGPd(Process):
             while nacc<n_points:
                 X_prop = sp.matrix(sp.random.uniform(-1, 1,size=dim))
                 Y_prop = self.GP.infer_m(X_prop, [[sp.NaN]])
-                theta = -(Y_prop[0,0]-mx)/(mx-mn)
+                theta = -(Y_prop[0,0]-mx)/max(0.001,(mx-mn))
                 p = norm.cdf(2*theta-1.)
                 
                 if sp.random.uniform(0,1)<=p:
@@ -201,7 +201,7 @@ class mGPd(Process):
                 X_prop = sp.matrix(sp.random.uniform(-1,1,size=dim))
                 Y_prop = self.GP.infer_m(X_prop, [[sp.NaN]])
                 [dY, vdY] = self.GP.infer_diag(X_prop, [[0]])
-                theta = -(Y_prop[0,0]-mx)/(mx-mn)
+                theta = -(Y_prop[0,0]-mx)/max(0.001,(mx-mn))
                 q1 = norm.cdf(2*theta-1.)
                 q2 = norm.pdf(dY, scale=sp.sqrt(vdY))
                 if sp.random.uniform(0,)<=q1+q2:
@@ -221,8 +221,15 @@ class mGPd(Process):
                 Vh_cho = spl.cholesky(Vh+sp.eye(n_points)*1e-9, lower=True)
                 logger.warn('added 1e-9 diagonal to K in drawmin')
             except:
-                raise
-
+                try:
+                    Vh_cho = spl.cholesky(Vh+sp.eye(n_points)*1e-6, lower=True)
+                    logger.warn('added 1e-6 diagonal to K in drawmin')
+                except:
+                    try:
+                        Vh_cho = spl.cholesky(Vh+sp.eye(n_points)*1e-3, lower=True)
+                        logger.warn('added 1e-3 diagonal to K in drawmin')
+                    except:
+                        raise
         dr = mh+Vh_cho*sp.matrix(sp.random.normal(size=n_points)).T
         xs = dr.argmin()
         return X_x[xs,:]

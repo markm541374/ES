@@ -8,7 +8,7 @@ Created on Sat Jun  6 14:51:25 2015
 #ploting parameters
 
 
-datasets=['V80','F80']
+datasets=['default']#,'m3EIMLE']
 plots=[]
 
 s2u = lambda x:1./(x**0.25)
@@ -118,13 +118,13 @@ p['yscale']='log'
 p['title']='s vs. steps'
 
 ex1=[dict()]
-ex1[0]['name']='median'
+ex1[0]['name']='mean'
 ex1[0]['colorcode']='b'
 ex2=[dict()]
-ex2[0]['name']='median'
+ex2[0]['name']='mean'
 ex2[0]['colorcode']='g'
 ex3=[dict()]
-ex3[0]['name']='median'
+ex3[0]['name']='mean'
 ex3[0]['colorcode']='r'
 p['extras']=[ex1,ex2,ex3]
 
@@ -140,13 +140,13 @@ p['yscale']='log'
 p['title']='u vs. steps'
 
 ex1=[dict()]
-ex1[0]['name']='median'
+ex1[0]['name']='mean'
 ex1[0]['colorcode']='b'
 ex2=[dict()]
-ex2[0]['name']='median'
+ex2[0]['name']='mean'
 ex2[0]['colorcode']='g'
 ex3=[dict()]
-ex3[0]['name']='median'
+ex3[0]['name']='mean'
 ex3[0]['colorcode']='r'
 p['extras']=[ex1,ex2,ex3]
 

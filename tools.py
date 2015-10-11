@@ -65,6 +65,40 @@ class fgennd():
         f = lambda x: sp.array(g.infer_m(sp.matrix(x),[[sp.NaN]])[0,0])
         return f
 
+class fgenbranin():
+    def __init__(self):
+        return
+    def genfun(self):
+        b = lambda x:self.branin([(x[0]-2.5)/7.5, (x[1]-7.5)/7.5])
+        return b
+    def branin(self,x):
+    #defined for [-5,10] [0,15]
+        x1 = x[0]
+        x2 = x[1]
+        a = 1.
+        b = 5.1 / (4.*np.pi**2)
+        c = 5. / np.pi
+        r = 6.
+        s = 10.
+        t = 1. / (8.*np.pi)
+        ret  = a*(x2-b*x1**2+c*x1-r)**2+s*(1-t)*np.cos(x1)+s
+        return ret
+
+class fgenrosen():
+    def __init__(self):
+        return
+    def genfun(self):
+        b = lambda x:self.rosen([x[0]*5.,x[1]*5.])
+        return b
+    def rosen(self,x):
+    #defined for [-5,10] [0,15]
+        x1 = x[0]
+        x2 = x[1]
+        a=1
+        b=100
+        z = 0.000001*((a-x1)**2 + b*(x2-x1**2)**2)
+        return z
+
 def slice_sample(dist, init, iters, sigma, step_out=True,burn=10):
     """
     from http://isaacslavitt.com/2013/12/30/metropolis-hastings-and-

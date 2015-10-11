@@ -29,8 +29,13 @@ class OptEval():
     def xerr(self):
         xerr=[]
         xmintrue = sp.matrix(self.O.para['xmintrue'])
+        print 'XXXXXXXXXXXXXXXXXXx'
         for s in self.O.states[1:]:
+		
             xminest = sp.matrix(s['xminIR'])
+            
+            print '['+str(xminest[0,0])+','+str(xminest[0,1])+'],'#+ ' '+str(xmintrue)+' '+str(s['searchres'][0])
+            
             xerr.append(spl.norm(xmintrue-xminest, ord='fro'))
         return xerr
     
@@ -39,7 +44,7 @@ class OptEval():
         ymintrue = self.O.para['ymintrue']
         for s in self.O.states[1:]:
             xminest = sp.matrix(s['xminIR'])
-            yIR.append(abs(self.O.f(xminest)-ymintrue))
+            yIR.append(abs(self.O.f(sp.array(xminest).flatten())-ymintrue))
         
         return sp.array(yIR)
 
@@ -86,7 +91,16 @@ class OptEval():
         for s in self.O.states[1:]:
             reg.append(s['searchres'][2])
         return reg
-
+    def x_chosen(self):
+        reg=[]
+        for s in self.O.states[1:]:
+            reg.append(s['searchres'][0])
+        return reg
+    def y_chosen(self):
+        reg=[]
+        for s in self.O.states[1:]:
+            reg.append(s['searchres'][1])
+        return reg
     def u_chosen(self,s2u=None):
         reg=[]
         for s in self.O.states[1:]:

@@ -19,83 +19,67 @@ import DIRECT
 import EntropyPredict
 import logging
 import traceback
+import readlog
 #import cProfile, pstats, StringIO
 #commandline input parser
-parser=argparse.ArgumentParser(prog='runGPGO')
-parser.add_argument('-p','--paras', nargs='?', default='default3')
-parser.add_argument('-n','--name', nargs='?', default='default')
-args = parser.parse_args()
 
-sys.path.append('paras')
-paras = __import__(args.paras)
+def extend(fpath,nsteps):
+    O = EntropyPredict.restartOpt(fpath)
+    O.runopt(nsteps)
+    O.savestate(os.path.join(os.path.split(fpath)[0],'trace'+str(O.states[0]['id'])+'_'+str(len(O.states)-1)+'.obj'))
+    return
 
-#create directory for results
-if args.name=='default':
-    rpath = 'results/default'
-    from shutil import rmtree
-    if os.path.exists(rpath):
-        rmtree(rpath, ignore_errors=True)
-    os.mkdir(rpath)
-else:
-    rpath = os.path.join('results',args.name)
-    if os.path.exists(rpath):
-        i=1
-        rpath=rpath+str(i)
-        while os.path.exists(rpath):
-            i+=1
-            rpath=rpath[:-1]+str(i)
-        
-    os.mkdir(rpath)
-    pass
-
+def startrun(rpath,paras,id,nsteps):
 #print header to logfile
-logger=logging.getLogger()
-logger.setLevel(logging.DEBUG)
-db=logging.FileHandler(os.path.join(rpath,'debug.log'))
-db.setLevel(logging.DEBUG)
-inf=logging.FileHandler(os.path.join(rpath,'info.log'))
-inf.setLevel(logging.INFO)
-formatter=logging.Formatter('%(asctime)s:%(levelname)s:%(module)s:%(message)s')
-db.setFormatter(formatter)
-inf.setFormatter(formatter)
-logger.addHandler(db)
-logger.addHandler(inf)
+    logger=logging.getLogger()
+    
 
-header=''
-header+=parser.prog+ ' started at '+time.strftime('%H:%M:%S on %a %-d %B %Y') +' on ' +os.uname()[1]+'\n\n'
-header+='INPUT from '+args.paras+':\n\nOptimisation parameters:\n'
-logger.info(header)
-detail=''
-detail+=pprint.pformat(paras.optpara)
-detail+='\n\nObjective function parameters:\n'
-detail+=pprint.pformat(paras.objf)
-detail += '\n'
-logger.debug(detail)
-#make the generator function ofor the objective function
-#pr = cProfile.Profile()
-#pr.enable()
+    header=''
+    header+='started at '+time.strftime('%H:%M:%S on %a %-d %B %Y') +' on ' +os.uname()[1]+'\n\n'
+    header+='INPUT :\n\nOptimisation parameters:\n'
+    logger.info(header)
+    detail=''
+    detail+=pprint.pformat(paras.optpara)
+    detail+='\n\nObjective function parameters:\n'
+    detail+=pprint.pformat(paras.objf)
+    detail += '\n'
+    logger.debug(detail)
+    #make the generator function ofor the objective function
+    #pr = cProfile.Profile()
+    #pr.enable()
+
+    D = paras.objf['D']
+    upper = [1.]*D
+    lower = [-1]*D
+    if paras.objf['type']=='drawfromcov':
+        if paras.objf['covgen']=='sqexp':
+            objkfGen = GPep.gen_sqexp_k_d
+        elif paras.objf['covgen']=='mat32':
+            objkfGen = GPep.gen_mat32_k_d
+        else:
+            raise MJMError('bad covtype')
+        hyptrue = paras.objf['hyp']
+        kftrue = objkfGen(hyptrue)
+        functiongenerator = fgennd(D, 50, kftrue)
+    elif paras.objf['type']=='branin':
+        functiongenerator = fgenbranin()
+    elif paras.objf['type']=='rosen':
+        functiongenerator = fgenrosen()
+
+    
+
+    #init kfgen and prior for covariance
+    if paras.optpara['covtype']=='sqexp' or paras.optpara['covtype']=='mat32':
+        optkfGen = GPep.gen_sqexp_k_d
+        optkfprior = genSqExpPrior(paras.optpara['prior'])
 
 
-if paras.objf['type']=='drawfromcov':
-    if paras.objf['covgen']=='sqexp':
-        objkfGen = GPep.gen_sqexp_k_d
-    hyptrue = paras.objf['hyp']
-    kftrue = objkfGen(hyptrue)
-D = paras.objf['D']
-upper = [1.]*D
-lower = [-1]*D
-functiongenerator = fgennd(D, 50, kftrue)
-
-#init kfgen and prior for covariance
-if paras.optpara['covtype']=='sqexp':
-    optkfGen = GPep.gen_sqexp_k_d
-    optkfprior = genSqExpPrior(paras.optpara['prior'])
-
-for i in xrange(paras.runs['nopts']):
-    logger.info('starting run '+str(i)+'\n')
+    logger.info('starting run \n')
     #draw an objective function
     xmintrue=lower
-    while any([j>0.99 or j<-0.99 for j in xmintrue]):
+    first = True
+    while any([j>0.99 or j<-0.99 for j in xmintrue]) and (not paras.objf['type']=='branin' or paras.objf['type']=='rosen' or first):
+        first = False
         f=functiongenerator.genfun()
         ee = lambda x, y: (f(x), 0)
         [xmintrue, miny, ierror] = DIRECT.solve(ee, lower, upper, user_data=[], algmethod=1, maxf=4000, logfilename='/dev/null')
@@ -107,22 +91,11 @@ for i in xrange(paras.runs['nopts']):
     if paras.optpara['inittype']=='rand':
         O.initrandobs(paras.optpara['nrand'],paras.optpara['fixs'])
     try:
-        O.runopt(paras.runs['nsteps'])
+        O.runopt(nsteps)
     except:
         logger.error('optimisation did not complete cleanly\n'+traceback.format_exc())
-    O.savestate(os.path.join(rpath,'trace'+str(i)+'.obj'))
-        
-#pr.disable()
-#s = StringIO.StringIO()
-#sortby = 'cumulative'
-#ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-#ps.print_stats()
-#print s.getvalue()
+    O.states[0]['id'] = id
+    O.savestate(os.path.join(rpath,'trace'+str(O.states[0]['id'])+'_'+str(len(O.states)-1)+'.obj'))
+    del(O)
+    return
 
-    
-logger.info(parser.prog+ ' exited at '+time.strftime('%H:%M:%S on %a %-d %B %Y'))
-try:
-    if not __IPYTHON__:
-        exit()
-except:
-    pass

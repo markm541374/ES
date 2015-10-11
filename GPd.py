@@ -4,7 +4,8 @@ from matplotlib import pyplot as plt
 from numpy.linalg import slogdet as slogdet
 import tools
 # conbine sets of observations
-
+from scipy import exp as exp
+from scipy import sqrt as sqrt
 
 def catObs(O):
     i = True
@@ -288,7 +289,7 @@ def sqexp_k_d(theta, x1, x2, d1=[sp.NaN], d2=[sp.NaN]):
     else:
         print d2
         raise MJMError("derivative combination not suported")
-        
+
 from functools import partial
 
 def gen_sqexp_k_d(theta):
@@ -296,6 +297,90 @@ def gen_sqexp_k_d(theta):
     k = partial(sqexp_k_d,theta)
     return k
 
+# sqexp kernel generator
+def mat32_k_d(theta, x1, x2, d1=[sp.NaN], d2=[sp.NaN]):
+    #strictly 2d implementation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    x1 = sp.matrix(x1)
+    x2 = sp.matrix(x2)
+    # print "xxxxx"
+    s = theta[0]
+    d = sp.matrix(theta[1:]).T
+    hx = d[0,0]
+    hy = d[1,0]
+    N = sp.matrix(d).shape[0]
+    D = sp.eye(N)
+    for i in range(N):
+        D[i, i] = 1./(d[i, 0]**2)
+    X = x1-x2
+    x=X[0,0]
+    y=X[0,1]
+    # print X
+    # print D
+
+    d0 = []
+    n1 = 0
+    n2 = 0
+
+    for i in d2:
+        if not sp.isnan(i):
+            # print 'x'+str(d2)
+            n2 += 1
+    # print 'y'+str(n2)
+    sign = (-1)**(n2 % 2)
+    # print sign
+    for i in d1+d2:
+
+        if not sp.isnan(i):
+            d0.append(i)
+
+    if len(d0) == 0:
+        # print "basic kernel"
+        # print core
+        return s**2*(sp.sqrt(3)*sp.sqrt(y**2/hy + x**2/hx) + 1)*sp.exp(-sp.sqrt(3)*sp.sqrt(y**2/hy + x**2/hx))
+    ds=[]
+
+    for f in d0:
+        ds+=f
+    ds = sorted(ds)
+
+    if ds == [0]:
+        return sign*(0-3*s**2*x*sp.exp(-sp.sqrt(3)*sp.sqrt(y**2/hy + x**2/hx))/hx)
+    elif ds == [1]:
+        return sign*(0-3*s**2*y*sp.exp(-sp.sqrt(3)*sp.sqrt(y**2/hy + x**2/hx))/hy)
+    elif ds == [0,0]:
+        return sign*(3*s**2*(-hx*y**2 + sqrt(3)*hy*x**2*sqrt((hx*y**2 + hy*x**2)/(hx*hy)) - hy*x**2)*exp(-sqrt(3)*sqrt((hx*y**2 + hy*x**2)/(hx*hy)))/(hx*(hx*y**2 + hy*x**2)))
+    elif ds == [1,1]:
+        return sign*(0-3*s**2*(-sqrt(3)*hx*y**2*sqrt((hx*y**2 + hy*x**2)/(hx*hy)) + hx*y**2 + hy*x**2)*exp(-sqrt(3)*sqrt((hx*y**2 + hy*x**2)/(hx*hy)))/(hy*(hx*y**2 + hy*x**2)))
+    elif ds == [0,1]:
+        return sign*(3*sqrt(3)*s**2*x*y*sqrt((hx*y**2 + hy*x**2)/(hx*hy))*exp(-sqrt(3)*sqrt((hx*y**2 + hy*x**2)/(hx*hy)))/(hx*y**2 + hy*x**2))
+    elif ds == [0,0,0]:
+        return sign*(3*s**2*x*(3*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx) + sqrt(3)*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx)**(3/2) - 6/(y**2/hy + x**2/hx) - sqrt(3)/(y**2/hy + x**2/hx)**(3/2) - 3*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**2) - sqrt(3)*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**(3/2)) - sqrt(3)*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**(5/2)) + 6*x**2/(hx*(y**2/hy + x**2/hx)**2) + 3*sqrt(3)*x**2/(hx*(y**2/hy + x**2/hx)**(3/2)) + sqrt(3)*x**2/(hx*(y**2/hy + x**2/hx)**(5/2)))*exp(-sqrt(3)*sqrt(y**2/hy + x**2/hx))/hx**2)
+    elif ds == [0,0,1]:
+        return sign*(s**2*y*(3*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx) + sqrt(3)*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx)**(3/2) - 6/(y**2/hy + x**2/hx) - sqrt(3)/(y**2/hy + x**2/hx)**(3/2) - 9*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**2) - 3*sqrt(3)*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**(3/2)) - 3*sqrt(3)*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**(5/2)) + 18*x**2/(hx*(y**2/hy + x**2/hx)**2) + 9*sqrt(3)*x**2/(hx*(y**2/hy + x**2/hx)**(3/2)) + 3*sqrt(3)*x**2/(hx*(y**2/hy + x**2/hx)**(5/2)))*exp(-sqrt(3)*sqrt(y**2/hy + x**2/hx))/(hx*hy))
+    elif ds == [0,1,1]:
+        return sign*(s**2*x*(3*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx) + sqrt(3)*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx)**(3/2) - 6/(y**2/hy + x**2/hx) - sqrt(3)/(y**2/hy + x**2/hx)**(3/2) - 9*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**2) - 3*sqrt(3)*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**(3/2)) - 3*sqrt(3)*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**(5/2)) + 18*y**2/(hy*(y**2/hy + x**2/hx)**2) + 9*sqrt(3)*y**2/(hy*(y**2/hy + x**2/hx)**(3/2)) + 3*sqrt(3)*y**2/(hy*(y**2/hy + x**2/hx)**(5/2)))*exp(-sqrt(3)*sqrt(y**2/hy + x**2/hx))/(hx*hy))
+    elif ds == [1,1,1]:
+        return sign*(3*s**2*y*(3*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx) + sqrt(3)*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx)**(3/2) - 6/(y**2/hy + x**2/hx) - sqrt(3)/(y**2/hy + x**2/hx)**(3/2) - 3*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**2) - sqrt(3)*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**(3/2)) - sqrt(3)*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**(5/2)) + 6*y**2/(hy*(y**2/hy + x**2/hx)**2) + 3*sqrt(3)*y**2/(hy*(y**2/hy + x**2/hx)**(3/2)) + sqrt(3)*y**2/(hy*(y**2/hy + x**2/hx)**(5/2)))*exp(-sqrt(3)*sqrt(y**2/hy + x**2/hx))/hy**2)
+    elif ds == [0,0,0,0]:
+        return sign*(3*s**2*(3*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx) + sqrt(3)*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx)**(3/2) - 6/(y**2/hy + x**2/hx) - sqrt(3)/(y**2/hy + x**2/hx)**(3/2) - 18*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**2) - 6*sqrt(3)*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**(3/2)) - 6*sqrt(3)*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**(5/2)) + 36*x**2/(hx*(y**2/hy + x**2/hx)**2) + 18*sqrt(3)*x**2/(hx*(y**2/hy + x**2/hx)**(3/2)) + 6*sqrt(3)*x**2/(hx*(y**2/hy + x**2/hx)**(5/2)) + 3*x**4*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx**2*(y**2/hy + x**2/hx)**2) + 15*x**4*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx**2*(y**2/hy + x**2/hx)**3) + 6*sqrt(3)*x**4*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx**2*(y**2/hy + x**2/hx)**(5/2)) + 5*sqrt(3)*x**4*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx**2*(y**2/hy + x**2/hx)**(7/2)) - 12*x**4/(hx**2*(y**2/hy + x**2/hx)**2) - 30*x**4/(hx**2*(y**2/hy + x**2/hx)**3) - 18*sqrt(3)*x**4/(hx**2*(y**2/hy + x**2/hx)**(5/2)) - 5*sqrt(3)*x**4/(hx**2*(y**2/hy + x**2/hx)**(7/2)))*exp(-sqrt(3)*sqrt(y**2/hy + x**2/hx))/hx**2)
+    elif ds == [0,0,0,1]:
+        return sign*(3*s**2*x*y*(-9*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx)**2 - 3*sqrt(3)*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx)**(3/2) - 3*sqrt(3)*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx)**(5/2) + 18/(y**2/hy + x**2/hx)**2 + 9*sqrt(3)/(y**2/hy + x**2/hx)**(3/2) + 3*sqrt(3)/(y**2/hy + x**2/hx)**(5/2) + 3*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**2) + 15*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**3) + 6*sqrt(3)*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**(5/2)) + 5*sqrt(3)*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**(7/2)) - 12*x**2/(hx*(y**2/hy + x**2/hx)**2) - 30*x**2/(hx*(y**2/hy + x**2/hx)**3) - 18*sqrt(3)*x**2/(hx*(y**2/hy + x**2/hx)**(5/2)) - 5*sqrt(3)*x**2/(hx*(y**2/hy + x**2/hx)**(7/2)))*exp(-sqrt(3)*sqrt(y**2/hy + x**2/hx))/(hx**2*hy))
+    elif ds == [0,0,1,1]:
+        return sign*(s**2*(3*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx) + sqrt(3)*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx)**(3/2) - 6/(y**2/hy + x**2/hx) - sqrt(3)/(y**2/hy + x**2/hx)**(3/2) - 9*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**2) - 3*sqrt(3)*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**(3/2)) - 3*sqrt(3)*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**(5/2)) + 18*y**2/(hy*(y**2/hy + x**2/hx)**2) + 9*sqrt(3)*y**2/(hy*(y**2/hy + x**2/hx)**(3/2)) + 3*sqrt(3)*y**2/(hy*(y**2/hy + x**2/hx)**(5/2)) - 9*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**2) - 3*sqrt(3)*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**(3/2)) - 3*sqrt(3)*x**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*(y**2/hy + x**2/hx)**(5/2)) + 18*x**2/(hx*(y**2/hy + x**2/hx)**2) + 9*sqrt(3)*x**2/(hx*(y**2/hy + x**2/hx)**(3/2)) + 3*sqrt(3)*x**2/(hx*(y**2/hy + x**2/hx)**(5/2)) + 9*x**2*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*hy*(y**2/hy + x**2/hx)**2) + 45*x**2*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*hy*(y**2/hy + x**2/hx)**3) + 18*sqrt(3)*x**2*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*hy*(y**2/hy + x**2/hx)**(5/2)) + 15*sqrt(3)*x**2*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hx*hy*(y**2/hy + x**2/hx)**(7/2)) - 36*x**2*y**2/(hx*hy*(y**2/hy + x**2/hx)**2) - 90*x**2*y**2/(hx*hy*(y**2/hy + x**2/hx)**3) - 54*sqrt(3)*x**2*y**2/(hx*hy*(y**2/hy + x**2/hx)**(5/2)) - 15*sqrt(3)*x**2*y**2/(hx*hy*(y**2/hy + x**2/hx)**(7/2)))*exp(-sqrt(3)*sqrt(y**2/hy + x**2/hx))/(hx*hy))
+    elif ds == [0,1,1,1]:
+        return sign*(3*s**2*x*y*(-9*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx)**2 - 3*sqrt(3)*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx)**(3/2) - 3*sqrt(3)*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx)**(5/2) + 18/(y**2/hy + x**2/hx)**2 + 9*sqrt(3)/(y**2/hy + x**2/hx)**(3/2) + 3*sqrt(3)/(y**2/hy + x**2/hx)**(5/2) + 3*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**2) + 15*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**3) + 6*sqrt(3)*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**(5/2)) + 5*sqrt(3)*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**(7/2)) - 12*y**2/(hy*(y**2/hy + x**2/hx)**2) - 30*y**2/(hy*(y**2/hy + x**2/hx)**3) - 18*sqrt(3)*y**2/(hy*(y**2/hy + x**2/hx)**(5/2)) - 5*sqrt(3)*y**2/(hy*(y**2/hy + x**2/hx)**(7/2)))*exp(-sqrt(3)*sqrt(y**2/hy + x**2/hx))/(hx*hy**2))
+    elif ds == [1,1,1,1]:
+        return sign*(3*s**2*(3*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx) + sqrt(3)*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(y**2/hy + x**2/hx)**(3/2) - 6/(y**2/hy + x**2/hx) - sqrt(3)/(y**2/hy + x**2/hx)**(3/2) - 18*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**2) - 6*sqrt(3)*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**(3/2)) - 6*sqrt(3)*y**2*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy*(y**2/hy + x**2/hx)**(5/2)) + 36*y**2/(hy*(y**2/hy + x**2/hx)**2) + 18*sqrt(3)*y**2/(hy*(y**2/hy + x**2/hx)**(3/2)) + 6*sqrt(3)*y**2/(hy*(y**2/hy + x**2/hx)**(5/2)) + 3*y**4*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy**2*(y**2/hy + x**2/hx)**2) + 15*y**4*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy**2*(y**2/hy + x**2/hx)**3) + 6*sqrt(3)*y**4*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy**2*(y**2/hy + x**2/hx)**(5/2)) + 5*sqrt(3)*y**4*(sqrt(3)*sqrt(y**2/hy + x**2/hx) + 1)/(hy**2*(y**2/hy + x**2/hx)**(7/2)) - 12*y**4/(hy**2*(y**2/hy + x**2/hx)**2) - 30*y**4/(hy**2*(y**2/hy + x**2/hx)**3) - 18*sqrt(3)*y**4/(hy**2*(y**2/hy + x**2/hx)**(5/2)) - 5*sqrt(3)*y**4/(hy**2*(y**2/hy + x**2/hx)**(7/2)))*exp(-sqrt(3)*sqrt(y**2/hy + x**2/hx))/hy**2)
+    else:
+        print ds
+        raise MJMError("derivative combination not suported")
+
+from functools import partial
+
+def gen_mat32_k_d(theta):
+    # print 'genk: '+str(theta)
+    k = partial(mat32_k_d,theta)
+    return k
 
 #k builder for asymettric k
 def buildKasym_d(kf,x1,x2,d1,d2):
@@ -340,9 +425,9 @@ class GPcore:
         return
         
     def precompute(self):
-        K_ss = buildKsym_d(self.kf, self.X_s, self.D_s)
+        K_ss = buildKsym_d(self.kf, self.X_s, self.D_s)+ vec2trace(self.S_s)
         (sign, self.logdet) = slogdet(K_ss)
-        self.K_ss_cf = spl.cho_factor(K_ss + vec2trace(self.S_s))
+        self.K_ss_cf = spl.cho_factor(K_ss )
         
         self.a = spl.cho_solve(self.K_ss_cf,self.Y_s)
         self.invalidflag=False

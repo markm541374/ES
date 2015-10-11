@@ -127,7 +127,7 @@ for plot in para.plots:
             ydata=sp.vstack([r.steptimes() for r in d])
             xdata=range(len(ydata[0]))
             readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
-            
+
         if plot['name']=='MLEhyp':
             alldata = [r.MLEhyp() for r in d]
             ydata=[]
@@ -149,7 +149,17 @@ for plot in para.plots:
             xdata=range(len(ydata[0]))
             readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
 
-    
+        if plot['name']=='printxy':
+            a = f.add_subplot(111)
+            ydata=[r.y_chosen() for r in d]
+            sdata=[r.s_chosen() for r in d]
+            xdata=[r.x_chosen() for r in d]
+
+            for i in xrange(len(xdata[0])):
+                #print str(xdata[0][i])+' : '+str(ydata[0][i])+' : '+str(sp.sqrt(sdata[0][i]))
+                #print '['+str(xdata[0][i][0])+', '+str(xdata[0][i][1])+'],'
+                pass
+
         if plot['name']=='IRu':
             a = f.add_subplot(111)
             ydata=[r.yIR() for r in d]

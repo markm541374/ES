@@ -9,7 +9,7 @@ import scipy as sp
 
 optpara=dict()
 optpara['D']=2
-optpara['nHYPsamples']=10
+optpara['nHYPsamples']=12
 optpara['nHYPmargin']=1.8
 optpara['HYPsearchLow'] = [-2, -2, -2]#, -2]
 optpara['HYPsearchHigh'] = [2, 2, 2]#, 2]
@@ -27,7 +27,7 @@ optpara['ulist'] = [1./(x**0.25) for x in optpara['slist']]
 optpara['fixs'] = 0.001
 from scipy import NaN as nan
 optpara['obstype'] = [nan]
-optpara['covtype'] = 'sqexp'
+optpara['covtype'] = 'mat32'
 #outpuscallogmean
 #optpara['OSLM']=0.
 #outputscalelogvar
@@ -37,7 +37,7 @@ optpara['covtype'] = 'sqexp'
 #prior over hyp, mean and var on logscale, output then axes
 optpara['prior'] = [[0.,2.*2],[0., 2.**2], [0., 2.**2]]#, [0., 2.**2]]
 optpara['inittype']='rand'
-optpara['nrand']=1
+optpara['nrand']=5
 optpara['boundregion']=0.99
 
 
@@ -54,5 +54,5 @@ objf['hyp']=[1.,0.3, 0.4]#,0.6]
 
 
 runs=dict()
-runs['nopts']=5
-runs['nsteps']= 80
+runs['nopts']=1
+runs['nsteps']= 2
