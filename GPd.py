@@ -199,8 +199,8 @@ def sqexp_k_d(theta, x1, x2, d1=[sp.NaN], d2=[sp.NaN]):
         
     elif d2==[1,2]:
         #print "3nd derivative i!=j==k"
-        ai=d1[0][0]
-        aj=d1[1][0]
+        ai=d1[1][0]
+        aj=d1[0][0]
         
         xi=X[0,ai]
         xj=X[0,aj]
@@ -240,9 +240,9 @@ def sqexp_k_d(theta, x1, x2, d1=[sp.NaN], d2=[sp.NaN]):
         
     elif d2==[1,1,2]:
         #print "4th derivative i!=j!=k==l"
-        ai=d1[0][0]
+        ai=d1[2][0]
         aj=d1[1][0]
-        ak=d1[2][0]
+        ak=d1[0][0]
         xi=X[0,ai]
         xj=X[0,aj]
         xk=X[0,ak]
@@ -255,8 +255,8 @@ def sqexp_k_d(theta, x1, x2, d1=[sp.NaN], d2=[sp.NaN]):
     
     elif d2==[1,3]:
         #print "4th derivative i!=j==k==l"
-        ai=d1[0][0]
-        aj=d1[1][0]
+        ai=d1[1][0]
+        aj=d1[0][0]
         xi=X[0,ai]
         xj=X[0,aj]
         li=D[ai,ai]
