@@ -1,16 +1,1993 @@
-2015-09-13 16:45:25,824:INFO:runexp:started at 16:45:25 on Sun 13 September 2015 on dunvegan
+2015-10-14 15:13:31,207:INFO:runexp:started at 15:13:31 on Wed 14 October 2015 on caithness
 
 INPUT :
 
 Optimisation parameters:
 
-2015-09-13 16:45:25,888:INFO:runexp:starting run 
+2015-10-14 15:13:31,251:INFO:runexp:starting run 
 
-2015-09-13 16:45:33,313:INFO:EntropyPredict:added 5 random initial observations
-2015-09-13 16:46:02,645:INFO:EntropyPredict:searching under disrete su
-2015-09-13 16:47:41,743:INFO:EntropyPredict:step 0 completed in 128.430032969
-2015-09-13 16:48:16,664:INFO:EntropyPredict:searching under disrete su
-2015-09-13 16:49:54,308:INFO:EntropyPredict:step 1 completed in 132.564522982
-2015-09-13 16:49:54,308:INFO:EntropyPredict:Completed 2 steps in 260.994695902
-2015-09-13 16:49:54,312:INFO:EntropyPredict:saving opt as results/default/trace0_2.obj
-2015-09-13 16:49:54,316:INFO:ESmain:runGPGO exited at 16:49:54 on Sun 13 September 2015
+2015-10-14 15:13:31,353:INFO:EntropyPredict:added 5 random initial observations
+2015-10-14 15:13:31,677:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:32,080:INFO:EntropyPredict:step 0 completed in 0.726782798767
+2015-10-14 15:13:32,417:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:32,821:INFO:EntropyPredict:step 1 completed in 0.740214824677
+2015-10-14 15:13:33,145:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:33,562:INFO:EntropyPredict:step 2 completed in 0.741543054581
+2015-10-14 15:13:33,887:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:34,300:INFO:EntropyPredict:step 3 completed in 0.737741947174
+2015-10-14 15:13:34,631:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:35,051:INFO:EntropyPredict:step 4 completed in 0.751162052155
+2015-10-14 15:13:35,384:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:35,802:INFO:EntropyPredict:step 5 completed in 0.750248908997
+2015-10-14 15:13:36,143:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:36,548:INFO:EntropyPredict:step 6 completed in 0.746534109116
+2015-10-14 15:13:36,892:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:37,308:INFO:EntropyPredict:step 7 completed in 0.759514808655
+2015-10-14 15:13:37,661:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:38,077:INFO:EntropyPredict:step 8 completed in 0.76951789856
+2015-10-14 15:13:38,421:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:38,837:INFO:EntropyPredict:step 9 completed in 0.759236097336
+2015-10-14 15:13:39,186:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:39,597:INFO:EntropyPredict:step 10 completed in 0.760067939758
+2015-10-14 15:13:39,939:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:40,356:INFO:EntropyPredict:step 11 completed in 0.759155988693
+2015-10-14 15:13:40,699:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:41,114:INFO:EntropyPredict:step 12 completed in 0.757822036743
+2015-10-14 15:13:41,460:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:41,890:INFO:EntropyPredict:step 13 completed in 0.776499032974
+2015-10-14 15:13:42,244:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:42,662:INFO:EntropyPredict:step 14 completed in 0.771110057831
+2015-10-14 15:13:43,023:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:43,440:INFO:EntropyPredict:step 15 completed in 0.777921915054
+2015-10-14 15:13:43,804:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:44,217:INFO:EntropyPredict:step 16 completed in 0.776902914047
+2015-10-14 15:13:44,590:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:45,010:INFO:EntropyPredict:step 17 completed in 0.79353094101
+2015-10-14 15:13:45,376:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:45,793:INFO:EntropyPredict:step 18 completed in 0.782232046127
+2015-10-14 15:13:46,165:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:46,581:INFO:EntropyPredict:step 19 completed in 0.788796901703
+2015-10-14 15:13:46,954:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:47,373:INFO:EntropyPredict:step 20 completed in 0.791750192642
+2015-10-14 15:13:47,747:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:48,170:INFO:EntropyPredict:step 21 completed in 0.79692697525
+2015-10-14 15:13:48,540:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:48,983:INFO:EntropyPredict:step 22 completed in 0.812912940979
+2015-10-14 15:13:49,364:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:49,778:INFO:EntropyPredict:step 23 completed in 0.79472899437
+2015-10-14 15:13:50,153:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:50,576:INFO:EntropyPredict:step 24 completed in 0.797921895981
+2015-10-14 15:13:50,966:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:51,391:INFO:EntropyPredict:step 25 completed in 0.815146923065
+2015-10-14 15:13:51,781:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:52,199:INFO:EntropyPredict:step 26 completed in 0.808122158051
+2015-10-14 15:13:52,587:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:53,014:INFO:EntropyPredict:step 27 completed in 0.814711093903
+2015-10-14 15:13:53,400:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:53,825:INFO:EntropyPredict:step 28 completed in 0.81059217453
+2015-10-14 15:13:54,225:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:54,647:INFO:EntropyPredict:step 29 completed in 0.822100162506
+2015-10-14 15:13:55,045:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:55,478:INFO:EntropyPredict:step 30 completed in 0.831470012665
+2015-10-14 15:13:55,881:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:56,304:INFO:EntropyPredict:step 31 completed in 0.825296878815
+2015-10-14 15:13:56,718:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:57,145:INFO:EntropyPredict:step 32 completed in 0.840821027756
+2015-10-14 15:13:57,558:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:57,983:INFO:EntropyPredict:step 33 completed in 0.837803125381
+2015-10-14 15:13:58,395:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:58,825:INFO:EntropyPredict:step 34 completed in 0.842396974564
+2015-10-14 15:13:59,251:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:13:59,676:INFO:EntropyPredict:step 35 completed in 0.850630998611
+2015-10-14 15:14:00,093:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:00,521:INFO:EntropyPredict:step 36 completed in 0.844856977463
+2015-10-14 15:14:00,946:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:01,372:INFO:EntropyPredict:step 37 completed in 0.85124206543
+2015-10-14 15:14:01,794:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:02,214:INFO:EntropyPredict:step 38 completed in 0.842475891113
+2015-10-14 15:14:02,644:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:03,062:INFO:EntropyPredict:step 39 completed in 0.847012996674
+2015-10-14 15:14:03,494:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:03,915:INFO:EntropyPredict:step 40 completed in 0.852979898453
+2015-10-14 15:14:04,352:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:04,774:INFO:EntropyPredict:step 41 completed in 0.859168052673
+2015-10-14 15:14:05,212:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:05,636:INFO:EntropyPredict:step 42 completed in 0.86225104332
+2015-10-14 15:14:06,101:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:06,533:INFO:EntropyPredict:step 43 completed in 0.896411180496
+2015-10-14 15:14:06,985:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:07,414:INFO:EntropyPredict:step 44 completed in 0.881691932678
+2015-10-14 15:14:07,880:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:08,305:INFO:EntropyPredict:step 45 completed in 0.890222072601
+2015-10-14 15:14:08,774:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:09,206:INFO:EntropyPredict:step 46 completed in 0.901165962219
+2015-10-14 15:14:09,677:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:10,111:INFO:EntropyPredict:step 47 completed in 0.90536403656
+2015-10-14 15:14:10,578:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:11,010:INFO:EntropyPredict:step 48 completed in 0.898545026779
+2015-10-14 15:14:11,493:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:11,925:INFO:EntropyPredict:step 49 completed in 0.914851903915
+2015-10-14 15:14:12,432:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:12,864:INFO:EntropyPredict:step 50 completed in 0.938748121262
+2015-10-14 15:14:13,353:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:13,789:INFO:EntropyPredict:step 51 completed in 0.925312995911
+2015-10-14 15:14:14,287:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:14,727:INFO:EntropyPredict:step 52 completed in 0.938308000565
+2015-10-14 15:14:15,236:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:15,666:INFO:EntropyPredict:step 53 completed in 0.938511133194
+2015-10-14 15:14:16,182:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:16,629:INFO:EntropyPredict:step 54 completed in 0.963405847549
+2015-10-14 15:14:17,149:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:17,594:INFO:EntropyPredict:step 55 completed in 0.964325904846
+2015-10-14 15:14:18,124:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:18,569:INFO:EntropyPredict:step 56 completed in 0.97548699379
+2015-10-14 15:14:19,101:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:19,541:INFO:EntropyPredict:step 57 completed in 0.971419095993
+2015-10-14 15:14:20,078:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:20,517:INFO:EntropyPredict:step 58 completed in 0.975948810577
+2015-10-14 15:14:21,054:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:21,508:INFO:EntropyPredict:step 59 completed in 0.990983963013
+2015-10-14 15:14:22,064:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:22,513:INFO:EntropyPredict:step 60 completed in 1.00462508202
+2015-10-14 15:14:23,061:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:23,506:INFO:EntropyPredict:step 61 completed in 0.993679046631
+2015-10-14 15:14:24,078:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:24,526:INFO:EntropyPredict:step 62 completed in 1.01901698112
+2015-10-14 15:14:25,096:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:25,543:INFO:EntropyPredict:step 63 completed in 1.0178399086
+2015-10-14 15:14:26,121:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:26,570:INFO:EntropyPredict:step 64 completed in 1.02681398392
+2015-10-14 15:14:27,153:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:27,598:INFO:EntropyPredict:step 65 completed in 1.02744817734
+2015-10-14 15:14:28,196:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:28,647:INFO:EntropyPredict:step 66 completed in 1.04928088188
+2015-10-14 15:14:29,238:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:29,680:INFO:EntropyPredict:step 67 completed in 1.03265500069
+2015-10-14 15:14:30,277:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:30,722:INFO:EntropyPredict:step 68 completed in 1.0420320034
+2015-10-14 15:14:31,317:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:31,755:INFO:EntropyPredict:step 69 completed in 1.03319311142
+2015-10-14 15:14:32,358:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:32,802:INFO:EntropyPredict:step 70 completed in 1.04638195038
+2015-10-14 15:14:33,413:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:33,858:INFO:EntropyPredict:step 71 completed in 1.05632209778
+2015-10-14 15:14:34,477:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:34,918:INFO:EntropyPredict:step 72 completed in 1.06004405022
+2015-10-14 15:14:35,538:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:35,981:INFO:EntropyPredict:step 73 completed in 1.06253790855
+2015-10-14 15:14:36,605:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:37,051:INFO:EntropyPredict:step 74 completed in 1.07023501396
+2015-10-14 15:14:37,678:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:38,121:INFO:EntropyPredict:step 75 completed in 1.06987190247
+2015-10-14 15:14:38,766:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:39,214:INFO:EntropyPredict:step 76 completed in 1.09239602089
+2015-10-14 15:14:39,868:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:40,327:INFO:EntropyPredict:step 77 completed in 1.11361908913
+2015-10-14 15:14:40,991:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:41,463:INFO:EntropyPredict:step 78 completed in 1.13586688042
+2015-10-14 15:14:42,138:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:42,594:INFO:EntropyPredict:step 79 completed in 1.13028788567
+2015-10-14 15:14:43,284:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:43,751:INFO:EntropyPredict:step 80 completed in 1.15749406815
+2015-10-14 15:14:44,426:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:44,891:INFO:EntropyPredict:step 81 completed in 1.13983011246
+2015-10-14 15:14:45,595:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:46,052:INFO:EntropyPredict:step 82 completed in 1.16106390953
+2015-10-14 15:14:46,742:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:47,190:INFO:EntropyPredict:step 83 completed in 1.13791394234
+2015-10-14 15:14:47,897:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:48,357:INFO:EntropyPredict:step 84 completed in 1.16726303101
+2015-10-14 15:14:49,089:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:49,549:INFO:EntropyPredict:step 85 completed in 1.19135689735
+2015-10-14 15:14:50,279:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:50,744:INFO:EntropyPredict:step 86 completed in 1.19461488724
+2015-10-14 15:14:51,463:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:51,920:INFO:EntropyPredict:step 87 completed in 1.17599415779
+2015-10-14 15:14:52,657:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:53,115:INFO:EntropyPredict:step 88 completed in 1.19493603706
+2015-10-14 15:14:53,849:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:54,305:INFO:EntropyPredict:step 89 completed in 1.190117836
+2015-10-14 15:14:55,046:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:55,500:INFO:EntropyPredict:step 90 completed in 1.19471406937
+2015-10-14 15:14:56,248:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:56,697:INFO:EntropyPredict:step 91 completed in 1.19747805595
+2015-10-14 15:14:57,460:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:57,918:INFO:EntropyPredict:step 92 completed in 1.22055006027
+2015-10-14 15:14:58,688:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:14:59,146:INFO:EntropyPredict:step 93 completed in 1.22831988335
+2015-10-14 15:14:59,934:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:00,405:INFO:EntropyPredict:step 94 completed in 1.258852005
+2015-10-14 15:15:01,188:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:01,658:INFO:EntropyPredict:step 95 completed in 1.25250697136
+2015-10-14 15:15:02,453:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:02,923:INFO:EntropyPredict:step 96 completed in 1.26531600952
+2015-10-14 15:15:03,731:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:04,194:INFO:EntropyPredict:step 97 completed in 1.27101588249
+2015-10-14 15:15:05,029:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:05,501:INFO:EntropyPredict:step 98 completed in 1.30642986298
+2015-10-14 15:15:06,351:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:06,820:INFO:EntropyPredict:step 99 completed in 1.31932091713
+2015-10-14 15:15:06,820:INFO:EntropyPredict:Completed 100 steps in 95.4664440155
+2015-10-14 15:15:06,820:INFO:EntropyPredict:saving opt as results/default/trace0_100.obj
+2015-10-14 15:15:06,837:INFO:runexp:started at 15:15:06 on Wed 14 October 2015 on caithness
+
+INPUT :
+
+Optimisation parameters:
+
+2015-10-14 15:15:06,886:INFO:runexp:starting run 
+
+2015-10-14 15:15:06,992:INFO:EntropyPredict:added 5 random initial observations
+2015-10-14 15:15:07,343:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:07,772:INFO:EntropyPredict:step 0 completed in 0.780117034912
+2015-10-14 15:15:08,106:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:08,530:INFO:EntropyPredict:step 1 completed in 0.757838010788
+2015-10-14 15:15:08,871:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:09,285:INFO:EntropyPredict:step 2 completed in 0.754573822021
+2015-10-14 15:15:09,623:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:10,041:INFO:EntropyPredict:step 3 completed in 0.756323814392
+2015-10-14 15:15:10,380:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:10,799:INFO:EntropyPredict:step 4 completed in 0.757314920425
+2015-10-14 15:15:11,149:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:11,563:INFO:EntropyPredict:step 5 completed in 0.763894081116
+2015-10-14 15:15:11,905:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:12,328:INFO:EntropyPredict:step 6 completed in 0.765413999557
+2015-10-14 15:15:12,668:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:13,087:INFO:EntropyPredict:step 7 completed in 0.758390903473
+2015-10-14 15:15:13,433:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:13,864:INFO:EntropyPredict:step 8 completed in 0.777038097382
+2015-10-14 15:15:14,210:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:14,630:INFO:EntropyPredict:step 9 completed in 0.76664185524
+2015-10-14 15:15:14,982:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:15,400:INFO:EntropyPredict:step 10 completed in 0.769464969635
+2015-10-14 15:15:15,752:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:16,168:INFO:EntropyPredict:step 11 completed in 0.768180847168
+2015-10-14 15:15:16,526:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:16,950:INFO:EntropyPredict:step 12 completed in 0.781384944916
+2015-10-14 15:15:17,310:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:17,740:INFO:EntropyPredict:step 13 completed in 0.789787054062
+2015-10-14 15:15:18,098:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:18,533:INFO:EntropyPredict:step 14 completed in 0.7935090065
+2015-10-14 15:15:18,894:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:19,324:INFO:EntropyPredict:step 15 completed in 0.790942907333
+2015-10-14 15:15:19,692:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:20,118:INFO:EntropyPredict:step 16 completed in 0.794089078903
+2015-10-14 15:15:20,493:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:20,919:INFO:EntropyPredict:step 17 completed in 0.800209999084
+2015-10-14 15:15:21,295:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:21,721:INFO:EntropyPredict:step 18 completed in 0.802427053452
+2015-10-14 15:15:22,086:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:22,504:INFO:EntropyPredict:step 19 completed in 0.783338069916
+2015-10-14 15:15:22,881:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:23,308:INFO:EntropyPredict:step 20 completed in 0.803577899933
+2015-10-14 15:15:23,685:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:24,114:INFO:EntropyPredict:step 21 completed in 0.805577993393
+2015-10-14 15:15:24,503:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:24,926:INFO:EntropyPredict:step 22 completed in 0.811908006668
+2015-10-14 15:15:25,309:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:25,730:INFO:EntropyPredict:step 23 completed in 0.804240942001
+2015-10-14 15:15:26,122:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:26,546:INFO:EntropyPredict:step 24 completed in 0.815591096878
+2015-10-14 15:15:26,942:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:27,367:INFO:EntropyPredict:step 25 completed in 0.821246862411
+2015-10-14 15:15:27,765:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:28,194:INFO:EntropyPredict:step 26 completed in 0.826480150223
+2015-10-14 15:15:28,593:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:29,018:INFO:EntropyPredict:step 27 completed in 0.824420928955
+2015-10-14 15:15:29,413:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:29,833:INFO:EntropyPredict:step 28 completed in 0.815295934677
+2015-10-14 15:15:30,236:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:30,664:INFO:EntropyPredict:step 29 completed in 0.830474853516
+2015-10-14 15:15:31,071:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:31,496:INFO:EntropyPredict:step 30 completed in 0.832097053528
+2015-10-14 15:15:31,903:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:32,327:INFO:EntropyPredict:step 31 completed in 0.83037686348
+2015-10-14 15:15:32,741:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:33,161:INFO:EntropyPredict:step 32 completed in 0.83478307724
+2015-10-14 15:15:33,580:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:34,002:INFO:EntropyPredict:step 33 completed in 0.840030193329
+2015-10-14 15:15:34,424:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:34,837:INFO:EntropyPredict:step 34 completed in 0.835192918777
+2015-10-14 15:15:35,251:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:35,678:INFO:EntropyPredict:step 35 completed in 0.840807199478
+2015-10-14 15:15:36,103:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:36,528:INFO:EntropyPredict:step 36 completed in 0.850167989731
+2015-10-14 15:15:36,964:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:37,393:INFO:EntropyPredict:step 37 completed in 0.86486697197
+2015-10-14 15:15:37,835:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:38,260:INFO:EntropyPredict:step 38 completed in 0.867476940155
+2015-10-14 15:15:38,701:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:39,133:INFO:EntropyPredict:step 39 completed in 0.872587919235
+2015-10-14 15:15:39,580:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:40,009:INFO:EntropyPredict:step 40 completed in 0.87585401535
+2015-10-14 15:15:40,454:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:40,885:INFO:EntropyPredict:step 41 completed in 0.875911951065
+2015-10-14 15:15:41,336:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:41,772:INFO:EntropyPredict:step 42 completed in 0.886475086212
+2015-10-14 15:15:42,229:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:42,656:INFO:EntropyPredict:step 43 completed in 0.884325027466
+2015-10-14 15:15:43,121:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:43,560:INFO:EntropyPredict:step 44 completed in 0.903805971146
+2015-10-14 15:15:44,030:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:44,463:INFO:EntropyPredict:step 45 completed in 0.9034512043
+2015-10-14 15:15:44,936:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:45,370:INFO:EntropyPredict:step 46 completed in 0.906368970871
+2015-10-14 15:15:45,844:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:46,278:INFO:EntropyPredict:step 47 completed in 0.908421993256
+2015-10-14 15:15:46,759:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:47,194:INFO:EntropyPredict:step 48 completed in 0.915682077408
+2015-10-14 15:15:47,688:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:48,140:INFO:EntropyPredict:step 49 completed in 0.94538807869
+2015-10-14 15:15:48,627:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:49,062:INFO:EntropyPredict:step 50 completed in 0.922093153
+2015-10-14 15:15:49,553:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:49,991:INFO:EntropyPredict:step 51 completed in 0.929558992386
+2015-10-14 15:15:50,493:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:50,929:INFO:EntropyPredict:step 52 completed in 0.937794208527
+2015-10-14 15:15:51,439:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:51,878:INFO:EntropyPredict:step 53 completed in 0.948805809021
+2015-10-14 15:15:52,404:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:52,841:INFO:EntropyPredict:step 54 completed in 0.962752819061
+2015-10-14 15:15:53,355:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:53,795:INFO:EntropyPredict:step 55 completed in 0.954215049744
+2015-10-14 15:15:54,325:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:54,766:INFO:EntropyPredict:step 56 completed in 0.970315933228
+2015-10-14 15:15:55,296:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:55,736:INFO:EntropyPredict:step 57 completed in 0.970150947571
+2015-10-14 15:15:56,276:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:56,718:INFO:EntropyPredict:step 58 completed in 0.981693029404
+2015-10-14 15:15:57,253:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:57,696:INFO:EntropyPredict:step 59 completed in 0.97781419754
+2015-10-14 15:15:58,249:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:58,695:INFO:EntropyPredict:step 60 completed in 0.998969078064
+2015-10-14 15:15:59,249:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:15:59,697:INFO:EntropyPredict:step 61 completed in 1.00218605995
+2015-10-14 15:16:00,269:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:00,716:INFO:EntropyPredict:step 62 completed in 1.01934409142
+2015-10-14 15:16:01,281:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:01,729:INFO:EntropyPredict:step 63 completed in 1.01225113869
+2015-10-14 15:16:02,297:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:02,737:INFO:EntropyPredict:step 64 completed in 1.0086119175
+2015-10-14 15:16:03,314:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:03,752:INFO:EntropyPredict:step 65 completed in 1.01444292068
+2015-10-14 15:16:04,344:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:04,791:INFO:EntropyPredict:step 66 completed in 1.03902411461
+2015-10-14 15:16:05,382:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:05,837:INFO:EntropyPredict:step 67 completed in 1.04552078247
+2015-10-14 15:16:06,439:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:06,888:INFO:EntropyPredict:step 68 completed in 1.05160188675
+2015-10-14 15:16:07,495:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:07,949:INFO:EntropyPredict:step 69 completed in 1.06117582321
+2015-10-14 15:16:08,558:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:09,021:INFO:EntropyPredict:step 70 completed in 1.07186985016
+2015-10-14 15:16:09,641:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:10,087:INFO:EntropyPredict:step 71 completed in 1.06558299065
+2015-10-14 15:16:10,710:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:11,156:INFO:EntropyPredict:step 72 completed in 1.06844687462
+2015-10-14 15:16:11,793:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:12,242:INFO:EntropyPredict:step 73 completed in 1.08678197861
+2015-10-14 15:16:12,880:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:13,330:INFO:EntropyPredict:step 74 completed in 1.08712697029
+2015-10-14 15:16:13,963:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:14,410:INFO:EntropyPredict:step 75 completed in 1.08075785637
+2015-10-14 15:16:15,060:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:15,542:INFO:EntropyPredict:step 76 completed in 1.13136696815
+2015-10-14 15:16:16,200:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:16,663:INFO:EntropyPredict:step 77 completed in 1.12071800232
+2015-10-14 15:16:17,332:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:17,788:INFO:EntropyPredict:step 78 completed in 1.12539792061
+2015-10-14 15:16:18,464:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:18,923:INFO:EntropyPredict:step 79 completed in 1.13516807556
+2015-10-14 15:16:19,600:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:20,053:INFO:EntropyPredict:step 80 completed in 1.12989902496
+2015-10-14 15:16:20,754:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:21,217:INFO:EntropyPredict:step 81 completed in 1.1633169651
+2015-10-14 15:16:21,929:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:22,385:INFO:EntropyPredict:step 82 completed in 1.16835093498
+2015-10-14 15:16:23,068:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:23,509:INFO:EntropyPredict:step 83 completed in 1.12375593185
+2015-10-14 15:16:24,213:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:24,671:INFO:EntropyPredict:step 84 completed in 1.16181898117
+2015-10-14 15:16:25,389:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:25,843:INFO:EntropyPredict:step 85 completed in 1.17184305191
+2015-10-14 15:16:26,559:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:27,007:INFO:EntropyPredict:step 86 completed in 1.16403007507
+2015-10-14 15:16:27,740:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:28,194:INFO:EntropyPredict:step 87 completed in 1.1867890358
+2015-10-14 15:16:28,937:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:29,394:INFO:EntropyPredict:step 88 completed in 1.19992208481
+2015-10-14 15:16:30,144:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:30,602:INFO:EntropyPredict:step 89 completed in 1.20776295662
+2015-10-14 15:16:31,357:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:31,822:INFO:EntropyPredict:step 90 completed in 1.22033596039
+2015-10-14 15:16:32,583:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:33,047:INFO:EntropyPredict:step 91 completed in 1.22511696815
+2015-10-14 15:16:33,818:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:34,284:INFO:EntropyPredict:step 92 completed in 1.23672199249
+2015-10-14 15:16:35,060:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:35,516:INFO:EntropyPredict:step 93 completed in 1.23144984245
+2015-10-14 15:16:36,306:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:36,765:INFO:EntropyPredict:step 94 completed in 1.2489361763
+2015-10-14 15:16:37,556:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:38,015:INFO:EntropyPredict:step 95 completed in 1.25028800964
+2015-10-14 15:16:38,819:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:39,282:INFO:EntropyPredict:step 96 completed in 1.26658201218
+2015-10-14 15:16:40,092:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:40,557:INFO:EntropyPredict:step 97 completed in 1.27512311935
+2015-10-14 15:16:41,375:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:41,836:INFO:EntropyPredict:step 98 completed in 1.27907705307
+2015-10-14 15:16:42,655:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:43,111:INFO:EntropyPredict:step 99 completed in 1.27453398705
+2015-10-14 15:16:43,111:INFO:EntropyPredict:Completed 100 steps in 96.1183941364
+2015-10-14 15:16:43,111:INFO:EntropyPredict:saving opt as results/default/trace1_100.obj
+2015-10-14 15:16:43,127:INFO:runexp:started at 15:16:43 on Wed 14 October 2015 on caithness
+
+INPUT :
+
+Optimisation parameters:
+
+2015-10-14 15:16:43,181:INFO:runexp:starting run 
+
+2015-10-14 15:16:43,295:INFO:EntropyPredict:added 5 random initial observations
+2015-10-14 15:16:43,652:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:44,080:INFO:EntropyPredict:step 0 completed in 0.785358905792
+2015-10-14 15:16:44,441:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:44,879:INFO:EntropyPredict:step 1 completed in 0.798725128174
+2015-10-14 15:16:45,263:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:45,699:INFO:EntropyPredict:step 2 completed in 0.819512844086
+2015-10-14 15:16:46,070:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:46,502:INFO:EntropyPredict:step 3 completed in 0.803121089935
+2015-10-14 15:16:46,832:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:47,298:INFO:EntropyPredict:step 4 completed in 0.795777082443
+2015-10-14 15:16:47,677:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:48,111:INFO:EntropyPredict:step 5 completed in 0.8129529953
+2015-10-14 15:16:48,482:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:48,901:INFO:EntropyPredict:step 6 completed in 0.789709091187
+2015-10-14 15:16:49,269:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:49,693:INFO:EntropyPredict:step 7 completed in 0.792783975601
+2015-10-14 15:16:50,059:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:50,485:INFO:EntropyPredict:step 8 completed in 0.792026042938
+2015-10-14 15:16:50,859:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:51,299:INFO:EntropyPredict:step 9 completed in 0.813585996628
+2015-10-14 15:16:51,670:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:52,098:INFO:EntropyPredict:step 10 completed in 0.798441886902
+2015-10-14 15:16:52,478:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:52,908:INFO:EntropyPredict:step 11 completed in 0.810077905655
+2015-10-14 15:16:53,290:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:53,745:INFO:EntropyPredict:step 12 completed in 0.837177991867
+2015-10-14 15:16:54,129:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:54,570:INFO:EntropyPredict:step 13 completed in 0.825158119202
+2015-10-14 15:16:54,952:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:55,390:INFO:EntropyPredict:step 14 completed in 0.819730997086
+2015-10-14 15:16:55,776:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:56,206:INFO:EntropyPredict:step 15 completed in 0.815989971161
+2015-10-14 15:16:56,598:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:57,029:INFO:EntropyPredict:step 16 completed in 0.822786808014
+2015-10-14 15:16:57,427:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:57,867:INFO:EntropyPredict:step 17 completed in 0.838174104691
+2015-10-14 15:16:58,279:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:58,724:INFO:EntropyPredict:step 18 completed in 0.856322050095
+2015-10-14 15:16:59,116:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:16:59,544:INFO:EntropyPredict:step 19 completed in 0.820780992508
+2015-10-14 15:16:59,939:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:00,367:INFO:EntropyPredict:step 20 completed in 0.822309970856
+2015-10-14 15:17:00,780:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:01,212:INFO:EntropyPredict:step 21 completed in 0.845109224319
+2015-10-14 15:17:01,612:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:02,049:INFO:EntropyPredict:step 22 completed in 0.837365150452
+2015-10-14 15:17:02,446:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:02,895:INFO:EntropyPredict:step 23 completed in 0.845374107361
+2015-10-14 15:17:03,275:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:03,718:INFO:EntropyPredict:step 24 completed in 0.822926998138
+2015-10-14 15:17:04,153:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:04,589:INFO:EntropyPredict:step 25 completed in 0.870962142944
+2015-10-14 15:17:05,012:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:05,466:INFO:EntropyPredict:step 26 completed in 0.877068996429
+2015-10-14 15:17:05,886:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:06,308:INFO:EntropyPredict:step 27 completed in 0.841454982758
+2015-10-14 15:17:06,728:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:07,148:INFO:EntropyPredict:step 28 completed in 0.839940071106
+2015-10-14 15:17:07,550:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:07,991:INFO:EntropyPredict:step 29 completed in 0.843517065048
+2015-10-14 15:17:08,407:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:08,853:INFO:EntropyPredict:step 30 completed in 0.861505031586
+2015-10-14 15:17:09,261:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:09,716:INFO:EntropyPredict:step 31 completed in 0.86305809021
+2015-10-14 15:17:10,139:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:10,591:INFO:EntropyPredict:step 32 completed in 0.874653100967
+2015-10-14 15:17:11,019:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:11,467:INFO:EntropyPredict:step 33 completed in 0.875950098038
+2015-10-14 15:17:11,909:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:12,362:INFO:EntropyPredict:step 34 completed in 0.894911050797
+2015-10-14 15:17:12,777:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:13,229:INFO:EntropyPredict:step 35 completed in 0.867526054382
+2015-10-14 15:17:13,685:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:14,126:INFO:EntropyPredict:step 36 completed in 0.896312952042
+2015-10-14 15:17:14,553:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:14,999:INFO:EntropyPredict:step 37 completed in 0.873528957367
+2015-10-14 15:17:15,449:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:15,870:INFO:EntropyPredict:step 38 completed in 0.870746135712
+2015-10-14 15:17:16,330:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:16,785:INFO:EntropyPredict:step 39 completed in 0.915243864059
+2015-10-14 15:17:17,242:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:17,671:INFO:EntropyPredict:step 40 completed in 0.886152982712
+2015-10-14 15:17:18,146:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:18,611:INFO:EntropyPredict:step 41 completed in 0.93989777565
+2015-10-14 15:17:19,088:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:19,511:INFO:EntropyPredict:step 42 completed in 0.900024175644
+2015-10-14 15:17:19,957:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:20,403:INFO:EntropyPredict:step 43 completed in 0.891777992249
+2015-10-14 15:17:20,879:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:21,327:INFO:EntropyPredict:step 44 completed in 0.923609018326
+2015-10-14 15:17:21,801:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:22,261:INFO:EntropyPredict:step 45 completed in 0.93439412117
+2015-10-14 15:17:22,742:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:23,212:INFO:EntropyPredict:step 46 completed in 0.950753927231
+2015-10-14 15:17:23,703:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:24,162:INFO:EntropyPredict:step 47 completed in 0.949459075928
+2015-10-14 15:17:24,642:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:25,094:INFO:EntropyPredict:step 48 completed in 0.931678056717
+2015-10-14 15:17:25,589:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:26,042:INFO:EntropyPredict:step 49 completed in 0.948561906815
+2015-10-14 15:17:26,551:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:26,984:INFO:EntropyPredict:step 50 completed in 0.941556930542
+2015-10-14 15:17:27,495:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:27,944:INFO:EntropyPredict:step 51 completed in 0.959964990616
+2015-10-14 15:17:28,466:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:28,924:INFO:EntropyPredict:step 52 completed in 0.980306148529
+2015-10-14 15:17:29,458:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:29,924:INFO:EntropyPredict:step 53 completed in 0.999177217484
+2015-10-14 15:17:30,426:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:30,893:INFO:EntropyPredict:step 54 completed in 0.968955993652
+2015-10-14 15:17:31,399:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:31,854:INFO:EntropyPredict:step 55 completed in 0.961027860641
+2015-10-14 15:17:32,416:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:32,861:INFO:EntropyPredict:step 56 completed in 1.00730991364
+2015-10-14 15:17:33,414:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:33,865:INFO:EntropyPredict:step 57 completed in 1.00364494324
+2015-10-14 15:17:34,409:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:34,841:INFO:EntropyPredict:step 58 completed in 0.976041078568
+2015-10-14 15:17:35,404:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:35,868:INFO:EntropyPredict:step 59 completed in 1.02697110176
+2015-10-14 15:17:36,448:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:36,918:INFO:EntropyPredict:step 60 completed in 1.05036902428
+2015-10-14 15:17:37,495:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:37,969:INFO:EntropyPredict:step 61 completed in 1.05057907104
+2015-10-14 15:17:38,563:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:39,020:INFO:EntropyPredict:step 62 completed in 1.0509519577
+2015-10-14 15:17:39,607:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:40,083:INFO:EntropyPredict:step 63 completed in 1.06265711784
+2015-10-14 15:17:40,686:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:41,145:INFO:EntropyPredict:step 64 completed in 1.06233501434
+2015-10-14 15:17:41,789:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:42,256:INFO:EntropyPredict:step 65 completed in 1.1105670929
+2015-10-14 15:17:42,894:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:43,359:INFO:EntropyPredict:step 66 completed in 1.10317611694
+2015-10-14 15:17:43,964:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:44,418:INFO:EntropyPredict:step 67 completed in 1.05867600441
+2015-10-14 15:17:45,053:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:45,524:INFO:EntropyPredict:step 68 completed in 1.10644602776
+2015-10-14 15:17:46,153:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:46,625:INFO:EntropyPredict:step 69 completed in 1.10106682777
+2015-10-14 15:17:47,259:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:47,732:INFO:EntropyPredict:step 70 completed in 1.10618114471
+2015-10-14 15:17:48,361:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:48,853:INFO:EntropyPredict:step 71 completed in 1.12086200714
+2015-10-14 15:17:49,687:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:50,183:INFO:EntropyPredict:step 72 completed in 1.33058691025
+2015-10-14 15:17:50,860:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:51,346:INFO:EntropyPredict:step 73 completed in 1.16204118729
+2015-10-14 15:17:52,141:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:52,652:INFO:EntropyPredict:step 74 completed in 1.30605483055
+2015-10-14 15:17:53,317:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:53,785:INFO:EntropyPredict:step 75 completed in 1.13299512863
+2015-10-14 15:17:54,456:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:54,940:INFO:EntropyPredict:step 76 completed in 1.15533208847
+2015-10-14 15:17:55,614:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:56,072:INFO:EntropyPredict:step 77 completed in 1.13196110725
+2015-10-14 15:17:56,769:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:57,231:INFO:EntropyPredict:step 78 completed in 1.1586689949
+2015-10-14 15:17:57,928:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:58,397:INFO:EntropyPredict:step 79 completed in 1.16631484032
+2015-10-14 15:17:59,137:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:17:59,615:INFO:EntropyPredict:step 80 completed in 1.21723413467
+2015-10-14 15:18:00,308:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:00,780:INFO:EntropyPredict:step 81 completed in 1.16556406021
+2015-10-14 15:18:01,483:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:01,962:INFO:EntropyPredict:step 82 completed in 1.18129301071
+2015-10-14 15:18:02,658:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:03,125:INFO:EntropyPredict:step 83 completed in 1.16372108459
+2015-10-14 15:18:03,860:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:04,326:INFO:EntropyPredict:step 84 completed in 1.20065116882
+2015-10-14 15:18:05,055:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:05,526:INFO:EntropyPredict:step 85 completed in 1.19984102249
+2015-10-14 15:18:06,251:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:06,727:INFO:EntropyPredict:step 86 completed in 1.20072293282
+2015-10-14 15:18:07,474:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:07,946:INFO:EntropyPredict:step 87 completed in 1.2190527916
+2015-10-14 15:18:08,710:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:09,199:INFO:EntropyPredict:step 88 completed in 1.25314497948
+2015-10-14 15:18:09,958:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:10,452:INFO:EntropyPredict:step 89 completed in 1.25260305405
+2015-10-14 15:18:11,213:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:11,668:INFO:EntropyPredict:step 90 completed in 1.21586298943
+2015-10-14 15:18:12,438:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:12,919:INFO:EntropyPredict:step 91 completed in 1.25127196312
+2015-10-14 15:18:13,699:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:14,184:INFO:EntropyPredict:step 92 completed in 1.26470112801
+2015-10-14 15:18:15,003:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:15,466:INFO:EntropyPredict:step 93 completed in 1.28259587288
+2015-10-14 15:18:16,246:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:16,703:INFO:EntropyPredict:step 94 completed in 1.23669695854
+2015-10-14 15:18:17,491:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:17,950:INFO:EntropyPredict:step 95 completed in 1.24711489677
+2015-10-14 15:18:18,734:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:19,188:INFO:EntropyPredict:step 96 completed in 1.23789906502
+2015-10-14 15:18:19,996:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:20,460:INFO:EntropyPredict:step 97 completed in 1.27107095718
+2015-10-14 15:18:21,264:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:21,727:INFO:EntropyPredict:step 98 completed in 1.26704287529
+2015-10-14 15:18:22,538:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:22,993:INFO:EntropyPredict:step 99 completed in 1.26652789116
+2015-10-14 15:18:22,993:INFO:EntropyPredict:Completed 100 steps in 99.6984050274
+2015-10-14 15:18:22,993:INFO:EntropyPredict:saving opt as results/default/trace2_100.obj
+2015-10-14 15:18:23,008:INFO:runexp:started at 15:18:23 on Wed 14 October 2015 on caithness
+
+INPUT :
+
+Optimisation parameters:
+
+2015-10-14 15:18:23,054:INFO:runexp:starting run 
+
+2015-10-14 15:18:23,252:INFO:EntropyPredict:added 5 random initial observations
+2015-10-14 15:18:23,578:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:23,993:INFO:EntropyPredict:step 0 completed in 0.740247964859
+2015-10-14 15:18:24,320:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:24,732:INFO:EntropyPredict:step 1 completed in 0.739265918732
+2015-10-14 15:18:25,066:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:25,470:INFO:EntropyPredict:step 2 completed in 0.737562894821
+2015-10-14 15:18:25,794:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:26,208:INFO:EntropyPredict:step 3 completed in 0.737902879715
+2015-10-14 15:18:26,546:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:26,958:INFO:EntropyPredict:step 4 completed in 0.749858856201
+2015-10-14 15:18:27,302:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:27,712:INFO:EntropyPredict:step 5 completed in 0.754411935806
+2015-10-14 15:18:28,058:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:28,470:INFO:EntropyPredict:step 6 completed in 0.757758140564
+2015-10-14 15:18:28,814:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:29,225:INFO:EntropyPredict:step 7 completed in 0.755098104477
+2015-10-14 15:18:29,566:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:29,987:INFO:EntropyPredict:step 8 completed in 0.761390924454
+2015-10-14 15:18:30,334:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:30,741:INFO:EntropyPredict:step 9 completed in 0.754852056503
+2015-10-14 15:18:31,096:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:31,511:INFO:EntropyPredict:step 10 completed in 0.769640922546
+2015-10-14 15:18:31,858:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:32,275:INFO:EntropyPredict:step 11 completed in 0.763537168503
+2015-10-14 15:18:32,623:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:33,037:INFO:EntropyPredict:step 12 completed in 0.762176990509
+2015-10-14 15:18:33,396:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:33,807:INFO:EntropyPredict:step 13 completed in 0.769452095032
+2015-10-14 15:18:34,166:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:34,582:INFO:EntropyPredict:step 14 completed in 0.775720834732
+2015-10-14 15:18:34,937:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:35,355:INFO:EntropyPredict:step 15 completed in 0.772258996964
+2015-10-14 15:18:35,713:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:36,119:INFO:EntropyPredict:step 16 completed in 0.764331102371
+2015-10-14 15:18:36,484:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:36,900:INFO:EntropyPredict:step 17 completed in 0.78076004982
+2015-10-14 15:18:37,274:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:37,695:INFO:EntropyPredict:step 18 completed in 0.794511079788
+2015-10-14 15:18:38,064:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:38,487:INFO:EntropyPredict:step 19 completed in 0.792249917984
+2015-10-14 15:18:38,856:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:39,278:INFO:EntropyPredict:step 20 completed in 0.791005134583
+2015-10-14 15:18:39,658:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:40,074:INFO:EntropyPredict:step 21 completed in 0.796234130859
+2015-10-14 15:18:40,465:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:40,886:INFO:EntropyPredict:step 22 completed in 0.811888217926
+2015-10-14 15:18:41,280:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:41,700:INFO:EntropyPredict:step 23 completed in 0.813879966736
+2015-10-14 15:18:42,091:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:42,508:INFO:EntropyPredict:step 24 completed in 0.807566165924
+2015-10-14 15:18:42,898:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:43,325:INFO:EntropyPredict:step 25 completed in 0.816930055618
+2015-10-14 15:18:43,713:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:44,138:INFO:EntropyPredict:step 26 completed in 0.812621831894
+2015-10-14 15:18:44,536:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:44,968:INFO:EntropyPredict:step 27 completed in 0.830470085144
+2015-10-14 15:18:45,373:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:45,801:INFO:EntropyPredict:step 28 completed in 0.832498788834
+2015-10-14 15:18:46,200:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:46,625:INFO:EntropyPredict:step 29 completed in 0.823862791061
+2015-10-14 15:18:47,031:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:47,457:INFO:EntropyPredict:step 30 completed in 0.832707166672
+2015-10-14 15:18:47,866:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:48,287:INFO:EntropyPredict:step 31 completed in 0.829229831696
+2015-10-14 15:18:48,703:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:49,127:INFO:EntropyPredict:step 32 completed in 0.839946985245
+2015-10-14 15:18:49,541:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:49,963:INFO:EntropyPredict:step 33 completed in 0.836767196655
+2015-10-14 15:18:50,394:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:50,817:INFO:EntropyPredict:step 34 completed in 0.853008985519
+2015-10-14 15:18:51,234:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:51,658:INFO:EntropyPredict:step 35 completed in 0.841303825378
+2015-10-14 15:18:52,084:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:52,514:INFO:EntropyPredict:step 36 completed in 0.856360912323
+2015-10-14 15:18:52,948:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:53,378:INFO:EntropyPredict:step 37 completed in 0.863615989685
+2015-10-14 15:18:53,815:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:54,239:INFO:EntropyPredict:step 38 completed in 0.861227989197
+2015-10-14 15:18:54,675:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:55,103:INFO:EntropyPredict:step 39 completed in 0.86385011673
+2015-10-14 15:18:55,546:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:55,970:INFO:EntropyPredict:step 40 completed in 0.866894960403
+2015-10-14 15:18:56,415:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:56,844:INFO:EntropyPredict:step 41 completed in 0.874125957489
+2015-10-14 15:18:57,290:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:57,721:INFO:EntropyPredict:step 42 completed in 0.876523017883
+2015-10-14 15:18:58,174:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:58,609:INFO:EntropyPredict:step 43 completed in 0.888226985931
+2015-10-14 15:18:59,071:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:18:59,506:INFO:EntropyPredict:step 44 completed in 0.896412849426
+2015-10-14 15:18:59,971:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:00,408:INFO:EntropyPredict:step 45 completed in 0.901973962784
+2015-10-14 15:19:00,880:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:01,310:INFO:EntropyPredict:step 46 completed in 0.902050018311
+2015-10-14 15:19:01,791:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:02,225:INFO:EntropyPredict:step 47 completed in 0.914667844772
+2015-10-14 15:19:02,702:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:03,137:INFO:EntropyPredict:step 48 completed in 0.912693023682
+2015-10-14 15:19:03,627:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:04,056:INFO:EntropyPredict:step 49 completed in 0.918933868408
+2015-10-14 15:19:04,548:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:04,978:INFO:EntropyPredict:step 50 completed in 0.921553850174
+2015-10-14 15:19:05,467:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:05,901:INFO:EntropyPredict:step 51 completed in 0.923171043396
+2015-10-14 15:19:06,402:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:06,844:INFO:EntropyPredict:step 52 completed in 0.942435979843
+2015-10-14 15:19:07,352:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:07,792:INFO:EntropyPredict:step 53 completed in 0.948258876801
+2015-10-14 15:19:08,307:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:08,746:INFO:EntropyPredict:step 54 completed in 0.954061031342
+2015-10-14 15:19:09,262:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:09,701:INFO:EntropyPredict:step 55 completed in 0.954730033875
+2015-10-14 15:19:10,230:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:10,665:INFO:EntropyPredict:step 56 completed in 0.964147806168
+2015-10-14 15:19:11,191:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:11,636:INFO:EntropyPredict:step 57 completed in 0.970944166183
+2015-10-14 15:19:12,170:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:12,617:INFO:EntropyPredict:step 58 completed in 0.980855226517
+2015-10-14 15:19:13,149:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:13,595:INFO:EntropyPredict:step 59 completed in 0.977848052979
+2015-10-14 15:19:14,135:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:14,576:INFO:EntropyPredict:step 60 completed in 0.980545043945
+2015-10-14 15:19:15,134:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:15,599:INFO:EntropyPredict:step 61 completed in 1.02372002602
+2015-10-14 15:19:16,163:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:16,609:INFO:EntropyPredict:step 62 completed in 1.00976896286
+2015-10-14 15:19:17,174:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:17,618:INFO:EntropyPredict:step 63 completed in 1.00839495659
+2015-10-14 15:19:18,186:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:18,633:INFO:EntropyPredict:step 64 completed in 1.01479387283
+2015-10-14 15:19:19,207:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:19,652:INFO:EntropyPredict:step 65 completed in 1.01929783821
+2015-10-14 15:19:20,236:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:20,684:INFO:EntropyPredict:step 66 completed in 1.03186798096
+2015-10-14 15:19:21,275:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:21,713:INFO:EntropyPredict:step 67 completed in 1.02948999405
+2015-10-14 15:19:22,311:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:22,751:INFO:EntropyPredict:step 68 completed in 1.03734111786
+2015-10-14 15:19:23,349:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:23,789:INFO:EntropyPredict:step 69 completed in 1.03853011131
+2015-10-14 15:19:24,401:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:24,838:INFO:EntropyPredict:step 70 completed in 1.0488858223
+2015-10-14 15:19:25,450:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:25,896:INFO:EntropyPredict:step 71 completed in 1.05729293823
+2015-10-14 15:19:26,510:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:26,958:INFO:EntropyPredict:step 72 completed in 1.06218886375
+2015-10-14 15:19:27,583:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:28,030:INFO:EntropyPredict:step 73 completed in 1.07163596153
+2015-10-14 15:19:28,665:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:29,115:INFO:EntropyPredict:step 74 completed in 1.08535003662
+2015-10-14 15:19:29,755:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:30,194:INFO:EntropyPredict:step 75 completed in 1.07843399048
+2015-10-14 15:19:30,828:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:31,283:INFO:EntropyPredict:step 76 completed in 1.08893203735
+2015-10-14 15:19:31,936:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:32,386:INFO:EntropyPredict:step 77 completed in 1.10322594643
+2015-10-14 15:19:33,035:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:33,484:INFO:EntropyPredict:step 78 completed in 1.09786200523
+2015-10-14 15:19:34,154:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:34,601:INFO:EntropyPredict:step 79 completed in 1.11681199074
+2015-10-14 15:19:35,259:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:35,703:INFO:EntropyPredict:step 80 completed in 1.10234117508
+2015-10-14 15:19:36,388:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:36,839:INFO:EntropyPredict:step 81 completed in 1.13599395752
+2015-10-14 15:19:37,524:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:37,977:INFO:EntropyPredict:step 82 completed in 1.13748693466
+2015-10-14 15:19:38,666:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:39,110:INFO:EntropyPredict:step 83 completed in 1.13320302963
+2015-10-14 15:19:39,808:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:40,262:INFO:EntropyPredict:step 84 completed in 1.15144491196
+2015-10-14 15:19:40,975:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:41,424:INFO:EntropyPredict:step 85 completed in 1.1621928215
+2015-10-14 15:19:42,134:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:42,603:INFO:EntropyPredict:step 86 completed in 1.17885518074
+2015-10-14 15:19:43,331:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:43,784:INFO:EntropyPredict:step 87 completed in 1.1812889576
+2015-10-14 15:19:44,515:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:44,969:INFO:EntropyPredict:step 88 completed in 1.18504190445
+2015-10-14 15:19:45,699:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:46,156:INFO:EntropyPredict:step 89 completed in 1.18705296516
+2015-10-14 15:19:46,904:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:47,361:INFO:EntropyPredict:step 90 completed in 1.20456695557
+2015-10-14 15:19:48,109:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:48,565:INFO:EntropyPredict:step 91 completed in 1.20436882973
+2015-10-14 15:19:49,334:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:49,790:INFO:EntropyPredict:step 92 completed in 1.22480607033
+2015-10-14 15:19:50,559:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:51,015:INFO:EntropyPredict:step 93 completed in 1.22504496574
+2015-10-14 15:19:51,802:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:52,259:INFO:EntropyPredict:step 94 completed in 1.24397397041
+2015-10-14 15:19:53,040:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:53,495:INFO:EntropyPredict:step 95 completed in 1.23563790321
+2015-10-14 15:19:54,295:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:54,752:INFO:EntropyPredict:step 96 completed in 1.25640201569
+2015-10-14 15:19:55,548:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:56,008:INFO:EntropyPredict:step 97 completed in 1.25606203079
+2015-10-14 15:19:56,834:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:57,291:INFO:EntropyPredict:step 98 completed in 1.28367400169
+2015-10-14 15:19:58,101:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:58,556:INFO:EntropyPredict:step 99 completed in 1.26451802254
+2015-10-14 15:19:58,556:INFO:EntropyPredict:Completed 100 steps in 95.3035559654
+2015-10-14 15:19:58,556:INFO:EntropyPredict:saving opt as results/default/trace3_100.obj
+2015-10-14 15:19:58,574:INFO:runexp:started at 15:19:58 on Wed 14 October 2015 on caithness
+
+INPUT :
+
+Optimisation parameters:
+
+2015-10-14 15:19:58,623:INFO:runexp:starting run 
+
+2015-10-14 15:19:58,721:INFO:EntropyPredict:added 5 random initial observations
+2015-10-14 15:19:59,055:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:19:59,467:INFO:EntropyPredict:step 0 completed in 0.745877981186
+2015-10-14 15:19:59,803:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:00,216:INFO:EntropyPredict:step 1 completed in 0.7483959198
+2015-10-14 15:20:00,553:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:00,968:INFO:EntropyPredict:step 2 completed in 0.751744031906
+2015-10-14 15:20:01,313:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:01,733:INFO:EntropyPredict:step 3 completed in 0.765333890915
+2015-10-14 15:20:02,071:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:02,489:INFO:EntropyPredict:step 4 completed in 0.75546503067
+2015-10-14 15:20:02,838:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:03,259:INFO:EntropyPredict:step 5 completed in 0.770264863968
+2015-10-14 15:20:03,606:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:04,023:INFO:EntropyPredict:step 6 completed in 0.764166116714
+2015-10-14 15:20:04,376:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:04,804:INFO:EntropyPredict:step 7 completed in 0.780946969986
+2015-10-14 15:20:05,157:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:05,574:INFO:EntropyPredict:step 8 completed in 0.769822835922
+2015-10-14 15:20:05,941:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:06,372:INFO:EntropyPredict:step 9 completed in 0.797887086868
+2015-10-14 15:20:06,732:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:07,160:INFO:EntropyPredict:step 10 completed in 0.787757873535
+2015-10-14 15:20:07,525:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:07,943:INFO:EntropyPredict:step 11 completed in 0.783041954041
+2015-10-14 15:20:08,299:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:08,721:INFO:EntropyPredict:step 12 completed in 0.777581930161
+2015-10-14 15:20:09,074:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:09,486:INFO:EntropyPredict:step 13 completed in 0.764954090118
+2015-10-14 15:20:09,853:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:10,274:INFO:EntropyPredict:step 14 completed in 0.788633823395
+2015-10-14 15:20:10,653:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:11,091:INFO:EntropyPredict:step 15 completed in 0.817141056061
+2015-10-14 15:20:11,466:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:11,901:INFO:EntropyPredict:step 16 completed in 0.809100866318
+2015-10-14 15:20:12,270:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:12,689:INFO:EntropyPredict:step 17 completed in 0.788508176804
+2015-10-14 15:20:13,075:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:13,495:INFO:EntropyPredict:step 18 completed in 0.805991888046
+2015-10-14 15:20:13,884:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:14,317:INFO:EntropyPredict:step 19 completed in 0.822036981583
+2015-10-14 15:20:14,688:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:15,108:INFO:EntropyPredict:step 20 completed in 0.790533065796
+2015-10-14 15:20:15,490:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:15,921:INFO:EntropyPredict:step 21 completed in 0.812579154968
+2015-10-14 15:20:16,299:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:16,729:INFO:EntropyPredict:step 22 completed in 0.808157920837
+2015-10-14 15:20:17,105:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:17,551:INFO:EntropyPredict:step 23 completed in 0.82266497612
+2015-10-14 15:20:17,957:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:18,380:INFO:EntropyPredict:step 24 completed in 0.828902959824
+2015-10-14 15:20:18,763:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:19,187:INFO:EntropyPredict:step 25 completed in 0.806620836258
+2015-10-14 15:20:19,587:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:20,005:INFO:EntropyPredict:step 26 completed in 0.817818880081
+2015-10-14 15:20:20,397:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:20,813:INFO:EntropyPredict:step 27 completed in 0.807849884033
+2015-10-14 15:20:21,211:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:21,632:INFO:EntropyPredict:step 28 completed in 0.818981170654
+2015-10-14 15:20:22,039:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:22,475:INFO:EntropyPredict:step 29 completed in 0.843119859695
+2015-10-14 15:20:22,887:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:23,304:INFO:EntropyPredict:step 30 completed in 0.828956842422
+2015-10-14 15:20:23,715:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:24,139:INFO:EntropyPredict:step 31 completed in 0.83525800705
+2015-10-14 15:20:24,545:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:24,978:INFO:EntropyPredict:step 32 completed in 0.838586091995
+2015-10-14 15:20:25,393:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:25,812:INFO:EntropyPredict:step 33 completed in 0.834201097488
+2015-10-14 15:20:26,240:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:26,668:INFO:EntropyPredict:step 34 completed in 0.85560297966
+2015-10-14 15:20:27,085:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:27,508:INFO:EntropyPredict:step 35 completed in 0.840061903
+2015-10-14 15:20:27,926:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:28,361:INFO:EntropyPredict:step 36 completed in 0.852475166321
+2015-10-14 15:20:28,785:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:29,223:INFO:EntropyPredict:step 37 completed in 0.862334012985
+2015-10-14 15:20:29,648:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:30,069:INFO:EntropyPredict:step 38 completed in 0.846261024475
+2015-10-14 15:20:30,504:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:30,935:INFO:EntropyPredict:step 39 completed in 0.865770816803
+2015-10-14 15:20:31,377:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:31,801:INFO:EntropyPredict:step 40 completed in 0.865371227264
+2015-10-14 15:20:32,246:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:32,680:INFO:EntropyPredict:step 41 completed in 0.878895044327
+2015-10-14 15:20:33,125:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:33,557:INFO:EntropyPredict:step 42 completed in 0.877002954483
+2015-10-14 15:20:34,002:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:34,439:INFO:EntropyPredict:step 43 completed in 0.882208108902
+2015-10-14 15:20:34,894:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:35,337:INFO:EntropyPredict:step 44 completed in 0.897409915924
+2015-10-14 15:20:35,801:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:36,227:INFO:EntropyPredict:step 45 completed in 0.890481948853
+2015-10-14 15:20:36,690:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:37,122:INFO:EntropyPredict:step 46 completed in 0.894510030746
+2015-10-14 15:20:37,593:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:38,021:INFO:EntropyPredict:step 47 completed in 0.898877859116
+2015-10-14 15:20:38,503:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:38,940:INFO:EntropyPredict:step 48 completed in 0.919184923172
+2015-10-14 15:20:39,430:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:39,863:INFO:EntropyPredict:step 49 completed in 0.922936916351
+2015-10-14 15:20:40,352:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:40,787:INFO:EntropyPredict:step 50 completed in 0.923897981644
+2015-10-14 15:20:41,281:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:41,721:INFO:EntropyPredict:step 51 completed in 0.9336810112
+2015-10-14 15:20:42,233:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:42,674:INFO:EntropyPredict:step 52 completed in 0.953074932098
+2015-10-14 15:20:43,191:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:43,633:INFO:EntropyPredict:step 53 completed in 0.958687067032
+2015-10-14 15:20:44,152:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:44,600:INFO:EntropyPredict:step 54 completed in 0.96777009964
+2015-10-14 15:20:45,115:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:45,556:INFO:EntropyPredict:step 55 completed in 0.955839157104
+2015-10-14 15:20:46,091:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:46,547:INFO:EntropyPredict:step 56 completed in 0.990649938583
+2015-10-14 15:20:47,086:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:47,529:INFO:EntropyPredict:step 57 completed in 0.98166513443
+2015-10-14 15:20:48,071:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:48,517:INFO:EntropyPredict:step 58 completed in 0.987860202789
+2015-10-14 15:20:49,063:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:49,500:INFO:EntropyPredict:step 59 completed in 0.983273029327
+2015-10-14 15:20:50,042:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:50,482:INFO:EntropyPredict:step 60 completed in 0.981556892395
+2015-10-14 15:20:51,042:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:51,487:INFO:EntropyPredict:step 61 completed in 1.0052819252
+2015-10-14 15:20:52,063:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:52,507:INFO:EntropyPredict:step 62 completed in 1.01966905594
+2015-10-14 15:20:53,079:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:53,522:INFO:EntropyPredict:step 63 completed in 1.01485991478
+2015-10-14 15:20:54,115:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:54,561:INFO:EntropyPredict:step 64 completed in 1.03940987587
+2015-10-14 15:20:55,144:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:55,614:INFO:EntropyPredict:step 65 completed in 1.05293822289
+2015-10-14 15:20:56,211:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:56,657:INFO:EntropyPredict:step 66 completed in 1.04317307472
+2015-10-14 15:20:57,251:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:57,692:INFO:EntropyPredict:step 67 completed in 1.03421592712
+2015-10-14 15:20:58,295:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:58,739:INFO:EntropyPredict:step 68 completed in 1.04752016068
+2015-10-14 15:20:59,349:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:20:59,795:INFO:EntropyPredict:step 69 completed in 1.05584692955
+2015-10-14 15:21:00,420:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:00,876:INFO:EntropyPredict:step 70 completed in 1.08110499382
+2015-10-14 15:21:01,503:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:01,947:INFO:EntropyPredict:step 71 completed in 1.07084202766
+2015-10-14 15:21:02,567:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:03,018:INFO:EntropyPredict:step 72 completed in 1.07087302208
+2015-10-14 15:21:03,654:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:04,101:INFO:EntropyPredict:step 73 completed in 1.08243393898
+2015-10-14 15:21:04,735:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:05,182:INFO:EntropyPredict:step 74 completed in 1.08131718636
+2015-10-14 15:21:05,816:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:06,263:INFO:EntropyPredict:step 75 completed in 1.0811150074
+2015-10-14 15:21:06,910:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:07,366:INFO:EntropyPredict:step 76 completed in 1.10296487808
+2015-10-14 15:21:08,021:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:08,476:INFO:EntropyPredict:step 77 completed in 1.10974216461
+2015-10-14 15:21:09,132:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:09,586:INFO:EntropyPredict:step 78 completed in 1.10951399803
+2015-10-14 15:21:10,243:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:10,697:INFO:EntropyPredict:step 79 completed in 1.11166906357
+2015-10-14 15:21:11,395:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:11,852:INFO:EntropyPredict:step 80 completed in 1.1545290947
+2015-10-14 15:21:12,544:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:12,998:INFO:EntropyPredict:step 81 completed in 1.14623808861
+2015-10-14 15:21:13,696:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:14,149:INFO:EntropyPredict:step 82 completed in 1.15105319023
+2015-10-14 15:21:14,832:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:15,281:INFO:EntropyPredict:step 83 completed in 1.13193297386
+2015-10-14 15:21:15,976:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:16,431:INFO:EntropyPredict:step 84 completed in 1.14961600304
+2015-10-14 15:21:17,137:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:17,596:INFO:EntropyPredict:step 85 completed in 1.16515207291
+2015-10-14 15:21:18,305:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:18,759:INFO:EntropyPredict:step 86 completed in 1.16260099411
+2015-10-14 15:21:19,482:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:19,935:INFO:EntropyPredict:step 87 completed in 1.17547416687
+2015-10-14 15:21:20,670:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:21,126:INFO:EntropyPredict:step 88 completed in 1.19178795815
+2015-10-14 15:21:21,868:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:22,319:INFO:EntropyPredict:step 89 completed in 1.19205784798
+2015-10-14 15:21:23,083:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:23,544:INFO:EntropyPredict:step 90 completed in 1.22533202171
+2015-10-14 15:21:24,300:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:24,756:INFO:EntropyPredict:step 91 completed in 1.21166205406
+2015-10-14 15:21:25,524:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:25,991:INFO:EntropyPredict:step 92 completed in 1.23499703407
+2015-10-14 15:21:26,761:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:27,224:INFO:EntropyPredict:step 93 completed in 1.23297095299
+2015-10-14 15:21:28,007:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:28,470:INFO:EntropyPredict:step 94 completed in 1.24603891373
+2015-10-14 15:21:29,264:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:29,725:INFO:EntropyPredict:step 95 completed in 1.2553088665
+2015-10-14 15:21:30,524:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:30,991:INFO:EntropyPredict:step 96 completed in 1.26534700394
+2015-10-14 15:21:31,795:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:32,252:INFO:EntropyPredict:step 97 completed in 1.26133680344
+2015-10-14 15:21:33,080:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:33,539:INFO:EntropyPredict:step 98 completed in 1.28649806976
+2015-10-14 15:21:34,354:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:34,831:INFO:EntropyPredict:step 99 completed in 1.29190301895
+2015-10-14 15:21:34,831:INFO:EntropyPredict:Completed 100 steps in 96.1092019081
+2015-10-14 15:21:34,831:INFO:EntropyPredict:saving opt as results/default/trace4_100.obj
+2015-10-14 15:21:34,849:INFO:runexp:started at 15:21:34 on Wed 14 October 2015 on caithness
+
+INPUT :
+
+Optimisation parameters:
+
+2015-10-14 15:21:34,894:INFO:runexp:starting run 
+
+2015-10-14 15:21:34,992:INFO:EntropyPredict:added 5 random initial observations
+2015-10-14 15:21:35,318:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:35,734:INFO:EntropyPredict:step 0 completed in 0.741819143295
+2015-10-14 15:21:36,060:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:36,475:INFO:EntropyPredict:step 1 completed in 0.740790128708
+2015-10-14 15:21:36,800:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:37,213:INFO:EntropyPredict:step 2 completed in 0.738248825073
+2015-10-14 15:21:37,554:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:37,960:INFO:EntropyPredict:step 3 completed in 0.746298074722
+2015-10-14 15:21:38,300:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:38,714:INFO:EntropyPredict:step 4 completed in 0.75426197052
+2015-10-14 15:21:39,050:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:39,467:INFO:EntropyPredict:step 5 completed in 0.753208875656
+2015-10-14 15:21:39,808:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:40,218:INFO:EntropyPredict:step 6 completed in 0.750627994537
+2015-10-14 15:21:40,561:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:40,977:INFO:EntropyPredict:step 7 completed in 0.759306907654
+2015-10-14 15:21:41,312:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:41,726:INFO:EntropyPredict:step 8 completed in 0.748872041702
+2015-10-14 15:21:42,078:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:42,494:INFO:EntropyPredict:step 9 completed in 0.767409086227
+2015-10-14 15:21:42,845:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:43,265:INFO:EntropyPredict:step 10 completed in 0.771196126938
+2015-10-14 15:21:43,608:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:44,022:INFO:EntropyPredict:step 11 completed in 0.756678104401
+2015-10-14 15:21:44,374:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:44,786:INFO:EntropyPredict:step 12 completed in 0.763898134232
+2015-10-14 15:21:45,140:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:45,556:INFO:EntropyPredict:step 13 completed in 0.770022153854
+2015-10-14 15:21:45,915:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:46,332:INFO:EntropyPredict:step 14 completed in 0.776201963425
+2015-10-14 15:21:46,699:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:47,116:INFO:EntropyPredict:step 15 completed in 0.78333902359
+2015-10-14 15:21:47,478:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:47,896:INFO:EntropyPredict:step 16 completed in 0.780252933502
+2015-10-14 15:21:48,261:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:48,675:INFO:EntropyPredict:step 17 completed in 0.779282093048
+2015-10-14 15:21:49,038:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:49,453:INFO:EntropyPredict:step 18 completed in 0.77760887146
+2015-10-14 15:21:49,816:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:50,232:INFO:EntropyPredict:step 19 completed in 0.779103040695
+2015-10-14 15:21:50,604:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:51,021:INFO:EntropyPredict:step 20 completed in 0.788593053818
+2015-10-14 15:21:51,401:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:51,820:INFO:EntropyPredict:step 21 completed in 0.798794031143
+2015-10-14 15:21:52,199:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:52,621:INFO:EntropyPredict:step 22 completed in 0.801048994064
+2015-10-14 15:21:53,004:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:53,426:INFO:EntropyPredict:step 23 completed in 0.80526804924
+2015-10-14 15:21:53,813:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:54,235:INFO:EntropyPredict:step 24 completed in 0.809072971344
+2015-10-14 15:21:54,623:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:55,043:INFO:EntropyPredict:step 25 completed in 0.808162927628
+2015-10-14 15:21:55,444:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:55,868:INFO:EntropyPredict:step 26 completed in 0.824877977371
+2015-10-14 15:21:56,262:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:56,682:INFO:EntropyPredict:step 27 completed in 0.813710927963
+2015-10-14 15:21:57,082:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:57,503:INFO:EntropyPredict:step 28 completed in 0.821305990219
+2015-10-14 15:21:57,910:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:58,339:INFO:EntropyPredict:step 29 completed in 0.835848093033
+2015-10-14 15:21:58,751:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:21:59,177:INFO:EntropyPredict:step 30 completed in 0.837353944778
+2015-10-14 15:21:59,598:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:00,028:INFO:EntropyPredict:step 31 completed in 0.851456165314
+2015-10-14 15:22:00,451:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:00,882:INFO:EntropyPredict:step 32 completed in 0.854099988937
+2015-10-14 15:22:01,302:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:01,747:INFO:EntropyPredict:step 33 completed in 0.86497092247
+2015-10-14 15:22:02,177:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:02,608:INFO:EntropyPredict:step 34 completed in 0.860156059265
+2015-10-14 15:22:03,076:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:03,554:INFO:EntropyPredict:step 35 completed in 0.946714878082
+2015-10-14 15:22:04,037:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:04,522:INFO:EntropyPredict:step 36 completed in 0.967215776443
+2015-10-14 15:22:04,977:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:05,416:INFO:EntropyPredict:step 37 completed in 0.893925905228
+2015-10-14 15:22:05,859:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:06,329:INFO:EntropyPredict:step 38 completed in 0.912755012512
+2015-10-14 15:22:06,811:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:07,256:INFO:EntropyPredict:step 39 completed in 0.927088022232
+2015-10-14 15:22:07,752:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:08,202:INFO:EntropyPredict:step 40 completed in 0.946248054504
+2015-10-14 15:22:08,667:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:09,105:INFO:EntropyPredict:step 41 completed in 0.903416872025
+2015-10-14 15:22:09,621:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:10,071:INFO:EntropyPredict:step 42 completed in 0.965205192566
+2015-10-14 15:22:10,564:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:11,001:INFO:EntropyPredict:step 43 completed in 0.930332183838
+2015-10-14 15:22:11,488:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:11,931:INFO:EntropyPredict:step 44 completed in 0.929599046707
+2015-10-14 15:22:12,423:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:12,848:INFO:EntropyPredict:step 45 completed in 0.917284011841
+2015-10-14 15:22:13,357:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:13,796:INFO:EntropyPredict:step 46 completed in 0.94740486145
+2015-10-14 15:22:14,288:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:14,729:INFO:EntropyPredict:step 47 completed in 0.93300485611
+2015-10-14 15:22:15,236:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:15,681:INFO:EntropyPredict:step 48 completed in 0.952069044113
+2015-10-14 15:22:16,204:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:16,652:INFO:EntropyPredict:step 49 completed in 0.970909118652
+2015-10-14 15:22:17,176:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:17,619:INFO:EntropyPredict:step 50 completed in 0.966928958893
+2015-10-14 15:22:18,130:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:18,585:INFO:EntropyPredict:step 51 completed in 0.966408014297
+2015-10-14 15:22:19,124:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:19,594:INFO:EntropyPredict:step 52 completed in 1.00843811035
+2015-10-14 15:22:20,129:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:20,584:INFO:EntropyPredict:step 53 completed in 0.990617036819
+2015-10-14 15:22:21,132:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:21,595:INFO:EntropyPredict:step 54 completed in 1.01032209396
+2015-10-14 15:22:22,136:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:22,611:INFO:EntropyPredict:step 55 completed in 1.01604700089
+2015-10-14 15:22:23,172:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:23,608:INFO:EntropyPredict:step 56 completed in 0.996697187424
+2015-10-14 15:22:24,161:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:24,679:INFO:EntropyPredict:step 57 completed in 1.07123589516
+2015-10-14 15:22:25,208:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:25,661:INFO:EntropyPredict:step 58 completed in 0.981424808502
+2015-10-14 15:22:26,238:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:26,694:INFO:EntropyPredict:step 59 completed in 1.03347420692
+2015-10-14 15:22:27,265:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:27,727:INFO:EntropyPredict:step 60 completed in 1.03294897079
+2015-10-14 15:22:28,330:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:28,769:INFO:EntropyPredict:step 61 completed in 1.04134392738
+2015-10-14 15:22:29,362:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:29,815:INFO:EntropyPredict:step 62 completed in 1.0465939045
+2015-10-14 15:22:30,424:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:30,865:INFO:EntropyPredict:step 63 completed in 1.0493118763
+2015-10-14 15:22:31,473:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:31,934:INFO:EntropyPredict:step 64 completed in 1.0693230629
+2015-10-14 15:22:32,537:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:32,998:INFO:EntropyPredict:step 65 completed in 1.06345510483
+2015-10-14 15:22:33,615:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:34,091:INFO:EntropyPredict:step 66 completed in 1.09338188171
+2015-10-14 15:22:34,711:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:35,171:INFO:EntropyPredict:step 67 completed in 1.07985281944
+2015-10-14 15:22:35,790:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:36,255:INFO:EntropyPredict:step 68 completed in 1.08394289017
+2015-10-14 15:22:36,869:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:37,341:INFO:EntropyPredict:step 69 completed in 1.08639597893
+2015-10-14 15:22:37,977:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:38,431:INFO:EntropyPredict:step 70 completed in 1.08987593651
+2015-10-14 15:22:39,058:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:39,524:INFO:EntropyPredict:step 71 completed in 1.09296393394
+2015-10-14 15:22:40,161:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:40,636:INFO:EntropyPredict:step 72 completed in 1.11200404167
+2015-10-14 15:22:41,276:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:41,746:INFO:EntropyPredict:step 73 completed in 1.10965299606
+2015-10-14 15:22:42,407:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:42,877:INFO:EntropyPredict:step 74 completed in 1.13040709496
+2015-10-14 15:22:43,540:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:44,018:INFO:EntropyPredict:step 75 completed in 1.14091396332
+2015-10-14 15:22:44,684:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:45,159:INFO:EntropyPredict:step 76 completed in 1.14164304733
+2015-10-14 15:22:45,834:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:46,314:INFO:EntropyPredict:step 77 completed in 1.15422797203
+2015-10-14 15:22:46,983:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:47,473:INFO:EntropyPredict:step 78 completed in 1.15973997116
+2015-10-14 15:22:48,146:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:48,626:INFO:EntropyPredict:step 79 completed in 1.15206003189
+2015-10-14 15:22:49,329:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:49,780:INFO:EntropyPredict:step 80 completed in 1.15475893021
+2015-10-14 15:22:50,498:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:50,954:INFO:EntropyPredict:step 81 completed in 1.17312812805
+2015-10-14 15:22:51,681:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:52,134:INFO:EntropyPredict:step 82 completed in 1.18067097664
+2015-10-14 15:22:52,846:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:53,300:INFO:EntropyPredict:step 83 completed in 1.16566896439
+2015-10-14 15:22:54,054:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:54,503:INFO:EntropyPredict:step 84 completed in 1.20301604271
+2015-10-14 15:22:55,250:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:55,700:INFO:EntropyPredict:step 85 completed in 1.19659018517
+2015-10-14 15:22:56,451:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:56,916:INFO:EntropyPredict:step 86 completed in 1.21581292152
+2015-10-14 15:22:57,670:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:58,134:INFO:EntropyPredict:step 87 completed in 1.2187230587
+2015-10-14 15:22:58,903:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:22:59,352:INFO:EntropyPredict:step 88 completed in 1.21767902374
+2015-10-14 15:23:00,136:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:00,601:INFO:EntropyPredict:step 89 completed in 1.24869298935
+2015-10-14 15:23:01,384:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:01,860:INFO:EntropyPredict:step 90 completed in 1.25939393044
+2015-10-14 15:23:02,651:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:03,115:INFO:EntropyPredict:step 91 completed in 1.25414800644
+2015-10-14 15:23:03,902:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:04,371:INFO:EntropyPredict:step 92 completed in 1.25670289993
+2015-10-14 15:23:05,171:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:05,635:INFO:EntropyPredict:step 93 completed in 1.2637898922
+2015-10-14 15:23:06,452:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:06,919:INFO:EntropyPredict:step 94 completed in 1.28375101089
+2015-10-14 15:23:07,732:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:08,197:INFO:EntropyPredict:step 95 completed in 1.27759099007
+2015-10-14 15:23:09,030:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:09,508:INFO:EntropyPredict:step 96 completed in 1.31169509888
+2015-10-14 15:23:10,325:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:10,811:INFO:EntropyPredict:step 97 completed in 1.30286598206
+2015-10-14 15:23:11,663:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:12,142:INFO:EntropyPredict:step 98 completed in 1.33061099052
+2015-10-14 15:23:12,986:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:13,440:INFO:EntropyPredict:step 99 completed in 1.29795694351
+2015-10-14 15:23:13,440:INFO:EntropyPredict:Completed 100 steps in 98.4477849007
+2015-10-14 15:23:13,440:INFO:EntropyPredict:saving opt as results/default/trace5_100.obj
+2015-10-14 15:23:13,457:INFO:runexp:started at 15:23:13 on Wed 14 October 2015 on caithness
+
+INPUT :
+
+Optimisation parameters:
+
+2015-10-14 15:23:13,508:INFO:runexp:starting run 
+
+2015-10-14 15:23:13,624:INFO:EntropyPredict:added 5 random initial observations
+2015-10-14 15:23:13,958:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:14,371:INFO:EntropyPredict:step 0 completed in 0.746151924133
+2015-10-14 15:23:14,702:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:15,110:INFO:EntropyPredict:step 1 completed in 0.739739179611
+2015-10-14 15:23:15,448:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:15,864:INFO:EntropyPredict:step 2 completed in 0.754020214081
+2015-10-14 15:23:16,196:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:16,609:INFO:EntropyPredict:step 3 completed in 0.744552850723
+2015-10-14 15:23:16,944:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:17,351:INFO:EntropyPredict:step 4 completed in 0.741951942444
+2015-10-14 15:23:17,692:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:18,111:INFO:EntropyPredict:step 5 completed in 0.759316921234
+2015-10-14 15:23:18,452:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:18,872:INFO:EntropyPredict:step 6 completed in 0.761157035828
+2015-10-14 15:23:19,217:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:19,634:INFO:EntropyPredict:step 7 completed in 0.762372970581
+2015-10-14 15:23:19,984:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:20,402:INFO:EntropyPredict:step 8 completed in 0.767786979675
+2015-10-14 15:23:20,749:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:21,167:INFO:EntropyPredict:step 9 completed in 0.764901161194
+2015-10-14 15:23:21,520:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:21,936:INFO:EntropyPredict:step 10 completed in 0.769142150879
+2015-10-14 15:23:22,284:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:22,699:INFO:EntropyPredict:step 11 completed in 0.762929916382
+2015-10-14 15:23:23,056:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:23,487:INFO:EntropyPredict:step 12 completed in 0.787321090698
+2015-10-14 15:23:23,847:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:24,264:INFO:EntropyPredict:step 13 completed in 0.77707195282
+2015-10-14 15:23:24,625:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:25,048:INFO:EntropyPredict:step 14 completed in 0.78425693512
+2015-10-14 15:23:25,414:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:25,835:INFO:EntropyPredict:step 15 completed in 0.786722898483
+2015-10-14 15:23:26,202:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:26,613:INFO:EntropyPredict:step 16 completed in 0.778496026993
+2015-10-14 15:23:26,977:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:27,402:INFO:EntropyPredict:step 17 completed in 0.788167953491
+2015-10-14 15:23:27,761:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:28,182:INFO:EntropyPredict:step 18 completed in 0.780582904816
+2015-10-14 15:23:28,545:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:28,963:INFO:EntropyPredict:step 19 completed in 0.780337095261
+2015-10-14 15:23:29,335:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:29,749:INFO:EntropyPredict:step 20 completed in 0.786162137985
+2015-10-14 15:23:30,126:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:30,550:INFO:EntropyPredict:step 21 completed in 0.801403999329
+2015-10-14 15:23:30,921:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:31,338:INFO:EntropyPredict:step 22 completed in 0.78718495369
+2015-10-14 15:23:31,719:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:32,134:INFO:EntropyPredict:step 23 completed in 0.795840024948
+2015-10-14 15:23:32,518:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:32,933:INFO:EntropyPredict:step 24 completed in 0.799304008484
+2015-10-14 15:23:33,310:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:33,729:INFO:EntropyPredict:step 25 completed in 0.795808792114
+2015-10-14 15:23:34,114:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:34,538:INFO:EntropyPredict:step 26 completed in 0.80924487114
+2015-10-14 15:23:34,919:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:35,337:INFO:EntropyPredict:step 27 completed in 0.799246072769
+2015-10-14 15:23:35,737:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:36,170:INFO:EntropyPredict:step 28 completed in 0.8327729702
+2015-10-14 15:23:36,570:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:36,997:INFO:EntropyPredict:step 29 completed in 0.82646894455
+2015-10-14 15:23:37,404:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:37,829:INFO:EntropyPredict:step 30 completed in 0.832186937332
+2015-10-14 15:23:38,225:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:38,650:INFO:EntropyPredict:step 31 completed in 0.821351766586
+2015-10-14 15:23:39,065:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:39,489:INFO:EntropyPredict:step 32 completed in 0.838543176651
+2015-10-14 15:23:39,904:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:40,334:INFO:EntropyPredict:step 33 completed in 0.844887971878
+2015-10-14 15:23:40,758:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:41,187:INFO:EntropyPredict:step 34 completed in 0.853332042694
+2015-10-14 15:23:41,603:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:42,031:INFO:EntropyPredict:step 35 completed in 0.843149900436
+2015-10-14 15:23:42,454:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:42,888:INFO:EntropyPredict:step 36 completed in 0.857367038727
+2015-10-14 15:23:43,322:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:43,754:INFO:EntropyPredict:step 37 completed in 0.865897893906
+2015-10-14 15:23:44,194:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:44,627:INFO:EntropyPredict:step 38 completed in 0.873068094254
+2015-10-14 15:23:45,066:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:45,491:INFO:EntropyPredict:step 39 completed in 0.86428809166
+2015-10-14 15:23:45,927:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:46,361:INFO:EntropyPredict:step 40 completed in 0.86943602562
+2015-10-14 15:23:46,804:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:47,227:INFO:EntropyPredict:step 41 completed in 0.865957975388
+2015-10-14 15:23:47,674:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:48,107:INFO:EntropyPredict:step 42 completed in 0.880038976669
+2015-10-14 15:23:48,561:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:48,992:INFO:EntropyPredict:step 43 completed in 0.884982824326
+2015-10-14 15:23:49,448:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:49,884:INFO:EntropyPredict:step 44 completed in 0.891482114792
+2015-10-14 15:23:50,341:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:50,771:INFO:EntropyPredict:step 45 completed in 0.88770198822
+2015-10-14 15:23:51,243:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:51,677:INFO:EntropyPredict:step 46 completed in 0.905640125275
+2015-10-14 15:23:52,151:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:52,592:INFO:EntropyPredict:step 47 completed in 0.914621829987
+2015-10-14 15:23:53,065:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:53,499:INFO:EntropyPredict:step 48 completed in 0.907096147537
+2015-10-14 15:23:53,982:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:54,428:INFO:EntropyPredict:step 49 completed in 0.929148197174
+2015-10-14 15:23:54,920:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:55,363:INFO:EntropyPredict:step 50 completed in 0.934743881226
+2015-10-14 15:23:55,853:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:56,288:INFO:EntropyPredict:step 51 completed in 0.925353050232
+2015-10-14 15:23:56,791:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:57,233:INFO:EntropyPredict:step 52 completed in 0.944432020187
+2015-10-14 15:23:57,757:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:58,208:INFO:EntropyPredict:step 53 completed in 0.975279092789
+2015-10-14 15:23:58,722:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:23:59,157:INFO:EntropyPredict:step 54 completed in 0.9490711689
+2015-10-14 15:23:59,671:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:00,117:INFO:EntropyPredict:step 55 completed in 0.959788799286
+2015-10-14 15:24:00,631:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:01,073:INFO:EntropyPredict:step 56 completed in 0.955348014832
+2015-10-14 15:24:01,608:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:02,057:INFO:EntropyPredict:step 57 completed in 0.984177827835
+2015-10-14 15:24:02,588:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:03,054:INFO:EntropyPredict:step 58 completed in 0.996650218964
+2015-10-14 15:24:03,596:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:04,046:INFO:EntropyPredict:step 59 completed in 0.99263715744
+2015-10-14 15:24:04,596:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:05,074:INFO:EntropyPredict:step 60 completed in 1.02769899368
+2015-10-14 15:24:05,667:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:06,116:INFO:EntropyPredict:step 61 completed in 1.04210591316
+2015-10-14 15:24:06,695:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:07,161:INFO:EntropyPredict:step 62 completed in 1.04471802711
+2015-10-14 15:24:07,763:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:08,237:INFO:EntropyPredict:step 63 completed in 1.07635498047
+2015-10-14 15:24:08,838:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:09,307:INFO:EntropyPredict:step 64 completed in 1.06957006454
+2015-10-14 15:24:09,933:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:10,440:INFO:EntropyPredict:step 65 completed in 1.13299107552
+2015-10-14 15:24:11,033:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:11,505:INFO:EntropyPredict:step 66 completed in 1.06497097015
+2015-10-14 15:24:12,128:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:12,593:INFO:EntropyPredict:step 67 completed in 1.08739495277
+2015-10-14 15:24:13,199:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:13,657:INFO:EntropyPredict:step 68 completed in 1.06451797485
+2015-10-14 15:24:14,269:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:14,726:INFO:EntropyPredict:step 69 completed in 1.06829094887
+2015-10-14 15:24:15,336:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:15,788:INFO:EntropyPredict:step 70 completed in 1.06220197678
+2015-10-14 15:24:16,405:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:16,882:INFO:EntropyPredict:step 71 completed in 1.09376215935
+2015-10-14 15:24:17,521:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:17,986:INFO:EntropyPredict:step 72 completed in 1.10405683517
+2015-10-14 15:24:18,624:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:19,091:INFO:EntropyPredict:step 73 completed in 1.10512185097
+2015-10-14 15:24:19,789:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:20,305:INFO:EntropyPredict:step 74 completed in 1.21399402618
+2015-10-14 15:24:20,958:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:21,424:INFO:EntropyPredict:step 75 completed in 1.11863613129
+2015-10-14 15:24:22,096:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:22,560:INFO:EntropyPredict:step 76 completed in 1.13634204865
+2015-10-14 15:24:23,244:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:23,725:INFO:EntropyPredict:step 77 completed in 1.1650929451
+2015-10-14 15:24:24,509:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:25,010:INFO:EntropyPredict:step 78 completed in 1.28450703621
+2015-10-14 15:24:25,727:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:26,320:INFO:EntropyPredict:step 79 completed in 1.31040120125
+2015-10-14 15:24:27,290:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:27,881:INFO:EntropyPredict:step 80 completed in 1.56064891815
+2015-10-14 15:24:28,677:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:29,216:INFO:EntropyPredict:step 81 completed in 1.33483290672
+2015-10-14 15:24:29,943:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:30,427:INFO:EntropyPredict:step 82 completed in 1.21060681343
+2015-10-14 15:24:31,207:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:31,759:INFO:EntropyPredict:step 83 completed in 1.33175802231
+2015-10-14 15:24:32,557:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:33,066:INFO:EntropyPredict:step 84 completed in 1.30773806572
+2015-10-14 15:24:33,847:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:34,325:INFO:EntropyPredict:step 85 completed in 1.25813579559
+2015-10-14 15:24:35,056:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:35,528:INFO:EntropyPredict:step 86 completed in 1.20357608795
+2015-10-14 15:24:36,268:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:36,752:INFO:EntropyPredict:step 87 completed in 1.22368001938
+2015-10-14 15:24:37,530:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:38,067:INFO:EntropyPredict:step 88 completed in 1.31457209587
+2015-10-14 15:24:38,833:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:39,320:INFO:EntropyPredict:step 89 completed in 1.25296401978
+2015-10-14 15:24:40,117:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:40,603:INFO:EntropyPredict:step 90 completed in 1.28284502029
+2015-10-14 15:24:41,378:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:41,846:INFO:EntropyPredict:step 91 completed in 1.2433359623
+2015-10-14 15:24:42,632:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:43,138:INFO:EntropyPredict:step 92 completed in 1.29140996933
+2015-10-14 15:24:44,168:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:44,739:INFO:EntropyPredict:step 93 completed in 1.60128307343
+2015-10-14 15:24:45,570:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:46,041:INFO:EntropyPredict:step 94 completed in 1.30222201347
+2015-10-14 15:24:46,850:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:47,318:INFO:EntropyPredict:step 95 completed in 1.27708792686
+2015-10-14 15:24:48,126:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:48,606:INFO:EntropyPredict:step 96 completed in 1.28720784187
+2015-10-14 15:24:49,429:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:49,911:INFO:EntropyPredict:step 97 completed in 1.30491900444
+2015-10-14 15:24:50,732:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:51,217:INFO:EntropyPredict:step 98 completed in 1.30668997765
+2015-10-14 15:24:52,049:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:52,522:INFO:EntropyPredict:step 99 completed in 1.30456209183
+2015-10-14 15:24:52,522:INFO:EntropyPredict:Completed 100 steps in 98.8975868225
+2015-10-14 15:24:52,522:INFO:EntropyPredict:saving opt as results/default/trace6_100.obj
+2015-10-14 15:24:52,538:INFO:runexp:started at 15:24:52 on Wed 14 October 2015 on caithness
+
+INPUT :
+
+Optimisation parameters:
+
+2015-10-14 15:24:52,593:INFO:runexp:starting run 
+
+2015-10-14 15:24:53,021:INFO:EntropyPredict:added 5 random initial observations
+2015-10-14 15:24:53,400:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:53,849:INFO:EntropyPredict:step 0 completed in 0.827487945557
+2015-10-14 15:24:54,204:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:54,671:INFO:EntropyPredict:step 1 completed in 0.821773052216
+2015-10-14 15:24:55,065:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:55,514:INFO:EntropyPredict:step 2 completed in 0.842842102051
+2015-10-14 15:24:55,920:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:56,401:INFO:EntropyPredict:step 3 completed in 0.887516975403
+2015-10-14 15:24:56,778:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:57,291:INFO:EntropyPredict:step 4 completed in 0.88999915123
+2015-10-14 15:24:57,667:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:58,149:INFO:EntropyPredict:step 5 completed in 0.857979059219
+2015-10-14 15:24:58,486:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:58,942:INFO:EntropyPredict:step 6 completed in 0.792437076569
+2015-10-14 15:24:59,386:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:24:59,821:INFO:EntropyPredict:step 7 completed in 0.878937005997
+2015-10-14 15:25:00,173:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:00,611:INFO:EntropyPredict:step 8 completed in 0.790189027786
+2015-10-14 15:25:00,953:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:01,373:INFO:EntropyPredict:step 9 completed in 0.761897087097
+2015-10-14 15:25:01,733:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:02,163:INFO:EntropyPredict:step 10 completed in 0.790222167969
+2015-10-14 15:25:02,517:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:02,939:INFO:EntropyPredict:step 11 completed in 0.775557041168
+2015-10-14 15:25:03,294:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:03,724:INFO:EntropyPredict:step 12 completed in 0.784492969513
+2015-10-14 15:25:04,085:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:04,567:INFO:EntropyPredict:step 13 completed in 0.84304189682
+2015-10-14 15:25:04,948:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:05,388:INFO:EntropyPredict:step 14 completed in 0.820808172226
+2015-10-14 15:25:05,751:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:06,177:INFO:EntropyPredict:step 15 completed in 0.789027929306
+2015-10-14 15:25:06,547:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:06,997:INFO:EntropyPredict:step 16 completed in 0.819967985153
+2015-10-14 15:25:07,382:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:07,804:INFO:EntropyPredict:step 17 completed in 0.806923866272
+2015-10-14 15:25:08,179:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:08,599:INFO:EntropyPredict:step 18 completed in 0.795346975327
+2015-10-14 15:25:08,981:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:09,418:INFO:EntropyPredict:step 19 completed in 0.818452119827
+2015-10-14 15:25:09,797:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:10,218:INFO:EntropyPredict:step 20 completed in 0.800900936127
+2015-10-14 15:25:10,594:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:11,017:INFO:EntropyPredict:step 21 completed in 0.798349142075
+2015-10-14 15:25:11,401:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:11,820:INFO:EntropyPredict:step 22 completed in 0.803241014481
+2015-10-14 15:25:12,198:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:12,622:INFO:EntropyPredict:step 23 completed in 0.801580905914
+2015-10-14 15:25:13,016:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:13,436:INFO:EntropyPredict:step 24 completed in 0.814044952393
+2015-10-14 15:25:13,831:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:14,253:INFO:EntropyPredict:step 25 completed in 0.816700935364
+2015-10-14 15:25:14,650:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:15,074:INFO:EntropyPredict:step 26 completed in 0.821650028229
+2015-10-14 15:25:15,471:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:15,894:INFO:EntropyPredict:step 27 completed in 0.81914806366
+2015-10-14 15:25:16,298:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:16,720:INFO:EntropyPredict:step 28 completed in 0.826797962189
+2015-10-14 15:25:17,117:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:17,548:INFO:EntropyPredict:step 29 completed in 0.827051877975
+2015-10-14 15:25:17,956:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:18,389:INFO:EntropyPredict:step 30 completed in 0.841101169586
+2015-10-14 15:25:18,806:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:19,235:INFO:EntropyPredict:step 31 completed in 0.846575021744
+2015-10-14 15:25:19,657:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:20,086:INFO:EntropyPredict:step 32 completed in 0.850427150726
+2015-10-14 15:25:20,510:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:20,935:INFO:EntropyPredict:step 33 completed in 0.848779916763
+2015-10-14 15:25:21,362:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:21,793:INFO:EntropyPredict:step 34 completed in 0.858253002167
+2015-10-14 15:25:22,219:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:22,646:INFO:EntropyPredict:step 35 completed in 0.85326385498
+2015-10-14 15:25:23,080:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:23,513:INFO:EntropyPredict:step 36 completed in 0.866539001465
+2015-10-14 15:25:23,952:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:24,386:INFO:EntropyPredict:step 37 completed in 0.872719049454
+2015-10-14 15:25:24,825:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:25,255:INFO:EntropyPredict:step 38 completed in 0.8687479496
+2015-10-14 15:25:25,698:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:26,132:INFO:EntropyPredict:step 39 completed in 0.877317905426
+2015-10-14 15:25:26,579:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:27,012:INFO:EntropyPredict:step 40 completed in 0.879550933838
+2015-10-14 15:25:27,461:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:27,892:INFO:EntropyPredict:step 41 completed in 0.880707025528
+2015-10-14 15:25:28,348:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:28,778:INFO:EntropyPredict:step 42 completed in 0.885724067688
+2015-10-14 15:25:29,244:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:29,674:INFO:EntropyPredict:step 43 completed in 0.895638942719
+2015-10-14 15:25:30,138:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:30,570:INFO:EntropyPredict:step 44 completed in 0.895851135254
+2015-10-14 15:25:31,031:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:31,469:INFO:EntropyPredict:step 45 completed in 0.899050951004
+2015-10-14 15:25:31,948:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:32,380:INFO:EntropyPredict:step 46 completed in 0.911223888397
+2015-10-14 15:25:32,849:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:33,287:INFO:EntropyPredict:step 47 completed in 0.906925916672
+2015-10-14 15:25:33,762:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:34,196:INFO:EntropyPredict:step 48 completed in 0.908365011215
+2015-10-14 15:25:34,678:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:35,105:INFO:EntropyPredict:step 49 completed in 0.909759998322
+2015-10-14 15:25:35,602:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:36,044:INFO:EntropyPredict:step 50 completed in 0.938775062561
+2015-10-14 15:25:36,542:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:36,979:INFO:EntropyPredict:step 51 completed in 0.934888839722
+2015-10-14 15:25:37,477:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:37,914:INFO:EntropyPredict:step 52 completed in 0.934548854828
+2015-10-14 15:25:38,426:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:38,869:INFO:EntropyPredict:step 53 completed in 0.954658031464
+2015-10-14 15:25:39,392:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:39,828:INFO:EntropyPredict:step 54 completed in 0.959484100342
+2015-10-14 15:25:40,346:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:40,789:INFO:EntropyPredict:step 55 completed in 0.960819959641
+2015-10-14 15:25:41,317:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:41,760:INFO:EntropyPredict:step 56 completed in 0.971242904663
+2015-10-14 15:25:42,289:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:42,749:INFO:EntropyPredict:step 57 completed in 0.989050149918
+2015-10-14 15:25:43,308:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:43,759:INFO:EntropyPredict:step 58 completed in 1.00910210609
+2015-10-14 15:25:44,318:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:44,762:INFO:EntropyPredict:step 59 completed in 1.0035071373
+2015-10-14 15:25:45,318:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:45,771:INFO:EntropyPredict:step 60 completed in 1.00821399689
+2015-10-14 15:25:46,336:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:46,794:INFO:EntropyPredict:step 61 completed in 1.02378511429
+2015-10-14 15:25:47,386:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:47,847:INFO:EntropyPredict:step 62 completed in 1.0524430275
+2015-10-14 15:25:48,425:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:48,870:INFO:EntropyPredict:step 63 completed in 1.02314090729
+2015-10-14 15:25:49,453:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:49,897:INFO:EntropyPredict:step 64 completed in 1.02665805817
+2015-10-14 15:25:50,478:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:50,923:INFO:EntropyPredict:step 65 completed in 1.0265789032
+2015-10-14 15:25:51,512:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:51,970:INFO:EntropyPredict:step 66 completed in 1.0467209816
+2015-10-14 15:25:52,557:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:53,000:INFO:EntropyPredict:step 67 completed in 1.02994418144
+2015-10-14 15:25:53,619:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:54,078:INFO:EntropyPredict:step 68 completed in 1.07757306099
+2015-10-14 15:25:54,690:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:55,152:INFO:EntropyPredict:step 69 completed in 1.07450294495
+2015-10-14 15:25:55,765:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:56,216:INFO:EntropyPredict:step 70 completed in 1.06382703781
+2015-10-14 15:25:56,832:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:57,279:INFO:EntropyPredict:step 71 completed in 1.06273508072
+2015-10-14 15:25:57,906:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:58,367:INFO:EntropyPredict:step 72 completed in 1.08746600151
+2015-10-14 15:25:59,005:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:25:59,461:INFO:EntropyPredict:step 73 completed in 1.09411716461
+2015-10-14 15:26:00,126:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:00,589:INFO:EntropyPredict:step 74 completed in 1.1284198761
+2015-10-14 15:26:01,233:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:01,703:INFO:EntropyPredict:step 75 completed in 1.113270998
+2015-10-14 15:26:02,362:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:02,837:INFO:EntropyPredict:step 76 completed in 1.1338698864
+2015-10-14 15:26:03,520:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:04,048:INFO:EntropyPredict:step 77 completed in 1.21119785309
+2015-10-14 15:26:04,749:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:05,227:INFO:EntropyPredict:step 78 completed in 1.17950797081
+2015-10-14 15:26:05,928:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:06,418:INFO:EntropyPredict:step 79 completed in 1.19060707092
+2015-10-14 15:26:07,110:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:07,575:INFO:EntropyPredict:step 80 completed in 1.15724515915
+2015-10-14 15:26:08,272:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:08,730:INFO:EntropyPredict:step 81 completed in 1.154088974
+2015-10-14 15:26:09,432:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:09,895:INFO:EntropyPredict:step 82 completed in 1.16492509842
+2015-10-14 15:26:10,576:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:11,030:INFO:EntropyPredict:step 83 completed in 1.13583111763
+2015-10-14 15:26:11,729:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:12,181:INFO:EntropyPredict:step 84 completed in 1.15053415298
+2015-10-14 15:26:12,879:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:13,339:INFO:EntropyPredict:step 85 completed in 1.15770101547
+2015-10-14 15:26:14,077:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:14,543:INFO:EntropyPredict:step 86 completed in 1.20402812958
+2015-10-14 15:26:15,262:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:15,728:INFO:EntropyPredict:step 87 completed in 1.18538284302
+2015-10-14 15:26:16,475:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:16,940:INFO:EntropyPredict:step 88 completed in 1.21157813072
+2015-10-14 15:26:17,681:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:18,140:INFO:EntropyPredict:step 89 completed in 1.19979000092
+2015-10-14 15:26:18,914:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:19,390:INFO:EntropyPredict:step 90 completed in 1.24982094765
+2015-10-14 15:26:20,205:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:20,671:INFO:EntropyPredict:step 91 completed in 1.28116512299
+2015-10-14 15:26:21,454:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:21,934:INFO:EntropyPredict:step 92 completed in 1.26313591003
+2015-10-14 15:26:22,752:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:23,244:INFO:EntropyPredict:step 93 completed in 1.30960917473
+2015-10-14 15:26:24,055:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:24,521:INFO:EntropyPredict:step 94 completed in 1.27665686607
+2015-10-14 15:26:25,320:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:25,788:INFO:EntropyPredict:step 95 completed in 1.26772689819
+2015-10-14 15:26:26,600:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:27,079:INFO:EntropyPredict:step 96 completed in 1.29039907455
+2015-10-14 15:26:27,893:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:28,368:INFO:EntropyPredict:step 97 completed in 1.28954315186
+2015-10-14 15:26:29,185:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:29,647:INFO:EntropyPredict:step 98 completed in 1.27883696556
+2015-10-14 15:26:30,465:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:30,923:INFO:EntropyPredict:step 99 completed in 1.27592611313
+2015-10-14 15:26:30,923:INFO:EntropyPredict:Completed 100 steps in 97.9019320011
+2015-10-14 15:26:30,923:INFO:EntropyPredict:saving opt as results/default/trace7_100.obj
+2015-10-14 15:26:30,941:INFO:runexp:started at 15:26:30 on Wed 14 October 2015 on caithness
+
+INPUT :
+
+Optimisation parameters:
+
+2015-10-14 15:26:30,987:INFO:runexp:starting run 
+
+2015-10-14 15:26:31,190:INFO:EntropyPredict:added 5 random initial observations
+2015-10-14 15:26:31,522:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:31,939:INFO:EntropyPredict:step 0 completed in 0.748935937881
+2015-10-14 15:26:32,281:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:32,700:INFO:EntropyPredict:step 1 completed in 0.760772943497
+2015-10-14 15:26:33,042:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:33,472:INFO:EntropyPredict:step 2 completed in 0.771500110626
+2015-10-14 15:26:33,816:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:34,248:INFO:EntropyPredict:step 3 completed in 0.776035070419
+2015-10-14 15:26:34,592:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:35,006:INFO:EntropyPredict:step 4 completed in 0.757875204086
+2015-10-14 15:26:35,352:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:35,766:INFO:EntropyPredict:step 5 completed in 0.760416984558
+2015-10-14 15:26:36,104:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:36,539:INFO:EntropyPredict:step 6 completed in 0.773060798645
+2015-10-14 15:26:36,887:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:37,332:INFO:EntropyPredict:step 7 completed in 0.792312860489
+2015-10-14 15:26:37,679:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:38,104:INFO:EntropyPredict:step 8 completed in 0.772265911102
+2015-10-14 15:26:38,488:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:38,954:INFO:EntropyPredict:step 9 completed in 0.849533081055
+2015-10-14 15:26:39,323:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:39,750:INFO:EntropyPredict:step 10 completed in 0.796455144882
+2015-10-14 15:26:40,121:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:40,588:INFO:EntropyPredict:step 11 completed in 0.837954044342
+2015-10-14 15:26:40,958:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:41,437:INFO:EntropyPredict:step 12 completed in 0.849043130875
+2015-10-14 15:26:41,847:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:42,310:INFO:EntropyPredict:step 13 completed in 0.872711896896
+2015-10-14 15:26:42,671:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:43,104:INFO:EntropyPredict:step 14 completed in 0.794318199158
+2015-10-14 15:26:43,467:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:43,906:INFO:EntropyPredict:step 15 completed in 0.80154299736
+2015-10-14 15:26:44,282:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:44,704:INFO:EntropyPredict:step 16 completed in 0.798510789871
+2015-10-14 15:26:45,066:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:45,501:INFO:EntropyPredict:step 17 completed in 0.796767950058
+2015-10-14 15:26:45,878:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:46,295:INFO:EntropyPredict:step 18 completed in 0.793934106827
+2015-10-14 15:26:46,672:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:47,106:INFO:EntropyPredict:step 19 completed in 0.811062812805
+2015-10-14 15:26:47,497:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:47,934:INFO:EntropyPredict:step 20 completed in 0.827842235565
+2015-10-14 15:26:48,315:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:48,751:INFO:EntropyPredict:step 21 completed in 0.816172122955
+2015-10-14 15:26:49,145:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:49,577:INFO:EntropyPredict:step 22 completed in 0.826332092285
+2015-10-14 15:26:49,958:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:50,393:INFO:EntropyPredict:step 23 completed in 0.815939903259
+2015-10-14 15:26:50,777:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:51,199:INFO:EntropyPredict:step 24 completed in 0.805927991867
+2015-10-14 15:26:51,585:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:52,013:INFO:EntropyPredict:step 25 completed in 0.813318967819
+2015-10-14 15:26:52,397:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:52,825:INFO:EntropyPredict:step 26 completed in 0.812361955643
+2015-10-14 15:26:53,227:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:53,650:INFO:EntropyPredict:step 27 completed in 0.824643135071
+2015-10-14 15:26:54,039:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:54,463:INFO:EntropyPredict:step 28 completed in 0.813724994659
+2015-10-14 15:26:54,866:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:55,280:INFO:EntropyPredict:step 29 completed in 0.816627025604
+2015-10-14 15:26:55,698:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:56,140:INFO:EntropyPredict:step 30 completed in 0.860033988953
+2015-10-14 15:26:56,545:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:56,975:INFO:EntropyPredict:step 31 completed in 0.83492898941
+2015-10-14 15:26:57,386:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:57,819:INFO:EntropyPredict:step 32 completed in 0.843955039978
+2015-10-14 15:26:58,229:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:58,685:INFO:EntropyPredict:step 33 completed in 0.865797042847
+2015-10-14 15:26:59,113:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:26:59,553:INFO:EntropyPredict:step 34 completed in 0.868038892746
+2015-10-14 15:26:59,975:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:00,401:INFO:EntropyPredict:step 35 completed in 0.847351074219
+2015-10-14 15:27:00,828:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:01,275:INFO:EntropyPredict:step 36 completed in 0.87420797348
+2015-10-14 15:27:01,701:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:02,132:INFO:EntropyPredict:step 37 completed in 0.856611967087
+2015-10-14 15:27:02,565:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:02,996:INFO:EntropyPredict:step 38 completed in 0.863867044449
+2015-10-14 15:27:03,421:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:03,845:INFO:EntropyPredict:step 39 completed in 0.849245071411
+2015-10-14 15:27:04,293:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:04,725:INFO:EntropyPredict:step 40 completed in 0.879878044128
+2015-10-14 15:27:05,163:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:05,596:INFO:EntropyPredict:step 41 completed in 0.870938062668
+2015-10-14 15:27:06,052:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:06,485:INFO:EntropyPredict:step 42 completed in 0.888900995255
+2015-10-14 15:27:06,947:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:07,393:INFO:EntropyPredict:step 43 completed in 0.907702922821
+2015-10-14 15:27:07,880:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:08,328:INFO:EntropyPredict:step 44 completed in 0.935015916824
+2015-10-14 15:27:08,807:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:09,243:INFO:EntropyPredict:step 45 completed in 0.915506839752
+2015-10-14 15:27:09,705:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:10,147:INFO:EntropyPredict:step 46 completed in 0.903956890106
+2015-10-14 15:27:10,619:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:11,053:INFO:EntropyPredict:step 47 completed in 0.905706882477
+2015-10-14 15:27:11,532:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:11,962:INFO:EntropyPredict:step 48 completed in 0.909286022186
+2015-10-14 15:27:12,449:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:12,882:INFO:EntropyPredict:step 49 completed in 0.919106006622
+2015-10-14 15:27:13,370:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:13,806:INFO:EntropyPredict:step 50 completed in 0.923966169357
+2015-10-14 15:27:14,295:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:14,735:INFO:EntropyPredict:step 51 completed in 0.929002046585
+2015-10-14 15:27:15,244:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:15,685:INFO:EntropyPredict:step 52 completed in 0.949959993362
+2015-10-14 15:27:16,205:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:16,646:INFO:EntropyPredict:step 53 completed in 0.961642026901
+2015-10-14 15:27:17,181:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:17,626:INFO:EntropyPredict:step 54 completed in 0.979373931885
+2015-10-14 15:27:18,163:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:18,605:INFO:EntropyPredict:step 55 completed in 0.979034900665
+2015-10-14 15:27:19,144:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:19,588:INFO:EntropyPredict:step 56 completed in 0.983062982559
+2015-10-14 15:27:20,123:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:20,566:INFO:EntropyPredict:step 57 completed in 0.977931022644
+2015-10-14 15:27:21,114:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:21,557:INFO:EntropyPredict:step 58 completed in 0.991209030151
+2015-10-14 15:27:22,110:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:22,565:INFO:EntropyPredict:step 59 completed in 1.00763702393
+2015-10-14 15:27:23,130:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:23,574:INFO:EntropyPredict:step 60 completed in 1.00870895386
+2015-10-14 15:27:24,130:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:24,570:INFO:EntropyPredict:step 61 completed in 0.995738983154
+2015-10-14 15:27:25,139:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:25,584:INFO:EntropyPredict:step 62 completed in 1.0147960186
+2015-10-14 15:27:26,157:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:26,605:INFO:EntropyPredict:step 63 completed in 1.02040910721
+2015-10-14 15:27:27,192:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:27,642:INFO:EntropyPredict:step 64 completed in 1.03722500801
+2015-10-14 15:27:28,237:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:28,680:INFO:EntropyPredict:step 65 completed in 1.03765702248
+2015-10-14 15:27:29,278:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:29,732:INFO:EntropyPredict:step 66 completed in 1.05158901215
+2015-10-14 15:27:30,317:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:30,761:INFO:EntropyPredict:step 67 completed in 1.02977514267
+2015-10-14 15:27:31,353:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:31,803:INFO:EntropyPredict:step 68 completed in 1.04110789299
+2015-10-14 15:27:32,407:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:32,837:INFO:EntropyPredict:step 69 completed in 1.03454208374
+2015-10-14 15:27:33,449:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:33,891:INFO:EntropyPredict:step 70 completed in 1.05318307877
+2015-10-14 15:27:34,506:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:34,943:INFO:EntropyPredict:step 71 completed in 1.05195689201
+2015-10-14 15:27:35,573:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:36,013:INFO:EntropyPredict:step 72 completed in 1.07085299492
+2015-10-14 15:27:36,641:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:37,079:INFO:EntropyPredict:step 73 completed in 1.065294981
+2015-10-14 15:27:37,711:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:38,149:INFO:EntropyPredict:step 74 completed in 1.07042312622
+2015-10-14 15:27:38,785:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:39,223:INFO:EntropyPredict:step 75 completed in 1.07386898994
+2015-10-14 15:27:39,883:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:40,325:INFO:EntropyPredict:step 76 completed in 1.10186696053
+2015-10-14 15:27:40,972:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:41,416:INFO:EntropyPredict:step 77 completed in 1.09061002731
+2015-10-14 15:27:42,082:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:42,523:INFO:EntropyPredict:step 78 completed in 1.10749697685
+2015-10-14 15:27:43,191:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:43,637:INFO:EntropyPredict:step 79 completed in 1.11324214935
+2015-10-14 15:27:44,319:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:44,752:INFO:EntropyPredict:step 80 completed in 1.1147069931
+2015-10-14 15:27:45,429:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:45,864:INFO:EntropyPredict:step 81 completed in 1.1125998497
+2015-10-14 15:27:46,547:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:46,990:INFO:EntropyPredict:step 82 completed in 1.12564301491
+2015-10-14 15:27:47,665:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:48,106:INFO:EntropyPredict:step 83 completed in 1.11552619934
+2015-10-14 15:27:48,807:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:49,250:INFO:EntropyPredict:step 84 completed in 1.1442489624
+2015-10-14 15:27:49,952:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:50,400:INFO:EntropyPredict:step 85 completed in 1.1499979496
+2015-10-14 15:27:51,114:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:51,559:INFO:EntropyPredict:step 86 completed in 1.15881109238
+2015-10-14 15:27:52,273:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:52,720:INFO:EntropyPredict:step 87 completed in 1.16052985191
+2015-10-14 15:27:53,453:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:53,903:INFO:EntropyPredict:step 88 completed in 1.18356013298
+2015-10-14 15:27:54,639:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:55,095:INFO:EntropyPredict:step 89 completed in 1.19200992584
+2015-10-14 15:27:55,843:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:56,297:INFO:EntropyPredict:step 90 completed in 1.20149111748
+2015-10-14 15:27:57,052:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:57,499:INFO:EntropyPredict:step 91 completed in 1.20194506645
+2015-10-14 15:27:58,267:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:58,724:INFO:EntropyPredict:step 92 completed in 1.22527217865
+2015-10-14 15:27:59,501:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:27:59,960:INFO:EntropyPredict:step 93 completed in 1.23549723625
+2015-10-14 15:28:00,748:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:01,202:INFO:EntropyPredict:step 94 completed in 1.24228405952
+2015-10-14 15:28:02,000:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:02,454:INFO:EntropyPredict:step 95 completed in 1.2519698143
+2015-10-14 15:28:03,257:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:03,721:INFO:EntropyPredict:step 96 completed in 1.26675486565
+2015-10-14 15:28:04,529:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:04,986:INFO:EntropyPredict:step 97 completed in 1.26504397392
+2015-10-14 15:28:05,813:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:06,266:INFO:EntropyPredict:step 98 completed in 1.27935600281
+2015-10-14 15:28:07,080:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:07,536:INFO:EntropyPredict:step 99 completed in 1.27020192146
+2015-10-14 15:28:07,536:INFO:EntropyPredict:Completed 100 steps in 96.3455860615
+2015-10-14 15:28:07,536:INFO:EntropyPredict:saving opt as results/default/trace8_100.obj
+2015-10-14 15:28:07,554:INFO:runexp:started at 15:28:07 on Wed 14 October 2015 on caithness
+
+INPUT :
+
+Optimisation parameters:
+
+2015-10-14 15:28:07,598:INFO:runexp:starting run 
+
+2015-10-14 15:28:07,698:INFO:EntropyPredict:added 5 random initial observations
+2015-10-14 15:28:08,034:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:08,451:INFO:EntropyPredict:step 0 completed in 0.752643108368
+2015-10-14 15:28:08,776:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:09,199:INFO:EntropyPredict:step 1 completed in 0.7481777668
+2015-10-14 15:28:09,538:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:09,949:INFO:EntropyPredict:step 2 completed in 0.750211954117
+2015-10-14 15:28:10,279:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:10,697:INFO:EntropyPredict:step 3 completed in 0.746999025345
+2015-10-14 15:28:11,036:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:11,452:INFO:EntropyPredict:step 4 completed in 0.755101919174
+2015-10-14 15:28:11,792:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:12,204:INFO:EntropyPredict:step 5 completed in 0.7525370121
+2015-10-14 15:28:12,555:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:12,973:INFO:EntropyPredict:step 6 completed in 0.768830060959
+2015-10-14 15:28:13,317:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:13,734:INFO:EntropyPredict:step 7 completed in 0.760349988937
+2015-10-14 15:28:14,080:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:14,496:INFO:EntropyPredict:step 8 completed in 0.762575864792
+2015-10-14 15:28:14,846:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:15,266:INFO:EntropyPredict:step 9 completed in 0.769874095917
+2015-10-14 15:28:15,615:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:16,031:INFO:EntropyPredict:step 10 completed in 0.764847993851
+2015-10-14 15:28:16,384:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:16,797:INFO:EntropyPredict:step 11 completed in 0.76619887352
+2015-10-14 15:28:17,155:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:17,574:INFO:EntropyPredict:step 12 completed in 0.776887893677
+2015-10-14 15:28:17,940:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:18,361:INFO:EntropyPredict:step 13 completed in 0.78623509407
+2015-10-14 15:28:18,725:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:19,142:INFO:EntropyPredict:step 14 completed in 0.781626939774
+2015-10-14 15:28:19,512:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:19,930:INFO:EntropyPredict:step 15 completed in 0.787827014923
+2015-10-14 15:28:20,296:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:20,712:INFO:EntropyPredict:step 16 completed in 0.782226085663
+2015-10-14 15:28:21,081:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:21,505:INFO:EntropyPredict:step 17 completed in 0.792047023773
+2015-10-14 15:28:21,874:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:22,300:INFO:EntropyPredict:step 18 completed in 0.795079946518
+2015-10-14 15:28:22,680:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:23,102:INFO:EntropyPredict:step 19 completed in 0.802081108093
+2015-10-14 15:28:23,479:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:23,903:INFO:EntropyPredict:step 20 completed in 0.801512002945
+2015-10-14 15:28:24,280:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:24,704:INFO:EntropyPredict:step 21 completed in 0.800389051437
+2015-10-14 15:28:25,086:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:25,511:INFO:EntropyPredict:step 22 completed in 0.807307004929
+2015-10-14 15:28:25,897:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:26,337:INFO:EntropyPredict:step 23 completed in 0.825746059418
+2015-10-14 15:28:26,730:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:27,184:INFO:EntropyPredict:step 24 completed in 0.846764087677
+2015-10-14 15:28:27,579:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:28,011:INFO:EntropyPredict:step 25 completed in 0.826977968216
+2015-10-14 15:28:28,407:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:28,833:INFO:EntropyPredict:step 26 completed in 0.821643829346
+2015-10-14 15:28:29,230:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:29,659:INFO:EntropyPredict:step 27 completed in 0.82617521286
+2015-10-14 15:28:30,063:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:30,492:INFO:EntropyPredict:step 28 completed in 0.833467960358
+2015-10-14 15:28:30,900:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:31,328:INFO:EntropyPredict:step 29 completed in 0.835968017578
+2015-10-14 15:28:31,741:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:32,170:INFO:EntropyPredict:step 30 completed in 0.841706991196
+2015-10-14 15:28:32,584:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:33,017:INFO:EntropyPredict:step 31 completed in 0.846662044525
+2015-10-14 15:28:33,429:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:33,854:INFO:EntropyPredict:step 32 completed in 0.836690187454
+2015-10-14 15:28:34,268:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:34,695:INFO:EntropyPredict:step 33 completed in 0.841243028641
+2015-10-14 15:28:35,116:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:35,546:INFO:EntropyPredict:step 34 completed in 0.850975036621
+2015-10-14 15:28:35,970:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:36,397:INFO:EntropyPredict:step 35 completed in 0.851193904877
+2015-10-14 15:28:36,824:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:37,254:INFO:EntropyPredict:step 36 completed in 0.856503009796
+2015-10-14 15:28:37,688:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:38,121:INFO:EntropyPredict:step 37 completed in 0.866916179657
+2015-10-14 15:28:38,576:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:39,009:INFO:EntropyPredict:step 38 completed in 0.888167142868
+2015-10-14 15:28:39,454:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:39,886:INFO:EntropyPredict:step 39 completed in 0.876904010773
+2015-10-14 15:28:40,328:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:40,760:INFO:EntropyPredict:step 40 completed in 0.873511075974
+2015-10-14 15:28:41,206:INFO:EntropyPredict:searching under EIMLE
+2015-10-14 15:28:41,636:INFO:EntropyPredict:step 41 completed in 0.876186847687
+2015-10-14 15:28:42,099:INFO:EntropyPredict:searching under EIMLE

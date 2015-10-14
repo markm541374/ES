@@ -6,11 +6,24 @@ from functools import partial
 from matplotlib import pyplot as plt
 import scipy.stats as sps
 import scipy.linalg as spl
-import GPd
+import GPdc as GPd
 
 
 def catObs(O):
-    return GPd.catObs(O)
+    i = True
+    for Os in O:
+        if i:
+            i = False
+            X = Os[0]
+            Y = Os[1]
+            S = Os[2]
+            D = Os[3]
+        else:
+            X = sp.vstack([X, Os[0]])
+            Y = sp.vstack([Y, Os[1]])
+            S = sp.vstack([S, Os[2]])
+            D = D+Os[3]
+    return [X, Y, S, D]
 
 
 def plot1(g, llimit, ulimit):
@@ -19,8 +32,8 @@ def plot1(g, llimit, ulimit):
 
 def gen_sqexp_k_d(theta):
     # print 'genk: '+str(theta)
-    k = partial(GPd.sqexp_k_d, theta)
-    return k
+    
+    return GPd.gen_sqexp_k_d(theta)
 
 
 def PhiR(x):
@@ -131,7 +144,7 @@ class GPcore:
 #            print 'y '+str(Y_z)
 #            print 's '+str(S_z)
 #            print 'de '+str(self.D_z)
-        [Xep, Yep, Sep, Dep] = GPd.catObs([[self.X_c, self.Y_c, self.S_c, self.D_c], [self.X_z, Y_z, S_z, self.D_z]])
+        [Xep, Yep, Sep, Dep] = catObs([[self.X_c, self.Y_c, self.S_c, self.D_c], [self.X_z, Y_z, S_z, self.D_z]])
         self.gep = GPd.GPcore(Xep, Yep, Sep, Dep, self.kf)
 
         self.invalidflag = False

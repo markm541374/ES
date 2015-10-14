@@ -21,13 +21,13 @@ optpara['ENTsamQ'] = 'method2'
 optpara['ENTzeroprecision'] = 10**-6
 optpara['ENTsearchn'] = 2000
 optpara['IRsearchn'] = 2000
-optpara['searchmethod']=['EIMLE','EIFB','fixs','discretes'][3]
+optpara['searchmethod']=['EIMLE','EIFB','fixs','discretes'][0]
 optpara['slist'] = sp.logspace(1,-6,20)
 optpara['ulist'] = [1./(x**0.25) for x in optpara['slist']]
 optpara['fixs'] = 0.001
 from scipy import NaN as nan
 optpara['obstype'] = [nan]
-optpara['covtype'] = 'mat32'
+optpara['covtype'] = 'sqexp'
 #outpuscallogmean
 #optpara['OSLM']=0.
 #outputscalelogvar
@@ -54,5 +54,5 @@ objf['hyp']=[1.,0.3, 0.4]#,0.6]
 
 
 runs=dict()
-runs['nopts']=1
-runs['nsteps']= 2
+runs['nopts']=10
+runs['nsteps']= 100

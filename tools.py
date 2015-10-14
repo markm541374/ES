@@ -7,7 +7,8 @@ Created on Mon Mar  2 14:27:45 2015
 import scipy as sp
 from scipy import linalg as spl
 from scipy import interpolate
-import GPd
+import GPdc as GPd
+
 from scipy.stats import norm as norms
 import scipy.stats as sps
 import numpy as np
@@ -17,6 +18,21 @@ from pyDOE import lhs as lhs
 import traceback
 class MJMError(Exception):
     pass
+def catObs(O):
+    i = True
+    for Os in O:
+        if i:
+            i = False
+            X = Os[0]
+            Y = Os[1]
+            S = Os[2]
+            D = Os[3]
+        else:
+            X = sp.vstack([X, Os[0]])
+            Y = sp.vstack([Y, Os[1]])
+            S = sp.vstack([S, Os[2]])
+            D = D+Os[3]
+    return [X, Y, S, D]
 
 def EI(ER,mu,sigma):
         alpha=(-ER+mu)/sigma
@@ -53,8 +69,9 @@ class fgennd():
         self.npoints = npoints
 
         support = lhs(D,samples=npoints,criterion='centermaximin')
+        import GPd as GPoutdated
         self.Xi = sp.matrix([[y*2-1 for y in x] for x in support])
-        V_p = GPd.buildKsym_d(kf, self.Xi, [[sp.NaN]]*npoints)
+        V_p = GPoutdated.buildKsym_d(kf, self.Xi, [[sp.NaN]]*npoints)
         self.vpCho = spl.cholesky(V_p, lower=True)
         self.kf = kf
         return
@@ -168,7 +185,7 @@ def squaresllk(xx, D, kfgen):
             hyp = [10**(i) for i in xx]
             kf = kfgen(hyp)
             try:
-                g = GPd.GPcore(D[0], D[1], D[2], D[3], kf)
+                g = GPd.GP_LKonly(D[0], D[1], D[2], D[3], kf)
                 lk = g.llk()
             except:
                 traceback.print_exc()

@@ -14,7 +14,7 @@ import time
 import pprint
 from tools import *
 import GPep
-import GPd
+import GPdc as GPd
 import DIRECT
 import EntropyPredict
 import logging

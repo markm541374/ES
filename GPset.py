@@ -7,7 +7,7 @@ class to create a set of GPd andor GPep and make parallel inference over them
 """
 
 from multiprocessing import Process, Pipe, Event
-import GPd
+import GPdc as GPd
 import GPep
 import time
 import traceback
@@ -77,11 +77,11 @@ class multiGP:
         for i,c in enumerate(self.conns):
             #self.logthis.debug('send to '+str(c)+ ' '+str([0,X_is[i],D_is[i]]))
             c.send([0,X_is[i],D_is[i]])
-        time.sleep(0.00001)
+        time.sleep(0.000005)
         result = []
         for c in self.conns:
             while not c.poll():
-                time.sleep(0.00001)
+                time.sleep(0.000005)
             rs = c.recv()
             #self.logthis.debug('recv from'+str(c)+ ' '+str(rs))
             if rs[0]==-1:
@@ -92,12 +92,12 @@ class multiGP:
     def infer_any(self,code, X_i, D_i,timeout=10.):
         for c in self.conns:
             c.send([code,X_i,D_i])
-        time.sleep(0.00001)
+        time.sleep(0.000005)
         result=[]
         for c in self.conns:
             err=False
             while not c.poll():
-                time.sleep(0.00001)
+                time.sleep(0.000005)
             result.append(c.recv())
         return result
       
@@ -126,27 +126,16 @@ class mGPd(Process):
         super(mGPd, self).__init__()
         self.conn=conn
         self.exit_event=exit_event
-        self.GP = GPd.GPcore(X_s, Y_s, S_s, D_s, kf,precom=False)
+        self.GP = GPd.GPcore(X_s, Y_s, S_s, D_s, kf)
         self.status=[0,0,0]
         
         return
         
     def run(self):
-        try:
-            self.GP.precompute()
-        except:
-            err = traceback.format_exc()
-            self.status=[-2,err]
-            while not self.exit_event.is_set():
-                if not self.conn.poll():
-                    time.sleep(0.000005)
-                    continue
-                msg = self.conn.poll
-                self.conn.send(self.status)
-                
+        
         while not self.exit_event.is_set():
             if not self.conn.poll():
-                time.sleep(0.000005)
+                time.sleep(0.000002)
                 continue
             [code, X_i, D_i] = self.conn.recv()
             #self.logthis.debug(str(self.uniq)+'recv '+str([code, X_i, D_i]))
@@ -215,7 +204,7 @@ class mGPd(Process):
         
         mh, Vh = self.GP.infer_full(X_x, D_x)
         try:
-            Vh_cho = spl.cholesky(Vh, lower=True)
+            Vh_cho = spl.cholesky(Vh+sp.eye(n_points)*1e-12, lower=True)
         except:
             try:
                 Vh_cho = spl.cholesky(Vh+sp.eye(n_points)*1e-9, lower=True)
@@ -260,7 +249,7 @@ class mGPep(Process):
                 
         while not self.exit_event.is_set():
             if not self.conn.poll():
-                time.sleep(0.000005)
+                time.sleep(0.000002)
                 continue
             [code, X_i, D_i] = self.conn.recv()
             #self.logthis.debug(str(self.uniq)+'recv '+str([code, X_i, D_i]))

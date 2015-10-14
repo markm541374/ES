@@ -4,7 +4,7 @@ import scipy.stats as sps
 import scipy.linalg as spl
 from scipy.stats import norm as norm
 import GPep
-import GPd
+import GPdc as GPd
 import GPset
 # from scipy.optimize import minimize as mnz
 import DIRECT
@@ -29,21 +29,20 @@ class OptEval():
     def xerr(self):
         xerr=[]
         xmintrue = sp.matrix(self.O.para['xmintrue'])
-        print 'XXXXXXXXXXXXXXXXXXx'
+        
         for s in self.O.states[1:]:
-		
             xminest = sp.matrix(s['xminIR'])
-            
-            print '['+str(xminest[0,0])+','+str(xminest[0,1])+'],'#+ ' '+str(xmintrue)+' '+str(s['searchres'][0])
-            
             xerr.append(spl.norm(xmintrue-xminest, ord='fro'))
         return xerr
     
     def yIR(self):
+        print 'YYYY'
         yIR=[]
         ymintrue = self.O.para['ymintrue']
         for s in self.O.states[1:]:
+             
             xminest = sp.matrix(s['xminIR'])
+            print self.O.f([0,0])
             yIR.append(abs(self.O.f(sp.array(xminest).flatten())-ymintrue))
         
         return sp.array(yIR)

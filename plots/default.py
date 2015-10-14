@@ -32,49 +32,6 @@ ex3[0]['colorcode']='r'
 p['extras']=[ex1,ex2,ex3]
 plots.append(p)
 
-#IR plot
-p=dict()
-p['name']='IR'
-p['dsets']=[True,True,True]
-p['colorcodes']=['lightblue','lightgreen','lightcoral']
-p['xscale']='linear'
-p['yscale']='log'
-p['title']='IR vs. steps'
-
-ex1=[dict()]
-ex1[0]['name']='median'
-ex1[0]['colorcode']='b'
-ex2=[dict()]
-ex2[0]['name']='median'
-ex2[0]['colorcode']='g'
-ex3=[dict()]
-ex3[0]['name']='median'
-ex3[0]['colorcode']='r'
-p['extras']=[ex1,ex2,ex3]
-
-plots.append(p)
-
-#IRu plot
-p=dict()
-p['name']='IRu'
-p['dsets']=[True,True,True]
-p['colorcodes']=['lightblue','lightgreen','lightcoral']
-p['xscale']='linear'
-p['yscale']='log'
-p['title']='IR vs. uacc'
-
-ex1=[dict()]
-ex1[0]['name']='median'
-ex1[0]['colorcode']='b'
-ex2=[dict()]
-ex2[0]['name']='median'
-ex2[0]['colorcode']='g'
-ex3=[dict()]
-ex3[0]['name']='median'
-ex3[0]['colorcode']='r'
-p['extras']=[ex1,ex2,ex3]
-
-plots.append(p)
 
 #xerru plot
 p=dict()
@@ -249,3 +206,48 @@ p['yscale']='linear'
 p['title']='global_hyp vs. steps'
 p['extras']=[[],[],[]]
 #plots.append(p)
+
+#IR plot
+p=dict()
+p['name']='IR'
+p['dsets']=[True,True,True]
+p['colorcodes']=['lightblue','lightgreen','lightcoral']
+p['xscale']='linear'
+p['yscale']='log'
+p['title']='IR vs. steps'
+
+ex1=[dict()]
+ex1[0]['name']='median'
+ex1[0]['colorcode']='b'
+ex2=[dict()]
+ex2[0]['name']='median'
+ex2[0]['colorcode']='g'
+ex3=[dict()]
+ex3[0]['name']='median'
+ex3[0]['colorcode']='r'
+p['extras']=[ex1,ex2,ex3]
+
+plots.append(p)
+
+#IRu plot
+p=dict()
+p['name']='IRu'
+p['dsets']=[True,True,True]
+p['colorcodes']=['lightblue','lightgreen','lightcoral']
+p['xscale']='linear'
+p['yscale']='log'
+p['title']='IR vs. uacc'
+
+ex1=[dict()]
+ex1[0]['name']='median'
+ex1[0]['colorcode']='b'
+ex2=[dict()]
+ex2[0]['name']='median'
+ex2[0]['colorcode']='g'
+ex3=[dict()]
+ex3[0]['name']='median'
+ex3[0]['colorcode']='r'
+p['extras']=[ex1,ex2,ex3]
+
+plots.append(p)
+

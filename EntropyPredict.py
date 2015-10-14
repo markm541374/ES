@@ -9,7 +9,7 @@ import scipy.stats as sps
 import scipy.linalg as spl
 from scipy.stats import norm as norm
 import GPep
-import GPd
+import GPdc as GPd
 import GPset
 # from scipy.optimize import minimize as mnz
 import DIRECT
@@ -183,7 +183,7 @@ class EntPredictor():
             if not md[0]==0:
                 self.mask[i]=-1
                 #create a bad GP in the correct position so that others are alligned
-                self.EPInfer.addGPd(-1,-1,-1,-1,-1)
+                self.EPInfer.addGPd(sp.matrix([[-1]]),sp.matrix([[-1]]),sp.matrix([[1e-3]]),[[sp.NaN]],self.kfgen([1.,1.]))
                 continue
             xs = md[1]
 
@@ -209,6 +209,7 @@ class EntPredictor():
         badset=[]
         for i,s in enumerate(status):
             if not s[0] == 0:
+                print s[1]
                 badset.append(i)
                 flag = True
         badset.reverse()
@@ -317,6 +318,7 @@ class EntPredictor():
         Dmcs=[]
 
         for i in xrange(self.nHYPsamples):
+            
             X = sp.vstack([X_s,self.ENTmindraws[i][1]])
             Xmcs.append(X)
             Dmcs.append(D_s+[[sp.NaN]])

@@ -15,7 +15,7 @@ import time
 import pprint
 from tools import *
 import GPep
-import GPd
+import GPdc as GPd
 import GPset
 import DIRECT
 import EntropyPredict
@@ -79,11 +79,7 @@ for plot in para.plots:
             xdata=range(len(ydata[0]))
             readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
         
-        if plot['name']=='IR':        
-            a = f.add_subplot(111)
-            ydata=sp.vstack([r.yIR() for r in d])
-            xdata=range(len(ydata[0]))
-            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
+        
             
         if plot['name']=='region':        
             a = f.add_subplot(111)
@@ -208,6 +204,12 @@ for plot in para.plots:
                 med.append(sp.median([p[j] for p in ints]))
             plt.plot(sp.linspace(0,q,np),med,plot['extras'][i][0]['colorcode'])
 
+        if plot['name']=='IR':        
+            a = f.add_subplot(111)
+            ydata=sp.vstack([r.yIR() for r in d])
+            print 'R'
+            xdata=range(len(ydata[0]))
+            readlog.plotset(ydata,xdata,f,a,plot['colorcodes'][i],extras=plot['extras'][i])
 
         if plot['name']=='sprofdata':
             alldata = [r.sprofile() for r in d]
